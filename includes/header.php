@@ -44,6 +44,13 @@ require_once('includes/authorization.php');
               </a>
             </li>
           <!------------------------------->
+              <!-------CADASTRO DE Agentes--->
+            <li>
+              <a href="cadastroDeAgentes.php" class="dropdown">
+                Cadastros de Agentes
+              </a>
+            </li>
+          <!------------------------------->
             
 
           </ul>
