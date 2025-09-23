@@ -9,7 +9,9 @@
 
             <tr>
                 
-                <th>Nome</th>               
+                <th>Nome</th>
+                <th>Data_Nascimento</th>
+                <th>Idade</th>
                 <th>CPF</th>
                 <th>Ações</th>
 
@@ -23,7 +25,7 @@
         
         //-----------criterios de consulta--------------
           
-          $tabela = "cadastro_agente";//--------tabela como parametro 
+          $tabela = "cadastro_profissionais";//--------tabela como parametro 
 
           $cadUbs = new UbsCrudAll($tabela);//----objeto classe UbsCrudAll(parametro)
 
@@ -40,17 +42,32 @@
             $id =               $registrosUbs['ID'];
 
             $nome =             $registrosUbs['NOME'];
-           
+            $data_nascimento =  $registrosUbs['DATA_NASCIMENTO'];
             $cpf =              $registrosUbs['CPF'];
 
-            
+            $dataBR->setIdade($data_nascimento);//---setando data
         ?>
 
 
             <tr>
                 <td><?=$nome?></td>
 
-                
+                <td>
+                  <?php 
+                      //-------------formatando data
+                       echo $dataBR->dataBr();
+                  ?>    
+                </td>
+
+                <td>
+                  <?php 
+
+                      //----------usando a funcao idade Anos
+                       echo $dataBR->IdadeAnos();
+                       
+                       //-----exemplo de idade completa
+                       echo " ou (".$dataBR->IdadeCompleta().")";
+                  ?>    
                 </td>
 
                 <td><?=$cpf?></td>
@@ -71,7 +88,7 @@
       ?>
                 <!-------botão editar------->
                   <a 
-                    href="modal/edicao/modalEdCadastroDeAgentes.php?id=<?=$id?>" 
+                    href="modal/edicao/modalEdCadastroDeProfissional.php?id=<?=$id?>" 
                     data-toggle="modal" data-target="#updateBioUBS" 
                     data-backdrop="static" data-keyboard="false"
                     id="btnEdPaciente"
@@ -83,7 +100,7 @@
                   .
                 <!-------botão excluir------->
                   <a 
-                    href="modal/exclusao/modalExCadastroDeAgentes.php?id=<?=$id?>" 
+                    href="modal/exclusao/modalExCadastroDeProfissional.php?id=<?=$id?>" 
                     data-toggle="modal" data-target="#deleteBioUBS" 
                     data-backdrop="static" data-keyboard="false"
                     id="btnExPaciente"
