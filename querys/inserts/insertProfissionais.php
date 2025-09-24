@@ -2,20 +2,47 @@
 
 
       //-------campos via post
-        $nome = $_POST['nome']; //---------o name no formulario é livre mas deve ser recebido aqui
+        $nome = $_POST['nome_completo']; //---------o name no formulario é livre mas deve ser recebido aqui
         
-        $cpf = $_POST['cpf'];
-
+        //---------------------- Dados Pessoais ----------------
         $data_nascimento = $_POST['data_nascimento'];
 
-        $cns = $_POST['cns'];
+         $cpf = $_POST['cpf'];
 
-        $conselho = $_POST['conselho'];
+        $cns_profissional = $_POST['cns_profissional'];
+
+        $conselho = $_POST['conselho_classe'];
+
+        $sexo = $_POST['sexo'];
 
         $registro_conselho = $_POST['registro_conselho'];
        
-        $estado = $_POST['uf_cns'];
+        $estado_conselho = $_POST['estado_emissor_conselho'];
       //----------------------
+
+      //------------------ Dados para contato ----------------
+        $email = $_POST['email'];
+        $telefone = $_POST['telefone'];
+
+        //---------------------- Dados do Conselho de Classe ----------------
+       $conselho = $_POST['conselho_classe'];
+        $registro_conselho = $_POST['registro_conselho'];
+        $estado_conselho = $_POST['estado_emissor_conselho'];
+
+        //---------------------- Dados do Endereço ----------------
+        $cep = $_POST['cep'];
+        $logradouro = $_POST['logradouro'];
+        $numero = $_POST['numero'];
+        $bairro = $_POST['bairro'];
+        $complemento = $_POST['complemento'];
+        $municipio = $_POST['municipio'];
+        $estado_endereco = $_POST['estado_endereco'];
+        $ponto_referencia = $_POST['ponto_referencia'];
+      //----------------------
+
+      //--------------------- Dados de Acesso ----------------
+         $senha = $_POST['senha_hash'];
+        
 
 //------------------inserindo na tabela profissionais---------
 
@@ -24,25 +51,41 @@
     $colunasPermitidas = 
     [
       'NOME_COMPLETO'  ,
-      'CPF',
-      'DATA_NASCIMENTO',
+      'DATA_NASCIMENTO',      
+      'CPF',      
       'CNS_PROFISSIONAL',
-        'CONSELHO_CLASSE',
-        'REGISTRO_CONSELHO',
-        'ESTADO_OMISSOR_CONSELHO'
+      'SEXO',
+      'EMAIL', 
+      'TELEFONE',
+      'CONSELHO_CLASSE',
+      'REGISTRO_CONSELHO',
+      'ESTADO_EMISSOR_CONSELHO'
 
     ]; //--nao informar ID chave primaria
 
     $objeto = new UbsCrudAll($tabela, $colunasPermitidas); //---receberá a tabela e as colunas
 
     $dados = ([
-        'NOME'              => $nome,
+        'NOME_COMPLETO'              => $nome,
         'CPF'               => $cpf,
         'DATA_NASCIMENTO'   => $data_nascimento,
-        'CNS_PROFISSIONAL'  => $cns,
+        'CNS_PROFISSIONAL'  => $cns_profissional,
+        'SEXO'              => $sexo,
+        'EMAIL'             => $email,
+        'TELEFONE'          => $telefone,
         'CONSELHO_CLASSE'   => $conselho,
         'REGISTRO_CONSELHO' => $registro_conselho, 
-        'ESTADO_OMISSOR_CONSELHO' => $estado
+        'ESTADO_EMISSOR_CONSELHO' => $estado_conselho,
+        'CEP'               => $cep,
+        'LOGRADOURO'        => $logradouro,
+        'NUMERO'           => $numero,
+        'BAIRRO'           => $bairro,
+        'COMPLEMENTO'      => $complemento,
+        'MUNICIPIO'        => $municipio, 
+        'ESTADO_ENDERECO'  => $estado_endereco,
+        'PONTO_REFERENCIA' => $ponto_referencia,  
+        'SENHA'            => $senha
+
         
     ]);
 
