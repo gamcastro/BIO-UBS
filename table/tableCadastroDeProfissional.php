@@ -25,7 +25,7 @@
         
         //-----------criterios de consulta--------------
           
-          $tabela = "cadastro_profissionais";//--------tabela como parametro 
+          $tabela = "cadastro_profissional";//--------tabela como parametro 
 
           $cadUbs = new UbsCrudAll($tabela);//----objeto classe UbsCrudAll(parametro)
 
@@ -41,7 +41,7 @@
 
             $id =               $registrosUbs['ID'];
 
-            $nome =             $registrosUbs['NOME'];
+            $nome =             $registrosUbs['NOME_COMPLETO'];
             $data_nascimento =  $registrosUbs['DATA_NASCIMENTO'];
             $cpf =              $registrosUbs['CPF'];
 
