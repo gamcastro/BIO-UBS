@@ -52,15 +52,30 @@ require_once('includes/authorization.php');
                Profissionais
               </a>
             </li>
-          <!------------------------------->
-            
+          <!------------------------------->            
 
+             
           </ul>
           
       </li>
 
       <li><a href="#">Documentos</a></li>
       <li><a href="#">Relatórios</a></li>
+      <li class="dropdown">
+         <a href="#" data-toggle="dropdown" class="dropdown-toggle">
+          Administração <span class="caret"></span>
+        </a>
+        <ul class="dropdown-menu">
+             <li>
+              <!-------CADASTRO DE UNIDADES --->
+              <a href="cadastroDeUnidades.php" class="dropdown">
+               Cadastro da Unidade
+              </a>
+            </li>
+          <!------------------------------->    
+            
+          </ul>
+      </li>
     </ul>
   </div>
 </nav>

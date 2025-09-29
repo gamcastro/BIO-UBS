@@ -1,6 +1,4 @@
-<?php  
-  require_once('includes/authorization.php');  
-
+<?php  require_once('includes/authorization.php');  
 
 
 ?>
@@ -11,10 +9,9 @@
 
             <tr>
                 
-                <th>Nome</th>
-                <th>Data_Nascimento</th>
-                <th>Idade</th>
-                <th>CPF</th>
+                <th>Nome UBS</th>
+                <th>CNES</th>
+                <th>Município</th>               
                 <th>Ações</th>
 
             </tr>
@@ -27,11 +24,11 @@
         
         //-----------criterios de consulta--------------
           
-          $tabela = "cadastro_profissional";//--------tabela como parametro 
+          $tabela = "cadastro_unidade";//--------tabela como parametro 
 
           $cadUbs = new UbsCrudAll($tabela);//----objeto classe UbsCrudAll(parametro)
 
-          $dataBR = new Idade(); //---------------objeto classe Idade   
+        //   $dataBR = new Idade(); //---------------objeto classe Idade   
 
         //----------------------------------------------
 
@@ -39,17 +36,15 @@
 
         $UbsQuery = $cadUbs->listarTodos(); 
 
-      
-
         foreach ($UbsQuery as $registrosUbs) {
 
             $id =               $registrosUbs['ID'];
 
-            $nome =             $registrosUbs['NOME_COMPLETO'];
-            $data_nascimento =  $registrosUbs['DATA_NASCIMENTO'];
-            $cpf =              $registrosUbs['CPF'];
+            $nome =             $registrosUbs['NOME'];
+            $cnes =  $registrosUbs['CNES'];
+            $municipio =              $registrosUbs['MUNICIPIO'];
 
-            $dataBR->setIdade($data_nascimento);//---setando data
+           
         ?>
 
 
@@ -57,24 +52,14 @@
                 <td><?=$nome?></td>
 
                 <td>
-                  <?php 
-                      //-------------formatando data
-                       echo $dataBR->dataBr();
-                  ?>    
+                   <?=$cnes?>
                 </td>
 
                 <td>
-                  <?php 
-
-                      //----------usando a funcao idade Anos
-                       echo $dataBR->IdadeAnos();
-                       
-                       //-----exemplo de idade completa
-                       echo " ou (".$dataBR->IdadeCompleta().")";
-                  ?>    
+                     <?=$municipio?>
                 </td>
 
-                <td><?=$cpf?></td>
+               
                 
                 <td>
                   <!-------botão iimprimir------->
@@ -92,7 +77,7 @@
       ?>
                 <!-------botão editar------->
                   <a 
-                    href="modal/edicao/modalEdCadastroDeProfissional.php?id=<?=$id?>" 
+                    href="modal/edicao/modalEdCadastroDeUnidades.php?id=<?=$id?>" 
                     data-toggle="modal" data-target="#updateBioUBS" 
                     data-backdrop="static" data-keyboard="false"
                     id="btnEdPaciente"
@@ -104,7 +89,7 @@
                   .
                 <!-------botão excluir------->
                   <a 
-                    href="modal/exclusao/modalExCadastroDeProfissional.php?id=<?=$id?>" 
+                    href="modal/exclusao/modalExCadastroDeUnidades.php?id=<?=$id?>" 
                     data-toggle="modal" data-target="#deleteBioUBS" 
                     data-backdrop="static" data-keyboard="false"
                     id="btnExPaciente"

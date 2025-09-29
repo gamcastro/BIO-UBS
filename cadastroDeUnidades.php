@@ -1,7 +1,6 @@
 <?php 
 //----titulo da página------
-  $tituloDaPagina = "Cadastro de Profissionais";
-
+  $tituloDaPagina = "Cadastro de Unidades";
 //---------------------------
 
 include_once('includes/header.php');
@@ -20,19 +19,19 @@ if($nivelAcesso == 1):
     if(isset($_POST['salvar'])):
 
       //-----------------salvando o cadastro-----
-      include('querys/inserts/insertProfissionais.php');
+      include('querys/inserts/insertUnidades.php');
       //********************************************************
 
     elseif(isset($_POST['editar'])):
 
       //-----------------editando o cadastro-----
-      include('querys/updates/updateProfissionais.php');
+      include('querys/updates/updateUnidades.php');
       //********************************************************
 
     elseif(isset($_POST['excluir'])):
 
       //-----------------excluindo o cadastro-----
-      include('querys/deletes/deleteProfissionais.php');
+      include('querys/deletes/deleteUnidades.php');
       //********************************************************
 
     endif;  
@@ -83,7 +82,7 @@ endif;//---fim para controle de acesso
 
 
 
-        <h1 style="color:#CCCCCC; text-align:center">Cadastro de Profissionais</h1>
+        <h1 style="color:#CCCCCC; text-align:center">Cadastro da Unidade</h1>
 
 <hr>
 
@@ -97,7 +96,7 @@ if($nivelAcesso == 1):
 <!---------------botão para acionar a modal------------------>
     <a
       class="btn btn-primary pull-right" 
-      data-toggle="modal" data-target="#insertProfissional" 
+      data-toggle="modal" data-target="#insertUnidade" 
       id="btnCadPaciente" style="margin-top: -40px"
     >
       <span class="glyphicon glyphicon-plus-sign"></span> Novo Cadastro
@@ -113,7 +112,7 @@ if($nivelAcesso == 1):
 <?php 
 ///-----------------JANELA MODAL----------------------
 //-------------incluindo janela modal cadastro-----------------------------
-include('modal/cadastro/modalCadastroDeProfissional.php');
+include('modal/cadastro/modalCadastroDeUnidade.php');
 ?>
 
 <!-----------casca da modal de edicao------------->
@@ -146,9 +145,10 @@ include('modal/cadastro/modalCadastroDeProfissional.php');
 
 
 
+
 //---------------------IMPORTANTE!!!!!!!!!!!!
 //-------------tabela principal--------------
-include('table/tableCadastroDeProfissional.php');
+include('table/tableCadastroDeUnidade.php');
 //-------------------------------------------
 
 
