@@ -15,6 +15,7 @@
         $cns_profissional = $_POST['cns_profissional'];
         $conselho = $_POST['conselho_classe'];
         $sexo = $_POST['sexo'];
+        $perfil = $_POST['perfil'] ;
         $registro_conselho = $_POST['registro_conselho'];
         $estado_conselho = $_POST['estado_emissor_conselho'];
 
@@ -47,6 +48,7 @@
       'CNS_PROFISSIONAL',
       'DATA_NASCIMENTO',
       'SEXO',
+      'PERFIL',
       'EMAIL',
       'TELEFONE',
       'CONSELHO_CLASSE',
@@ -71,6 +73,7 @@
       'CNS_PROFISSIONAL'           => $cns_profissional,
       'DATA_NASCIMENTO'            => $data_nascimento,
       'SEXO'                       => $sexo,
+      'PERFIL'                     => $perfil,
       'EMAIL'                      => $email,
       'TELEFONE'                   => $telefone,
       'CONSELHO_CLASSE'            => $conselho,

@@ -52,15 +52,22 @@ require_once('includes/authorization.php');
                Profissionais
               </a>
             </li>
-          <!------------------------------->
-            
+          <!------------------------------->            
 
+            <li>
+              <!-------CADASTRO DE UNIDADES --->
+              <a href="cadastroDeUnidades.php" class="dropdown">
+               Unidade
+              </a>
+            </li>
+             
           </ul>
           
       </li>
 
       <li><a href="#">Documentos</a></li>
       <li><a href="#">Relatórios</a></li>
+      
     </ul>
   </div>
 </nav>
