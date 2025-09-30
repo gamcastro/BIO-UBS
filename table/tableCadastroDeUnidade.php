@@ -1,6 +1,4 @@
-<?php  
-  require_once('includes/authorization.php');  
-
+<?php  require_once('includes/authorization.php');  
 
 
 ?>
@@ -11,9 +9,9 @@
 
             <tr>
                 
-                <th>Nome</th>
-                <th>Perfil</th>
-                <th>CNS</th>               
+                <th>Nome UBS</th>
+                <th>CNES</th>
+                <th>Município</th>               
                 <th>Ações</th>
 
             </tr>
@@ -26,11 +24,11 @@
         
         //-----------criterios de consulta--------------
           
-          $tabela = "cadastro_profissional";//--------tabela como parametro 
+          $tabela = "cadastro_unidade";//--------tabela como parametro 
 
           $cadUbs = new UbsCrudAll($tabela);//----objeto classe UbsCrudAll(parametro)
 
-          $dataBR = new Idade(); //---------------objeto classe Idade   
+        //   $dataBR = new Idade(); //---------------objeto classe Idade   
 
         //----------------------------------------------
 
@@ -38,32 +36,30 @@
 
         $UbsQuery = $cadUbs->listarTodos(); 
 
-      
-
         foreach ($UbsQuery as $registrosUbs) {
 
             $id =               $registrosUbs['ID'];
 
-            $nome =             $registrosUbs['NOME_COMPLETO'];
-            $cns =  $registrosUbs['CNS_PROFISSIONAL'];
-            $perfil =              $registrosUbs['PERFIL'];
+            $nome =             $registrosUbs['NOME'];
+            $cnes =  $registrosUbs['CNES'];
+            $municipio =              $registrosUbs['MUNICIPIO'];
 
-            
+           
         ?>
 
 
             <tr>
                 <td><?=$nome?></td>
 
-                <td><?=$perfil?></td>
-
                 <td>
-                <?=$cns?>
+                   <?=$cnes?>
                 </td>
 
-            
+                <td>
+                     <?=$municipio?>
+                </td>
 
-                
+               
                 
                 <td>
                   <!-------botão iimprimir------->
@@ -81,7 +77,7 @@
       ?>
                 <!-------botão editar------->
                   <a 
-                    href="modal/edicao/modalEdCadastroDeProfissional.php?id=<?=$id?>" 
+                    href="modal/edicao/modalEdCadastroDeUnidades.php?id=<?=$id?>" 
                     data-toggle="modal" data-target="#updateBioUBS" 
                     data-backdrop="static" data-keyboard="false"
                     id="btnEdPaciente"
@@ -93,7 +89,7 @@
                   .
                 <!-------botão excluir------->
                   <a 
-                    href="modal/exclusao/modalExCadastroDeProfissional.php?id=<?=$id?>" 
+                    href="modal/exclusao/modalExCadastroDeUnidades.php?id=<?=$id?>" 
                     data-toggle="modal" data-target="#deleteBioUBS" 
                     data-backdrop="static" data-keyboard="false"
                     id="btnExPaciente"

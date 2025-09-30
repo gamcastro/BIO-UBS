@@ -1,12 +1,14 @@
 <?php 
 
 
+
 class Conexao{
 
-	private static $local = 'localhost';
-	private static $banco = 'bio_ubs';
-	private static $usuario = 'root';
-	private static $senha = '';
+	 
+	private static $local ;
+	private static $banco ;
+	private static $usuario ;
+	private static $senha ;
 
 
 	private static $instance;
@@ -16,13 +18,19 @@ class Conexao{
 	public static function getConn(){
 		try{
 			if (!isset(self::$instance)) :
+			$config = require_once __DIR__ . '/../config.php';
+			self::$local = $config['local'];
+			self::$banco = $config['banco'];
+			self::$usuario = $config['usuario'];
+			self::$senha = $config['senha'];
 
-			self::$instance = new PDO('mysql:host='.self::$local. ';dbname='.self::$banco, self::$usuario, self::$senha);
+			self::$instance = new PDO('mysql:host='.self::$local. ';dbname='.self::$banco .';charset=utf8mb4',self::$usuario, self::$senha);
 
-			//-------------acrescente estas duas linhas para dar mais segurança-----------
+			//-------------acrescente estas,'charset=utf8mb4' duas linhas para dar mais segurança-----------
 			//----------------------------------------------------------------------------
 			self::$instance->setAttribute( PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 			self::$instance->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_OBJ);
+			
 			
 		    endif;
 
