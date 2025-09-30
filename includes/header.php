@@ -54,6 +54,12 @@ require_once('includes/authorization.php');
             </li>
           <!------------------------------->            
 
+            <li>
+              <!-------CADASTRO DE UNIDADES --->
+              <a href="cadastroDeUnidades.php" class="dropdown">
+               Unidade
+              </a>
+            </li>
              
           </ul>
           
@@ -61,21 +67,7 @@ require_once('includes/authorization.php');
 
       <li><a href="#">Documentos</a></li>
       <li><a href="#">Relatórios</a></li>
-      <li class="dropdown">
-         <a href="#" data-toggle="dropdown" class="dropdown-toggle">
-          Administração <span class="caret"></span>
-        </a>
-        <ul class="dropdown-menu">
-             <li>
-              <!-------CADASTRO DE UNIDADES --->
-              <a href="cadastroDeUnidades.php" class="dropdown">
-               Cadastro da Unidade
-              </a>
-            </li>
-          <!------------------------------->    
-            
-          </ul>
-      </li>
+      
     </ul>
   </div>
 </nav>

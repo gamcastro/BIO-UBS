@@ -20,6 +20,7 @@ if(isset($_GET['id'])): //----só sugirá o conteúdo se vier um ID
         $cns_profissional = $rowsId['CNS_PROFISSIONAL'];
         $data_nascimento = $rowsId['DATA_NASCIMENTO'];
         $sexo = $rowsId['SEXO'];
+        $perfil = $rowsId['PERFIL'];
         $email = $rowsId['EMAIL'];
         $telefone = $rowsId['TELEFONE'];
         $conselho = $rowsId['CONSELHO_CLASSE'];
@@ -69,7 +70,8 @@ if(isset($_GET['id'])): //----só sugirá o conteúdo se vier um ID
                         <tr>
                             <td>CPF:</td>
                             <td>CNS do Profissional:</td>
-                            <td colspan="2">Sexo:</td>
+                            <td>Sexo:</td>
+                            <td>Perfil:</td>
                         </tr>
                         <tr>
                             <td>
@@ -78,12 +80,28 @@ if(isset($_GET['id'])): //----só sugirá o conteúdo se vier um ID
                             <td>
                                 <input class="form-control" type="text" id="cns_profissional" name="cns_profissional" placeholder="Nº do Cartão Nacional de Saúde" value="<?=$cns_profissional?>">
                             </td>
-                            <td colspan="2">
+                            <td>
                                 <select id="sexo" name="sexo" class="form-control" required="required">
                                     <option value="">Selecione...</option>
                                     <option value="Feminino" <?=($sexo=='Feminino'?'selected':'')?>>Feminino</option>
                                     <option value="Masculino" <?=($sexo=='Masculino'?'selected':'')?>>Masculino</option>
-                                    <option value="Outro" <?=($sexo=='Outro'?'selected':'')?>>Outro</option>
+                                    
+                                </select>
+                            </td>
+                            <td>
+                                <select id="perfil" name="perfil" class="form-control" required="required">
+                                    <option value="">Selecione um perfil...</option>
+                                    <option value="MEDICO">MÉDICO</option>
+                                    <option value="ENFERMEIRO">ENFERMEIRO</option>
+                                    <option value="TECNICO_ENFERMAGEM">AUXILIAR OU TÉCNICO DE ENFERMAGEM</option>
+                                    <option value="CIRURGIAO_DENTISTA">CIRURGIÃO DENTISTA</option>
+                                    <option value="ASB">ASB - AUXILIAR DE SAÚDE BUCAL</option>
+                                    <option value="TSB">TSB - TÉCNICO DE SAÚDE BUCAL</option>
+                                    <option value="ACS">ACS - AGENTE COMUNITÁRIO DE SAÚDE</option>
+                                    <option value="ACE">ACE - AGENTE DE COMBATE ÀS ENDEMIAS</option>
+                                    <option value="COORDENADOR">COORDENADOR DA UBS</option>
+                                    <option value="RECEPCAO">RECEPÇÃO</option>
+                                    <option value="OUTRO_NIVEL_SUPERIOR">OUTRO PROF. NÍVEL SUPERIOR</option>
                                 </select>
                             </td>
                         </tr>

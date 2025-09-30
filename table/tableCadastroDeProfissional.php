@@ -12,9 +12,8 @@
             <tr>
                 
                 <th>Nome</th>
-                <th>Data_Nascimento</th>
-                <th>Idade</th>
-                <th>CPF</th>
+                <th>Perfil</th>
+                <th>CNS</th>               
                 <th>Ações</th>
 
             </tr>
@@ -46,35 +45,25 @@
             $id =               $registrosUbs['ID'];
 
             $nome =             $registrosUbs['NOME_COMPLETO'];
-            $data_nascimento =  $registrosUbs['DATA_NASCIMENTO'];
-            $cpf =              $registrosUbs['CPF'];
+            $cns =  $registrosUbs['CNS_PROFISSIONAL'];
+            $perfil =              $registrosUbs['PERFIL'];
 
-            $dataBR->setIdade($data_nascimento);//---setando data
+            
         ?>
 
 
             <tr>
                 <td><?=$nome?></td>
 
-                <td>
-                  <?php 
-                      //-------------formatando data
-                       echo $dataBR->dataBr();
-                  ?>    
-                </td>
+                <td><?=$perfil?></td>
 
                 <td>
-                  <?php 
-
-                      //----------usando a funcao idade Anos
-                       echo $dataBR->IdadeAnos();
-                       
-                       //-----exemplo de idade completa
-                       echo " ou (".$dataBR->IdadeCompleta().")";
-                  ?>    
+                <?=$cns?>
                 </td>
 
-                <td><?=$cpf?></td>
+            
+
+                
                 
                 <td>
                   <!-------botão iimprimir------->
