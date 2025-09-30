@@ -1,0 +1,21 @@
+name: Deploy para Desenvolvimento (InfinityFree)
+
+on:
+  push:
+    branches:
+      - desenvolvimento # Este workflow roda toda vez que a branch 'develop' é atualizada
+
+jobs:
+  ftp-deploy:
+    runs-on: ubuntu-latest
+    steps:
+    - name: checkout
+      uses: actions/checkout@v4
+
+    - name: FTP Deploy
+      uses: SamKirkland/FTP-Deploy-Action@v4.3.4
+      with:
+        server: ${{ secrets.FTP_SERVER }}
+        username: ${{ secrets.FTP_USERNAME }}
+        password: ${{ secrets.FTP_PASSWORD }}
+        server-dir: /htdocs/bio-ubs-desenvolvimento/
