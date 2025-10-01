@@ -1,0 +1,41 @@
+name: Auto merge no branch desenvolvimento
+
+on:
+  push:
+    branches:
+      - 'feature/**' # Aciona em pushes para branches 'feature/...'
+      - 'bug/**'     # Aciona em pushes para branches 'bug/...'
+
+jobs:
+  auto-merge-and-cleanup:
+    runs-on: ubuntu-latest
+    steps:
+      # 1. Faz o checkout do código da branch que disparou a ação
+      - name: Checkout Source Branch
+        uses: actions/checkout@v4
+
+      # 2. Configura o Git para fazer o commit de merge
+      - name: Set up Git
+        run: |
+          git config --global user.name 'GitHub Actions Bot'
+          git config --global user.email 'actions-bot@github.com'
+
+      # 3. Faz o merge na branch 'develop'
+      - name: Merge to Develop
+        run: |
+          SOURCE_BRANCH="${{ github.ref_name }}"
+          
+          git fetch origin desenvolvimento
+          git checkout desenvolvimento
+          
+          echo "Merging ${SOURCE_BRANCH} into develop..."
+          git merge --no-ff "origin/${SOURCE_BRANCH}" -m "Auto-merge da branch ${SOURCE_BRANCH}"
+          
+          # Usa o token para fazer o push na branch 'develop' protegida
+          git push https://x-access-token:${{ secrets.AUTO_MERGE_TOKEN }}@github.com/${{ github.repository }}.git develop
+
+      # 4. Deleta a branch de origem (feature/ ou bug/) do repositório remoto
+      - name: Delete Source Branch
+        run: |
+          SOURCE_BRANCH="${{ github.ref_name }}"
+          git push https://x-access-token:${{ secrets.AUTO_MERGE_TOKEN }}@github.com/${{ github.repository }}.git --delete "${SOURCE_BRANCH}"
