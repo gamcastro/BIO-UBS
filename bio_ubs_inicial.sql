@@ -1,13 +1,14 @@
 -- phpMyAdmin SQL Dump
--- version 5.2.1
+-- version 4.9.0.1
 -- https://www.phpmyadmin.net/
 --
--- Host: 127.0.0.1
--- Tempo de geração: 29/09/2025 às 16:49
--- Versão do servidor: 10.4.32-MariaDB
--- Versão do PHP: 8.2.12
+-- Host: sql104.infinityfree.com
+-- Tempo de geração: 01-Out-2025 às 17:06
+-- Versão do servidor: 11.4.7-MariaDB
+-- versão do PHP: 7.2.22
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+SET AUTOCOMMIT = 0;
 START TRANSACTION;
 SET time_zone = "+00:00";
 
@@ -18,13 +19,13 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Banco de dados: `bio_ubs`
+-- Banco de dados: `if0_40045751_bio_ubs`
 --
 
 -- --------------------------------------------------------
 
 --
--- Estrutura para tabela `cadastro_paciente`
+-- Estrutura da tabela `cadastro_paciente`
 --
 
 CREATE TABLE `cadastro_paciente` (
@@ -40,17 +41,10 @@ CREATE TABLE `cadastro_paciente` (
   `ATUALIZADO_EM` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
---
--- Despejando dados para a tabela `cadastro_paciente`
---
-
-INSERT INTO `cadastro_paciente` (`ID`, `NOME`, `DATA_NASCIMENTO`, `CPF`, `RG`, `UF_RG`, `SSP`, `TELEFONE_CELULAR`, `CRIADO_EM`, `ATUALIZADO_EM`) VALUES
-(34, 'MARKLENY MARTINHS PINHEIRO', '0000-00-00', '655.014.383-72', '', '', '', '', '2025-09-23 02:20:02', '2025-09-23 02:20:02');
-
 -- --------------------------------------------------------
 
 --
--- Estrutura para tabela `cadastro_profissional`
+-- Estrutura da tabela `cadastro_profissional`
 --
 
 CREATE TABLE `cadastro_profissional` (
@@ -59,7 +53,8 @@ CREATE TABLE `cadastro_profissional` (
   `CPF` varchar(14) DEFAULT NULL,
   `CNS_PROFISSIONAL` varchar(15) DEFAULT NULL,
   `DATA_NASCIMENTO` date DEFAULT NULL,
-  `SEXO` enum('Feminino','Masculino','Outro') DEFAULT NULL,
+  `SEXO` enum('Feminino','Masculino') DEFAULT NULL,
+  `PERFIL` varchar(50) NOT NULL,
   `EMAIL` varchar(255) NOT NULL,
   `TELEFONE` varchar(15) DEFAULT NULL,
   `CONSELHO_CLASSE` varchar(50) DEFAULT NULL,
@@ -79,25 +74,25 @@ CREATE TABLE `cadastro_profissional` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Despejando dados para a tabela `cadastro_profissional`
+-- Extraindo dados da tabela `cadastro_profissional`
 --
 
-INSERT INTO `cadastro_profissional` (`ID`, `NOME_COMPLETO`, `CPF`, `CNS_PROFISSIONAL`, `DATA_NASCIMENTO`, `SEXO`, `EMAIL`, `TELEFONE`, `CONSELHO_CLASSE`, `REGISTRO_CONSELHO`, `ESTADO_EMISSOR_CONSELHO`, `CEP`, `ESTADO_ENDERECO`, `MUNICIPIO`, `BAIRRO`, `LOGRADOURO`, `NUMERO`, `COMPLEMENTO`, `PONTO_REFERENCIA`, `SENHA_HASH`, `CRIADO_EM`, `ATUALIZADO_EM`) VALUES
-(1, 'GEORGE ANDRE MELO CASTRO', '655.014.383-72', '44444445', '1976-04-17', 'Masculino', 'george.castro@tre-ma.gov.br', '9832443155', 'CRM', '23232326', '21', '65047-240', '21', 'SÃO LUÍS', 'ANIL', 'VINTE E CINCO DE DEZEMBRO 220', '220', '', '\\z\\x\\z', '12345678', '2025-09-25 12:16:31', '2025-09-26 23:09:42'),
-(10, 'MARKLENY MARTINS PINHEIRO', '710500353-71', '454354365345345', '1981-02-28', 'Feminino', 'marklenypinheiro@gmail.com', '9832443155', 'COREN', '756565656565', '21', '65047-240', '21', 'SÃO LUÍS', 'ANIL', 'VINTE E CINCO DE DEZEMBRO 220', '220', '', '', '12323213123123', '2025-09-26 23:29:18', '2025-09-26 23:29:18');
+INSERT INTO `cadastro_profissional` (`ID`, `NOME_COMPLETO`, `CPF`, `CNS_PROFISSIONAL`, `DATA_NASCIMENTO`, `SEXO`, `PERFIL`, `EMAIL`, `TELEFONE`, `CONSELHO_CLASSE`, `REGISTRO_CONSELHO`, `ESTADO_EMISSOR_CONSELHO`, `CEP`, `ESTADO_ENDERECO`, `MUNICIPIO`, `BAIRRO`, `LOGRADOURO`, `NUMERO`, `COMPLEMENTO`, `PONTO_REFERENCIA`, `SENHA_HASH`, `CRIADO_EM`, `ATUALIZADO_EM`) VALUES
+(1, 'GEORGE ANDRÉ MELO CASTRO', '710.500.353-72', '343434343434', '1976-04-17', 'Masculino', 'MEDICO', 'gamcastro14@gmail.com', '98992332673', 'CRM', '121232323', '21', '65047240', '', 'SÃO LUÍS', 'ANIL', 'RUA 25 DE DEZEMBRO ', '220', '', '', '12345678', '2025-09-29 01:17:17', '2025-09-30 15:06:05');
 
 -- --------------------------------------------------------
 
 --
--- Estrutura para tabela `cadastro_unidade`
+-- Estrutura da tabela `cadastro_unidade`
 --
 
 CREATE TABLE `cadastro_unidade` (
   `ID` int(11) NOT NULL,
-  `NOME` varchar(255) NOT NULL,
+  `NOME` varchar(255) NOT NULL, 
   `CNES` varchar(7) NOT NULL,
   `CNPJ` varchar(18) DEFAULT NULL,
   `TELEFONE` varchar(15) DEFAULT NULL,
+  `EMAIL` varchar(255) DEFAULT NULL,
   `CEP` varchar(9) DEFAULT NULL,
   `ESTADO` varchar(2) DEFAULT NULL,
   `MUNICIPIO` varchar(100) DEFAULT NULL,
@@ -109,27 +104,20 @@ CREATE TABLE `cadastro_unidade` (
   `ATUALIZADO_EM` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
---
--- Despejando dados para a tabela `cadastro_unidade`
---
-
-INSERT INTO `cadastro_unidade` (`ID`, `NOME`, `CNES`, `CNPJ`, `TELEFONE`, `CEP`, `ESTADO`, `MUNICIPIO`, `BAIRRO`, `LOGRADOURO`, `NUMERO`, `COMPLEMENTO`, `CRIADO_EM`, `ATUALIZADO_EM`) VALUES
-(1, 'UNIDADE BÁSICA DE SAÚDE AMAPÁ DO MARANHÃO', '1224243', '66.777.888.99-000', '9998765432', '65047240', '21', 'AMAPÁ DO MARANHÃO', 'CENTRO', 'RUA 10 ', '10', '', '2025-09-29 13:57:49', '2025-09-29 13:57:49');
-
 -- --------------------------------------------------------
 
 --
--- Estrutura para tabela `ibge_municipios`
+-- Estrutura da tabela `ibge_municipios`
 --
 
 CREATE TABLE `ibge_municipios` (
   `CD_MUNICIPIO` int(7) NOT NULL,
   `MUNICIPIO` varchar(100) NOT NULL,
   `CD_UF` int(2) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Despejando dados para a tabela `ibge_municipios`
+-- Extraindo dados da tabela `ibge_municipios`
 --
 
 INSERT INTO `ibge_municipios` (`CD_MUNICIPIO`, `MUNICIPIO`, `CD_UF`) VALUES
@@ -5713,7 +5701,7 @@ INSERT INTO `ibge_municipios` (`CD_MUNICIPIO`, `MUNICIPIO`, `CD_UF`) VALUES
 -- --------------------------------------------------------
 
 --
--- Estrutura para tabela `ibge_ufs`
+-- Estrutura da tabela `ibge_ufs`
 --
 
 CREATE TABLE `ibge_ufs` (
@@ -5724,53 +5712,53 @@ CREATE TABLE `ibge_ufs` (
   `NOME_REGIAO` varchar(50) DEFAULT NULL,
   `SIGLA_REGIAO` varchar(5) DEFAULT NULL,
   `AREA_KM2` decimal(12,3) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Despejando dados para a tabela `ibge_ufs`
+-- Extraindo dados da tabela `ibge_ufs`
 --
 
 INSERT INTO `ibge_ufs` (`CD_UF`, `DS_UF_NOME`, `DS_UF_SIGLA`, `CD_REGIAO`, `NOME_REGIAO`, `SIGLA_REGIAO`, `AREA_KM2`) VALUES
-(11, 'Rondônia', 'RO', 1, 'Norte', 'N', 237754.171),
-(12, 'Acre', 'AC', 1, 'Norte', 'N', 164082.960),
-(13, 'Amazonas', 'AM', 1, 'Norte', 'N', 1558706.127),
-(14, 'Roraima', 'RR', 1, 'Norte', 'N', 223505.385),
-(15, 'Pará', 'PA', 1, 'Norte', 'N', 1245828.829),
-(16, 'Amapá', 'AP', 1, 'Norte', 'N', 142253.880),
-(17, 'Tocantins', 'TO', 1, 'Norte', 'N', 277423.627),
-(21, 'Maranhão', 'MA', 2, 'Nordeste', 'NE', 329651.478),
-(22, 'Piauí', 'PI', 2, 'Nordeste', 'NE', 251755.499),
-(23, 'Ceará', 'CE', 2, 'Nordeste', 'NE', 148894.444),
-(24, 'Rio Grande do Norte', 'RN', 2, 'Nordeste', 'NE', 52809.599),
-(25, 'Paraíba', 'PB', 2, 'Nordeste', 'NE', 56467.242),
-(26, 'Pernambuco', 'PE', 2, 'Nordeste', 'NE', 98067.879),
-(27, 'Alagoas', 'AL', 2, 'Nordeste', 'NE', 27830.661),
-(28, 'Sergipe', 'SE', 2, 'Nordeste', 'NE', 21938.188),
-(29, 'Bahia', 'BA', 2, 'Nordeste', 'NE', 564760.429),
-(31, 'Minas Gerais', 'MG', 3, 'Sudeste', 'SE', 586513.984),
-(32, 'Espírito Santo', 'ES', 3, 'Sudeste', 'SE', 46074.448),
-(33, 'Rio de Janeiro', 'RJ', 3, 'Sudeste', 'SE', 43750.425),
-(35, 'São Paulo', 'SP', 3, 'Sudeste', 'SE', 248219.485),
-(41, 'Paraná', 'PR', 4, 'Sul', 'S', 199298.981),
-(42, 'Santa Catarina', 'SC', 4, 'Sul', 'S', 95730.690),
-(43, 'Rio Grande do Sul', 'RS', 4, 'Sul', 'S', 281707.151),
-(50, 'Mato Grosso do Sul', 'MS', 5, 'Centro-oeste', 'CO', 357142.010),
-(51, 'Mato Grosso', 'MT', 5, 'Centro-oeste', 'CO', 903208.362),
-(52, 'Goiás', 'GO', 5, 'Centro-oeste', 'CO', 340242.860),
-(53, 'Distrito Federal', 'DF', 5, 'Centro-oeste', 'CO', 5760.783);
+(11, 'Rondônia', 'RO', 1, 'Norte', 'N', '237754.171'),
+(12, 'Acre', 'AC', 1, 'Norte', 'N', '164082.960'),
+(13, 'Amazonas', 'AM', 1, 'Norte', 'N', '1558706.127'),
+(14, 'Roraima', 'RR', 1, 'Norte', 'N', '223505.385'),
+(15, 'Pará', 'PA', 1, 'Norte', 'N', '1245828.829'),
+(16, 'Amapá', 'AP', 1, 'Norte', 'N', '142253.880'),
+(17, 'Tocantins', 'TO', 1, 'Norte', 'N', '277423.627'),
+(21, 'Maranhão', 'MA', 2, 'Nordeste', 'NE', '329651.478'),
+(22, 'Piauí', 'PI', 2, 'Nordeste', 'NE', '251755.499'),
+(23, 'Ceará', 'CE', 2, 'Nordeste', 'NE', '148894.444'),
+(24, 'Rio Grande do Norte', 'RN', 2, 'Nordeste', 'NE', '52809.599'),
+(25, 'Paraíba', 'PB', 2, 'Nordeste', 'NE', '56467.242'),
+(26, 'Pernambuco', 'PE', 2, 'Nordeste', 'NE', '98067.879'),
+(27, 'Alagoas', 'AL', 2, 'Nordeste', 'NE', '27830.661'),
+(28, 'Sergipe', 'SE', 2, 'Nordeste', 'NE', '21938.188'),
+(29, 'Bahia', 'BA', 2, 'Nordeste', 'NE', '564760.429'),
+(31, 'Minas Gerais', 'MG', 3, 'Sudeste', 'SE', '586513.984'),
+(32, 'Espírito Santo', 'ES', 3, 'Sudeste', 'SE', '46074.448'),
+(33, 'Rio de Janeiro', 'RJ', 3, 'Sudeste', 'SE', '43750.425'),
+(35, 'São Paulo', 'SP', 3, 'Sudeste', 'SE', '248219.485'),
+(41, 'Paraná', 'PR', 4, 'Sul', 'S', '199298.981'),
+(42, 'Santa Catarina', 'SC', 4, 'Sul', 'S', '95730.690'),
+(43, 'Rio Grande do Sul', 'RS', 4, 'Sul', 'S', '281707.151'),
+(50, 'Mato Grosso do Sul', 'MS', 5, 'Centro-oeste', 'CO', '357142.010'),
+(51, 'Mato Grosso', 'MT', 5, 'Centro-oeste', 'CO', '903208.362'),
+(52, 'Goiás', 'GO', 5, 'Centro-oeste', 'CO', '340242.860'),
+(53, 'Distrito Federal', 'DF', 5, 'Centro-oeste', 'CO', '5760.783');
 
 --
 -- Índices para tabelas despejadas
 --
 
 --
--- Índices de tabela `cadastro_paciente`
+-- Índices para tabela `cadastro_paciente`
 --
 ALTER TABLE `cadastro_paciente`
   ADD PRIMARY KEY (`ID`);
 
 --
--- Índices de tabela `cadastro_profissional`
+-- Índices para tabela `cadastro_profissional`
 --
 ALTER TABLE `cadastro_profissional`
   ADD PRIMARY KEY (`ID`),
@@ -5779,7 +5767,7 @@ ALTER TABLE `cadastro_profissional`
   ADD UNIQUE KEY `CNS_PROFISSIONAL` (`CNS_PROFISSIONAL`);
 
 --
--- Índices de tabela `cadastro_unidade`
+-- Índices para tabela `cadastro_unidade`
 --
 ALTER TABLE `cadastro_unidade`
   ADD PRIMARY KEY (`ID`),
@@ -5787,13 +5775,13 @@ ALTER TABLE `cadastro_unidade`
   ADD UNIQUE KEY `CNPJ` (`CNPJ`);
 
 --
--- Índices de tabela `ibge_municipios`
+-- Índices para tabela `ibge_municipios`
 --
 ALTER TABLE `ibge_municipios`
   ADD PRIMARY KEY (`CD_MUNICIPIO`);
 
 --
--- Índices de tabela `ibge_ufs`
+-- Índices para tabela `ibge_ufs`
 --
 ALTER TABLE `ibge_ufs`
   ADD PRIMARY KEY (`CD_UF`),
@@ -5801,26 +5789,26 @@ ALTER TABLE `ibge_ufs`
   ADD KEY `idx_nm` (`DS_UF_NOME`);
 
 --
--- AUTO_INCREMENT para tabelas despejadas
+-- AUTO_INCREMENT de tabelas despejadas
 --
 
 --
 -- AUTO_INCREMENT de tabela `cadastro_paciente`
 --
 ALTER TABLE `cadastro_paciente`
-  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=36;
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT de tabela `cadastro_profissional`
 --
 ALTER TABLE `cadastro_profissional`
-  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT de tabela `cadastro_unidade`
 --
 ALTER TABLE `cadastro_unidade`
-  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
