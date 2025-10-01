@@ -20,19 +20,19 @@ jobs:
           git config --global user.name 'GitHub Actions Bot'
           git config --global user.email 'actions-bot@github.com'
 
-      # 3. Faz o merge na branch 'develop'
-      - name: Merge to Develop
+      # 3. Faz o merge na branch 'desenvolvimento' e faz o push
+      - name: Merge to desenvolvimento
         run: |
           SOURCE_BRANCH="${{ github.ref_name }}"
           
           git fetch origin desenvolvimento
           git checkout desenvolvimento
           
-          echo "Merging ${SOURCE_BRANCH} into develop..."
+          echo "Merging ${SOURCE_BRANCH} into desenvolvimento..."
           git merge --no-ff "origin/${SOURCE_BRANCH}" -m "Auto-merge da branch ${SOURCE_BRANCH}"
           
-          # Usa o token para fazer o push na branch 'develop' protegida
-          git push https://x-access-token:${{ secrets.AUTO_MERGE_TOKEN }}@github.com/${{ github.repository }}.git develop
+          # Usa o token para fazer o push na branch 'desenvolvimento' protegida
+          git push https://x-access-token:${{ secrets.AUTO_MERGE_TOKEN }}@github.com/${{ github.repository }}.git desenvolvimento
 
       # 4. Deleta a branch de origem (feature/ ou bug/) do repositório remoto
       - name: Delete Source Branch
