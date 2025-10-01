@@ -8,7 +8,7 @@
 
 //------------------apagar registro de paciente---------
 
-    $tabela = 'cadastro_agente'; 
+    $tabela = 'cadastro_profissional'; //----tabela para a query
 
     $objeto = new UbsCrudAll($tabela);
 
@@ -20,7 +20,7 @@
 /**/
   echo "<script>
   window.alert('Registro apagado com sucesso!');
-  window.location='cadastroDeAgentes.php'
+  window.location='cadastroDeProfissionais.php'
   </script>";
   
 //----------------------------------------------------------  
