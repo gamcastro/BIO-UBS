@@ -29,7 +29,7 @@ jobs:
           git checkout desenvolvimento
           
           echo "Merging ${SOURCE_BRANCH} into desenvolvimento..."
-          git merge --no-ff "origin/${SOURCE_BRANCH}" -m "Auto-merge da branch ${SOURCE_BRANCH}"
+          git merge --no-ff --allow-unrelated-histories "origin/${SOURCE_BRANCH}" -m "Auto-merge da branch ${SOURCE_BRANCH}"
           
           # Usa o token para fazer o push na branch 'desenvolvimento' protegida
           git push https://x-access-token:${{ secrets.AUTO_MERGE_TOKEN }}@github.com/${{ github.repository }}.git desenvolvimento
