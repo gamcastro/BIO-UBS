@@ -40,18 +40,34 @@ require_once('includes/authorization.php');
           <!-------CADASTRO DE PACIENTES--->
             <li>
               <a href="cadastroDePacientes.php" class="dropdown">
-                Cadastros de Pacientes
+                Pacientes
               </a>
             </li>
-          <!------------------------------->
+         
             
+          
+              <!-------CADASTRO DE Profissionais --->
+            <li>
+              <a href="cadastroDeProfissionais.php" class="dropdown">
+               Profissionais
+              </a>
+            </li>
+          <!------------------------------->            
 
+            <li>
+              <!-------CADASTRO DE UNIDADES --->
+              <a href="cadastroDeUnidades.php" class="dropdown">
+               Unidade
+              </a>
+            </li>
+             
           </ul>
           
       </li>
 
       <li><a href="#">Documentos</a></li>
       <li><a href="#">Relatórios</a></li>
+      
     </ul>
   </div>
 </nav>
