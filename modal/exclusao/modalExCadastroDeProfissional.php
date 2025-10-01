@@ -7,7 +7,7 @@ if(isset($_GET['id'])): //----só sugirá o conteúdo de vier um ID
 
         //-----------criterios de consulta--------------
           $camposIdBio = "*";
-          $tabelaIdBio = "cadastro_agente";
+          $tabelaIdBio = "cadastro_profissional";
         //----------------------------------------------
 
         //----------CONSULTA BÁSICA COM ID E OS CRITÉRIOS ACIMA
@@ -16,7 +16,7 @@ if(isset($_GET['id'])): //----só sugirá o conteúdo de vier um ID
             //-------buscando dados na tabela------------------   
             while($rowsId = $buscaId->fetch(PDO::FETCH_ASSOC)){
 
-                $nomePaciente = $rowsId['NOME'];
+                $nomeProfissional = $rowsId['NOME_COMPLETO'];
                 $cpf = $rowsId['CPF'];
                
 
@@ -33,7 +33,7 @@ if(isset($_GET['id'])): //----só sugirá o conteúdo de vier um ID
 
               <a href="" type="button" class="close" data-dismissB="modal">&times;</a><!------botao fechar------>
               
-              <h4 class="modal-title">Excluir cadastro de Agente</h4>
+              <h4 class="modal-title">Excluir cadastro de CNS_PROFISSIONAL</h4>
 
             </div>
             <!-------------------------------------------------------->
@@ -52,7 +52,7 @@ if(isset($_GET['id'])): //----só sugirá o conteúdo de vier um ID
                 <hr>
                 Registro a ser excluído:<br>
                 <b>
-                    <?=$nomePaciente?><br>
+                    <?=$nomeProfissional?><br>
                     CPF: <?=$cpf?>
                 </b>
             </div>
