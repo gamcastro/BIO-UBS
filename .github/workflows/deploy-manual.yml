@@ -1,0 +1,31 @@
+name: Deploy Manual para Desenvolvimento
+
+on:
+  # 1. ESTE É O GATILHO PARA ACIONAMENTO MANUAL
+  workflow_dispatch:
+    inputs:
+      confirmacao:
+        description: 'Digite "confirmar" para iniciar o deploy. Qualquer outro valor cancelará.'
+        required: true
+        default: 'cancelar'
+
+jobs:
+  manual-ftp-deploy:
+    # 2. CONDIÇÃO DE SEGURANÇA: Só executa se você digitou "confirmar"
+    if: github.event.inputs.confirmacao == 'confirmar'
+    runs-on: ubuntu-latest
+    
+    steps:
+      # 3. FAZ O CHECKOUT ESPECÍFICO DA BRANCH 'desenvolvimento'
+      - name: Checkout da branch desenvolvimento
+        uses: actions/checkout@v4
+        with:
+          ref: 'desenvolvimento'
+
+      - name: FTP Deploy
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.4
+        with:
+          server: ${{ secrets.FTP_SERVER }}
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          server-dir: /htdocs/bio-ubs-desenvolvimento/
