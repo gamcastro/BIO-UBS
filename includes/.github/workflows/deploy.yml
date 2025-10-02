@@ -1,0 +1,28 @@
+name: Deploy em Desenvolvimento (via Push ou Merge)
+
+# GATILHO: Roda em qualquer PUSH para a branch 'desenvolvimento'.
+# Isso cobre merges feitos localmente e enviados via 'push' direto,
+# e também merges feitos através do botão "Merge pull request" no GitHub.
+on:
+  push:
+    branches:
+      - desenvolvimento
+
+jobs:
+  deploy-to-infinityfree:
+    name: Deploy para InfinityFree
+    runs-on: ubuntu-latest
+
+    steps:
+      # 1. Faz o checkout do código mais recente da branch 'desenvolvimento'.
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      # 2. Envia os arquivos para o servidor FTP.
+      - name: FTP Deploy
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.4
+        with:
+          server: ${{ secrets.FTP_SERVER }}
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          server-dir: /htdocs/bio-ubs-desenvolvimento/
