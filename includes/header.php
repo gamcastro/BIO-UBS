@@ -61,12 +61,7 @@ require_once('includes/authorization.php');
               </a>
             </li>
              
-                <li>
-              <!-------CADASTRO DE UNIDADES --->
-              <a href="cadastroDeUnidades.php" class="dropdown">
-              Teste agora dia 02/10/2025
-              </a>
-            </li>
+            
           </ul>
           
       </li>
