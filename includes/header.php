@@ -61,6 +61,12 @@ require_once('includes/authorization.php');
               </a>
             </li>
              
+                <li>
+              <!-------CADASTRO DE UNIDADES --->
+              <a href="cadastroDeUnidades.php" class="dropdown">
+              Teste
+              </a>
+            </li>
           </ul>
           
       </li>
