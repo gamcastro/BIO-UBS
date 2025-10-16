@@ -26,7 +26,7 @@
         
         /* Estilos para a coluna de branding com imagem de fundo */
         .branding-column {
-            background-image: url('https://images.unsplash.com/photo-1576091160550-2173dba9996a?q=80&w=2070&auto=format&fit=crop');
+            /* background-image: url('https://images.unsplash.com/photo-1576091160550-2173dba9996a?q=80&w=2070&auto=format&fit=crop'); */
             background-size: cover;
             background-position: center;
             position: relative;
@@ -40,7 +40,7 @@
             left: 0;
             right: 0;
             bottom: 0;
-            background: linear-gradient(to bottom right, rgba(13, 110, 253, 0.7), rgba(13, 110, 253, 0.5));
+          background: linear-gradient(to bottom right, #0d6efd, #004297);
             z-index: 1;
         }
 
@@ -66,9 +66,9 @@
                     <h1 class="display-3 fw-bold mb-4">
                         <i class="bi bi-heart-pulse-fill me-2"></i>BIO-UBS
                     </h1>
-                    <p class="fs-4 fst-italic">Cuidando da nossa comunidade, um paciente de cada vez.</p>
+                    
                 </div>
-                <footer class="branding-content position-absolute bottom-0 mb-4 text-white-50">
+                <footer class="branding-content position-absolute bottom-0 mb-4 text-white">
                     <small>BIO-UBS 2025 &copy; | Versão 0.0.1</small>
                 </footer>
             </aside>
