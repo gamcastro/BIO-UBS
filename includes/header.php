@@ -88,6 +88,7 @@ require_once('includes/authorization.php');
       </ul>
     </div>
   </nav>
+  <script src="js/custom.js"></script>
 
 
   <!------------------------------------------------------------------------------------>
