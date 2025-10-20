@@ -105,6 +105,20 @@ CREATE TABLE `cadastro_unidade` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
+--
+-- Estrutura da tabela `fila_atendifmento`
+--
+
+CREATE TABLE `fila_atendimento` (
+  `ID` int(11) NOT NULL AUTO_INCREMENT,
+  `ID_PACIENTE` int(11) NOT NULL,
+  `QUEIXA_PRINCIPAL` text DEFAULT NULL,
+  `DATA_HORA_CHEGA` timestamp NOT NULL DEFAULT current_timestamp(),
+  `STATUS` enum('AGUARDANDO_TRIAGEM','EM_TRIAGEM','AGUARDANDO_ATENDIMENTO','FINALIZADO') NOT NULL DEFAULT 'AGUARDANDO_TRIAGEM',
+  PRIMARY KEY (`ID`),
+  KEY `fk_fila_paciente` (`ID_PACIENTE`),
+  CONSTRAINT `fk_fila_paciente` FOREIGN KEY (`ID_PACIENTE`) REFERENCES `cadastro_paciente` (`ID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Estrutura da tabela `ibge_municipios`
