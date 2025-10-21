@@ -18,35 +18,23 @@ $(document).ready(function(){
             // Validação simples para não fazer uma busca vazia.
             if (termoBusca.length > 0) {
                 
-                // Exibe uma mensagem de carregamento para o usuário.
-                $('#dadosPaciente').slideUp(function(){
-                    $(this).find('#nomePaciente span').text('Buscando...');
-                    $(this).slideDown();
-                });
+             var spanNomePaciente = $('#nomePaciente span');
 
-                // Inicia a requisição AJAX usando o método $.post do jQuery.
-                // Parâmetro 1: A URL do nosso serviço de busca.
-                // Parâmetro 2: Os dados que estamos enviando ({ chave: valor }).
-                // Parâmetro 3: A função que será executada quando o servidor responder.
+                // Exibe a mensagem de carregamento.
+                spanNomePaciente.text('Buscando...');
+                $('#dadosPaciente').slideDown();
+
                 $.post('querys/buscaPaciente.php', { termo_busca: termoBusca }, function(data) {
                     
-                    // 'data' é a resposta JSON que o PHP enviou.
                     if (data.status === 'success') {
-                        // Se a busca foi bem-sucedida...
-                        
-                        // Preenche os campos na tela com os dados retornados.
-                        $('#nomePaciente span').text(data.nome);
+                        // MUDANÇA 2: Preenche o span e os outros campos.
+                        spanNomePaciente.text(data.nome);
                         $('#nascimentoPaciente').text(data.data_nascimento);
-                        $('#pacienteId').val(data.id); // Preenche o campo oculto com o ID.
+                        $('#pacienteId').val(data.id);
                         
-                        // Mostra a div com os dados do paciente.
-                        $('#dadosPaciente').slideDown(); 
                     } else {
-                        // Se o PHP retornou um status de erro...
-                        
-                        // Esconde a div de resultados e mostra um alerta para o usuário.
                         $('#dadosPaciente').slideUp();
-                        alert(data.message); // Exibe a mensagem "Paciente não encontrado."
+                        alert(data.message);
                     }
                 });
 
@@ -54,12 +42,8 @@ $(document).ready(function(){
                 alert('Por favor, digite um CPF para realizar a busca.');
             }
         });
-
-        // --- Fim da lógica do modal ---
     });
 
-    // Boa prática: Limpa o conteúdo do modal quando ele é fechado.
-    // Isso garante que, ao abri-lo novamente, ele carregue uma versão "nova".
     $('body').on('hidden.bs.modal', '.modal', function () {
         $(this).removeData('bs.modal');
     });
