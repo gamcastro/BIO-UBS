@@ -22,12 +22,15 @@ require_once('includes/authorization.php');
 
 <body>
 
-<div id="acolhimentoBioUBS" class="modal fade" role="dialog">
+  <!-----------------Casca do Modal Novo Acolhimento----------------------------------->
+  <div id="acolhimentoBioUBS" class="modal fade" role="dialog">
     <div class="modal-dialog modal-lg">
       <div class="modal-content">
       </div>
     </div>
   </div>
+  <!-----------------Fim da Casca do Modal Novo Acolhimento------------------------------->
+  
 
   <!------------------menu inicial para testes---- modelo Bootstrap------------------>
 
@@ -77,6 +80,11 @@ require_once('includes/authorization.php');
 
         <li><a href="#">Documentos</a></li>
         <li><a href="#">Relatórios</a></li>
+
+
+
+        <!-------NOVO ACOLHIMENTO --->
+
         <li class="acolhimento-action">
           <a href="modal/fluxos/modalAcolhimento.php"
             data-toggle="modal"
@@ -84,7 +92,7 @@ require_once('includes/authorization.php');
             <span class="glyphicon glyphicon-plus-sign"></span> Novo Acolhimento
           </a>
         </li>
-
+        <!------------------------------->
       </ul>
     </div>
   </nav>
@@ -93,7 +101,7 @@ require_once('includes/authorization.php');
 
   <!------------------------------------------------------------------------------------>
 
-  
-  <!-----------------fim para modal----------------------------------->
+
+
 
   <!------------------fim do menu inicial para testes------------------>
