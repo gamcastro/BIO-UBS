@@ -1,4 +1,5 @@
 <?php
+
 header('Content-Type: application/json; charset=utf-8');
 require_once('../class/Conexao.php');
 require_once('../class/UbsCrudAll.php');
@@ -7,14 +8,14 @@ $response = array();
 
 if (isset($_POST['termo_busca'])) {
     
-    // Garantia extra: remove qualquer formatação que ainda possa existir
+    //  remove qualquer formatação que ainda possa existir
     $termo_busca = preg_replace('/[^0-9]/', '', $_POST['termo_busca']);
 
     try {
         $crud = new UbsCrudAll('cadastro_paciente');
 
-        // A MÁGICA ACONTECE AQUI:
-        // Usamos REPLACE() duas vezes para limpar a coluna CPF antes de comparar
+       
+        //  REPLACE() duas vezes para limpar a coluna CPF antes de comparar
         $condicao = "WHERE REPLACE(REPLACE(CPF, '.', ''), '-', '') = :termo";
         
         $parametros = [':termo' => $termo_busca];

@@ -6,7 +6,7 @@
 require_once('class/Conexao.php');       // Para conectar no banco de dados
 require_once('class/UbsCrudAll.php');    // Para usar as funções de Inserir, Alterar, etc.
 
-
+$tabela = 'fila_atendimento'; //----tabela para a query
 // 2. Verificando se os dados vieram do formulário
 // Checamos se a página foi acessada usando o método POST e se o 'paciente_id' não está vazio.
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['paciente_id']) && !empty($_POST['paciente_id'])) {
@@ -19,12 +19,19 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['paciente_id']) && !emp
     try {
         // Criamos um novo "objeto" para trabalhar com o banco,
         // e dizemos a ele que queremos usar a tabela 'fila_atendimento'.
-        $crud = new UbsCrudAll('fila_atendimento');
+
+        // $colunasPermitidas = 
+        // [
+        //   'ID_PACIENTE',
+        //   'QUEIXA_PRINCIPAL'
+        // ]; //--nao informar ID chave primaria
+
+        $crud = new UbsCrudAll($tabela);
 
         // Criamos um array, que é como uma lista, com os dados que queremos inserir.
         // A 'chave' do array (ex: 'ID_PACIENTE') deve ser igual ao nome da coluna na tabela.
         $dadosParaSalvar = [
-            'ID_PACiente' => $id_do_paciente,
+            'ID_PACIENTE' => $id_do_paciente,
             'QUEIXA_PRINCIPAL' => $queixa_do_paciente
         ];
 
@@ -47,6 +54,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['paciente_id']) && !emp
 
 // 6. Redirecionando de volta para a página inicial
 // Depois de salvar os dados, o usuário é enviado de volta para a 'index.php'.
+
+echo "<script>
+  window.alert('Paciente enviado para a triagem com sucesso!'); 
+  </script>";
+  
 header('Location: index.php');
 exit(); // Esta função garante que o script pare de rodar aqui.
 
