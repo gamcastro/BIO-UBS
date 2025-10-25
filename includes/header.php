@@ -20,14 +20,14 @@ require_once('includes/authorization.php');
 
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"><!-----biblioteca de ícones bootstrap--->
 
-  <link rel="stylesheet" type="text/css" href="css/style.css"><!---arquivo de estilo personalizado-->
+  <link rel="stylesheet" type="text/css" href="css/custom.css"><!---arquivo de estilo personalizado-->
 
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
 </head>
 
-<body>
+<body class="d-flex flex-column">
 
   <!-----------------Casca do Modal Novo Acolhimento----------------------------------->
   <div class="modal fade" id="acolhimentoBioUBS" tabindex="-1" aria-labelledby="acolhimentoModalLabel" aria-hidden="true">
@@ -88,12 +88,6 @@ require_once('includes/authorization.php');
       </div>
     </div>
   </nav>
-  <script src="js/custom.js"></script>
-
-
-  <!------------------------------------------------------------------------------------>
-
-
-
-
-  <!------------------fim do menu inicial para testes------------------>
+ 
+  <main class="flex-grow-1 container py-4">
+    <!------------------fim do menu inicial para testes------------------>
