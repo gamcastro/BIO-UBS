@@ -1,162 +1,51 @@
-<?php 
+<?php
 //----titulo da página------
-  $tituloDaPagina = "Cadastro de Unidades";
+$tituloDaPagina = "Cadastro de Unidades";
 //---------------------------
 
-include_once('includes/header.php');
+// Inclui o header (Carrega CSS globais: BS5, DT BS5, Buttons BS5, abre <main>)
+include_once('includes/header.php'); 
 
 //-----------classes que serão usadas-----
 require_once('class/UbsCrudAll.php');
-require_once('class/Idade.php');
+// require_once('class/Idade.php'); // Comentado
 //----------------------------------------
 
-
-
-/*autorização*/
-if($nivelAcesso == 1):
-/* verificando o nível de acesso para Cadastrar, Editar e Excluir*/
-      
-    if(isset($_POST['salvar'])):
-
-      //-----------------salvando o cadastro-----
-      include('querys/inserts/insertUnidades.php');
-      //********************************************************
-
-    elseif(isset($_POST['editar'])):
-
-      //-----------------editando o cadastro-----
-      include('querys/updates/updateUnidades.php');
-      //********************************************************
-
-    elseif(isset($_POST['excluir'])):
-
-      //-----------------excluindo o cadastro-----
-      include('querys/deletes/deleteUnidades.php');
-      //********************************************************
-
-    endif;  
-
-endif;//---fim para controle de acesso
-
-
-//-------------------FUNCOES PHP --------------------------
-
-//---------------------------------------------------------
-
-
-//--------------------classe PHP---------------------------
-    /*classe para calculo de idade
-//require_once('class/Idade.php');
-//$idade = new Idade();*/
-//---------------------------------------------------------
-?> 
-
-
-
-<!--------área para SCRIPTS---------------------------------->
-
-<!----------------chamando as funcoes de mascaras-------------------->
-<script type="text/javascript" src="js/mask/funcaoMascaraGeralNumeros.js"></script>
-<script type="text/javascript" src="js/mask/funcaoLetrasMaiusculas.js"></script>
-<!------------------------------------------------------------------->
-
-
-<!------incluir esse arquivo onde for usar tabela dinamica-------------->
-<script type="text/javascript" src="js/jquery.dataTables.min.js"></script>
-<!---------------------------------------------------------------------->
-
-
-<!--------caso tabela seja do tipo export--------------------------------->
-    <?php //include('tableScript/conjuntoScriptsTableExport.php');?>
-<!------------------------------------------------------------------------>
-
-<!-----------------------FIM SCRIPTS------------------------------------------>
-
-
-
-<!--------área para CSS---------------------------------->
-<!------incluir esse arquivo onde for usar tabela dinamica-------------->
-<link rel="stylesheet" href="css/jquery.dataTables.min.css" />
-<!--------------------------------------------------------------->
-<!------------------------fim css------------------------------>
-
-
-
-        <h1 style="color:#CCCCCC; text-align:center">Cadastro da Unidade</h1>
-
-<hr>
-
-
-<?php
-if($nivelAcesso == 1):
-/* verificando o nível de acesso para o Botão Cadastrar*/
+/* Lógica PHP de salvar/editar/excluir (Mantida como está) */
+if($nivelAcesso == 1) {
+    if(isset($_POST['salvar'])) { include('querys/inserts/insertUnidades.php'); }
+    elseif(isset($_POST['editar'])) { include('querys/updates/updateUnidades.php'); }
+    elseif(isset($_POST['excluir'])) { include('querys/deletes/deleteUnidades.php'); }
+}
 ?>
 
+<script type="text/javascript" src="js/mask/funcaoMascaraGeralNumeros.js"></script>
+<script type="text/javascript" src="js/mask/funcaoLetrasMaiusculas.js"></script>
 
-<!---------------botão para acionar a modal------------------>
-    <a
-      class="btn btn-primary pull-right" 
-      data-toggle="modal" data-target="#insertUnidade" 
-      id="btnCadPaciente" style="margin-top: -40px"
-    >
-      <span class="glyphicon glyphicon-plus-sign"></span> Novo Cadastro
-    </a>
-<!------------------------------------------------------------------>
+<h1 class="display-5 text-center text-muted mb-4">Cadastro da Unidade</h1>
+<hr class="mb-4">
 
+<?php if($nivelAcesso == 1): ?>
+    <div class="d-flex justify-content-end mb-3">
+        <button type="button" class="btn btn-primary"
+           data-bs-toggle="modal"
+           data-bs-target="#insertUnidade"> <i class="bi bi-plus-circle me-1"></i> Novo Cadastro
+        </button>
+    </div>
+<?php endif; ?>
 
-<?php endif;?>    
+<?php
+// Include da Tabela Principal (HTML da tabela + script tableSimples.js no final dela)
+include('table/tableCadastroDeUnidade.php'); 
+?>
 
-
-
-
-<?php 
-///-----------------JANELA MODAL----------------------
-//-------------incluindo janela modal cadastro-----------------------------
+<?php
+// Include do Modal de Cadastro (HTML completo do modal - precisa estar migrado para BS5)
 include('modal/cadastro/modalCadastroDeUnidade.php');
 ?>
 
-<!-----------casca da modal de edicao------------->
-<div id="updateBioUBS" class="modal fade" role="dialog">
-  <div class="modal-dialog modal-lg">
-    <!-- contener da janela-->
-    <div class="modal-content">
-
-
-    </div>
-  </div>
-</div>
-
-<!-----------casca da modal de exclusão------------->
-<div id="deleteBioUBS" class="modal fade" role="dialog">
-  <div class="modal-dialog">
-    <!-- contener da janela-->
-    <div class="modal-content">
-
-
-
-    </div>
-  </div>
-</div>      
-<!-----------------fim para modal----------------------------------->
-
-
-
 <?php
-
-
-
-
-//---------------------IMPORTANTE!!!!!!!!!!!!
-//-------------tabela principal--------------
-include('table/tableCadastroDeUnidade.php');
-//-------------------------------------------
-
-
-
-
-//-----------incluindo o rodapé 
-//include_once('includes/footer.php');
-
+// *** ESSENCIAL: Inclui o footer.php ***
+// Ele fecha </main>, adiciona <footer>, carrega TODOS os JS necessários (jQuery, BS5 Bundle, Axios, DT Core, DT BS5, DT Buttons, custom.js) e fecha </body></html>
+include_once('includes/footer.php'); 
 ?>
-
-
