@@ -9,17 +9,11 @@ require_once('includes/authorization.php');
 
 <head>
   <title><?= $tituloDaPagina ?></title>
+  
 
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">  <!-----biblioteca de ícones bootstrap--->
 
-     <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.3/css/bootstrap.min.css" rel="stylesheet">
-
-
-    <link href="https://cdn.datatables.net/2.3.4/css/dataTables.bootstrap5.css" rel="stylesheet">
-
-
-    <link rel="stylesheet" href="https://cdn.datatables.net/buttons/3.0.2/css/buttons.bootstrap5.css" />
-
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"><!-----biblioteca de ícones bootstrap--->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
 
   <link rel="stylesheet" type="text/css" href="css/custom.css"><!---arquivo de estilo personalizado-->
 
@@ -46,7 +40,7 @@ require_once('includes/authorization.php');
 
 
   <!------------------menu inicial para testes---- modelo Bootstrap------------------>
-  <nav class="navbar navbar-expand-lg navbar-light bg-light">
+ <nav class="navbar navbar-expand-lg navbar-light bg-light">
     <div class="container-fluid">
       <a class="navbar-brand" href="#">BioUBS</a>
 
@@ -89,6 +83,13 @@ require_once('includes/authorization.php');
       </div>
     </div>
   </nav>
- 
   <main class="flex-grow-1 container py-4">
-    <!------------------fim do menu inicial para testes------------------>
+
+
+
+  <!------------------------------------------------------------------------------------>
+
+
+
+
+  <!------------------fim do menu inicial para testes------------------>
