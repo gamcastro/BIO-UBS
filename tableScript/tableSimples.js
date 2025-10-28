@@ -1,5 +1,3 @@
-// Arquivo: tableScript/tableSimples.js
-// Arquivo: tableScript/tableSimples.js
 
 // Espera o HTML da página estar pronto (Vanilla JS)
 document.addEventListener('DOMContentLoaded', function () {

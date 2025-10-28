@@ -11,9 +11,10 @@ require_once('includes/authorization.php');
   <title><?= $tituloDaPagina ?></title>
   
 
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">  <!-----biblioteca de ícones bootstrap--->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.3/css/bootstrap.min.css" rel="stylesheet">  <!-----biblioteca de ícones bootstrap--->
 
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
+<link rel="stylesheet" href="https://cdn.datatables.net/2.3.4/css/dataTables.bootstrap5.css">
 
   <link rel="stylesheet" type="text/css" href="css/custom.css"><!---arquivo de estilo personalizado-->
 

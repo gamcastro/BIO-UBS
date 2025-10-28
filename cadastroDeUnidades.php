@@ -25,7 +25,7 @@ if($nivelAcesso == 1) {
 <script type="text/javascript" src="js/mask/funcaoMascaraGeralNumeros.js"></script>
 <script type="text/javascript" src="js/mask/funcaoLetrasMaiusculas.js"></script>
 
-<link href="https://cdn.jsdelivr.net/npm/simple-datatables@latest/dist/style.css" rel="stylesheet" type="text/css">
+
 
 <h1 class="display-5 text-center text-muted mb-4">Cadastro da Unidade</h1>
 <hr class="mb-4">
@@ -45,22 +45,8 @@ if($nivelAcesso == 1) {
 include('table/tableCadastroDeUnidade.php');
 ?>
 
-<script src="https://cdn.jsdelivr.net/npm/simple-datatables@latest" type="text/javascript"></script>
 
-<script>
-    document.addEventListener('DOMContentLoaded', function () {
-        const dataTable = new simpleDatatables.DataTable("#tableBioUBS", {
-            searchable: true,   // Habilita busca
-            perPageSelect: [5, 10, 15, 20], // Opções de itens por página
-            labels: { // Tradução para Português (opcional)
-                placeholder: "Buscar...",
-                perPage: "{select} registros por página",
-                noRows: "Nenhum registro encontrado",
-                info: "Mostrando {start} a {end} de {rows} registros",
-            }
-        });
-    });
-</script>
+
 
 
 <?php
