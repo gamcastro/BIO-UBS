@@ -19,6 +19,7 @@
 <script src="https://cdn.datatables.net/2.3.4/js/dataTables.bootstrap5.js"></script>
 
 <script src="js/custom.js"></script> 
+<script src="tableScript/tableSimples.js"></script>
 
 </body>
 
