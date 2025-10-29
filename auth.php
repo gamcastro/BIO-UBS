@@ -6,7 +6,7 @@
  * Também implementa o "Lembrar-me" com token persistente.
  */
 session_start();
-require_once('../../ConexaoUbs.php');
+require_once __DIR__ . '/class/Conexao.php';
 require_once __DIR__ . '/includes/functions.php';
 require_once __DIR__ . '/includes/csrf.php';
 require_once __DIR__ . '/includes/auth_helper.php';
@@ -92,7 +92,7 @@ if ($dados && password_verify($pass, $dados['password_hash'])) {
     }
 
     //---------------------------------Redireciona para área protegida
-    header("Location: dashboard.php");
+    header("Location: index.php");
     exit;
 } else {
     //--------------------------------Incrementa tentativas e devolve mensagem neutra

@@ -1,7 +1,0 @@
-{
-  "name": "bio-ubs/mailer-installer",
-  "description": "Instalador do PHPMailer para BIO-UBS",
-  "require": {
-    "phpmailer/phpmailer": "^6.9"
-  }
-}

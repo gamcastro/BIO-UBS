@@ -1,8 +1,32 @@
 <?php 
+
+session_start();
+require_once __DIR__ . '/includes/functions.php';
+require_once __DIR__ . '/includes/auth_helper.php';
+
+$db = db_conn();
+
+// Se não houver sessão, tenta autenticar via remember-me
+if (empty($_SESSION['user_id'])) {
+    $user = try_remember_login($db);
+    if ($user) {
+        session_regenerate_id(true);
+        $_SESSION['user_id'] = $user['id'];
+        $_SESSION['username'] = $user['username'];
+    } else {
+        header("Location: login.php");
+        exit;
+    }
+}
+
 $tituloDaPagina = "BIO-UBS" ;
 include_once('includes/header.php');
+?>
 
- ?> 
+
+
+
+
  
 
 <center>

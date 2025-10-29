@@ -6,7 +6,7 @@
  * - Logout com limpeza do token
  */
 
-require_once('../../ConexaoUbs.php');
+require_once __DIR__ . '../class/Conexao.php';
 require_once __DIR__ . '/functions.php';
 
 $db = Conexao::getConn();
