@@ -1,0 +1,17 @@
+{
+    "require": {
+        "phpmailer/phpmailer": "^7.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "BioUBS\\": "class/"
+        },
+        "files": [
+            "includes/functions.php",
+            "includes/csrf.php",
+            "includes/auth_helper.php",
+            "includes/authorization.php",
+            "includes/mailer.php"
+        ]
+    }
+}

@@ -1,6 +1,9 @@
 <?php 
 
+namespace BioUBS;
 
+use PDO; // <-- ADICIONAR ISTO
+use PDOException; // <-- ADICIONAR ISTO
 
 class Conexao{
 

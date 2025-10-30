@@ -1,6 +1,7 @@
 <?php
-require_once('class/Conexao.php');
-require_once('includes/authorization.php');
+
+require_once __DIR__ . '/../vendor/autoload.php';
+require_once 'authorization.php' ;
 
 ?>
 

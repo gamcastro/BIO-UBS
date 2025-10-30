@@ -6,6 +6,7 @@ $tituloDaPagina = "Cadastro de Unidades";
 include_once('includes/header.php'); // Já migrado para BS5
 
 //-----------classes que serão usadas-----
+require_once __DIR__ . '../vendor/autoload.php'; //-- Autoload do Composer - Carregamentos das Classes
 require_once('class/UbsCrudAll.php');
 // require_once('class/Idade.php'); // Comentado
 //----------------------------------------
