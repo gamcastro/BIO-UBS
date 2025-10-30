@@ -1,57 +1,35 @@
-
-<!----------------------------janela modal--------------------------------------------------------->
-
-  <!-------------CABEÇALHO DA JANELA------------------------->
+<?php
+// Conteúdo do modal de Acolhimento (Bootstrap 5)
+?>
 <div class="modal-header">
-  <button type="button" class="close" data-dismiss="modal">&times;</button> <!------botao fechar------>
-  <h4 class="modal-title">Acolhimento à Demanda Espontânea</h4>
+  <h5 class="modal-title" id="acolhimentoModalLabel">Acolhimento à Demanda Espontânea</h5>
+  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 </div>
 
 <div class="modal-body">
-  <form action="processa_acolhimento.php" method="POST"><!----formulario-------->   
-    
-    <div class="form-group">
-      <label for="buscaPaciente">1. Identificar Paciente</label>
-      <div class="input-group">
-        
-        <input type="text" class="form-control" id="buscaPaciente" name="busca_paciente" placeholder="Digite o CPF ou CNS..." required>
+  <form action="processa_acolhimento.php" method="POST">
 
-        <span class="input-group-btn">
-          <button class="btn btn-default" type="button" id="btnBuscar">
-            <span class="glyphicon glyphicon-search"></span> Buscar
-          </button> <!------botao buscar------> 
-        </span>
-      </div>
+    <div class="mb-3"> 
+      <label for="buscaPaciente" class="form-label fw-bold">1. Identificar Paciente</label> 
+      <div class="input-group"> 
+         <input type="text" class="form-control" id="buscaPaciente" name="busca_paciente" placeholder="Digite o CPF ou CNS..." required aria-label="CPF ou CNS do Paciente" aria-describedby="btnBuscar">
+         <button class="btn btn-outline-secondary" type="button" id="btnBuscar">
+           <i class="bi bi-search"></i> Buscar
+         </button> 
+       </div>
     </div>
 
-    <!-- Painel para exibir os dados do paciente encontrado . Inicialmente oculto -->
-    <div id="dadosPaciente" class="well well-sm" style="display: none;">
-      <h5 id="nomePaciente" style="margin-top: 0;"><strong>Paciente:</strong> <span></span></h5>
-      <p class="mb-0"><strong>Data de Nasc.:</strong> <span id="nascimentoPaciente"></span></p>
-
-       <!----------IMPORTANTE!!!!!!!!!!--------> 
-                  <!-----------------IMPUT COM ID DO REGISTRO A SER EXIBIDO----------> 
-      <input type="hidden" id="pacienteId" name="paciente_id">
-    </div>
-  <!-- -------------------------- Fim Painel ------------------------------>
-
-     <!-- TextArea para inserir a caixa do paciente ----------------------->
-    <div class="form-group">
-      <label for="queixaPrincipal">2. Registrar Queixa Principal</label>
+    <div id="dadosPaciente" class="p-3 mb-3 bg-light border rounded" style="display: none;">
+      <h6 id="nomePaciente" class="mb-1"><strong>Paciente:</strong> <span></span></h6>
+      <p class="mb-0 small"><strong>Data de Nasc.:</strong> <span id="nascimentoPaciente"></span></p> 
+      <input type="hidden" id="pacienteId" name="paciente_id"> 
+    </div> 
+    <div class="mb-3"> <label for="queixaPrincipal" class="form-label fw-bold">2. Registrar Queixa Principal</label> 
       <textarea class="form-control" id="queixaPrincipal" name="queixa_principal" rows="3" required></textarea>
     </div>
-<!-- -------------------------------------------------------------------->
 
-    <!-- Botão Encaminhar para Triagem -->
-    <button type="submit" class="btn btn-success btn-block" id="btnEncaminhar" disabled>
-      <span class="glyphicon glyphicon-arrow-right"></span> Encaminhar para Triagem
-    </button>
-<!-- ---------------------------------------------------------------------------->
-  </form> <!----fim do formulario-------->
+    <div class="d-grid"> <button type="submit" class="btn btn-success btn-lg" id="btnEncaminhar" disabled> <i class="bi bi-arrow-right-circle-fill"></i> Encaminhar para Triagem </button>
+    </div>
+    </form> </div> <div class="modal-footer">
+  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
 </div>
-
-<!---------------RODAPÉ DA JANELA---------------------->
-<div class="modal-footer">
-  <button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
-</div>
-<!----------------------------------------------------->
