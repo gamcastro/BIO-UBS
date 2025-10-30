@@ -9,11 +9,11 @@
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 
-require_once __DIR__ . '/vendor/vendor/autoload.php';
+require_once __DIR__ . '/../vendor/autoload.php';
 
 function send_reset_email(string $email, string $token): bool {
     //---------Em produção, troque para o nosso domínio HTTPS.
-    $resetLink = "http://localhost/bio-ubs/reset_password_form.php?token=" . urlencode($token);
+    $resetLink = "http://localhost/bio-ubs/actions/reset_password_form.php?token=" . urlencode($token);
 
     // >>> CONFIGURAR AQUI <<<
     $MAIL_HOST = 'smtp.gmail.com';

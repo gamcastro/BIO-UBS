@@ -1,4 +1,13 @@
-﻿<?php
+<?php
+namespace BioUBS; // <-- ADICIONAR ISTO
+
+// Adicionar 'use' para cada classe nativa ou classe do mesmo namespace
+use PDO; 
+use PDOException;
+use InvalidArgumentException;
+use RuntimeException;
+
+
 class UbsCrudAll {
     private $UbsPDO;
     private $tabela;

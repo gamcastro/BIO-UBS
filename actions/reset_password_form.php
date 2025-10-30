@@ -4,14 +4,15 @@
  * Página aberta via link do e-mail (contém ?token=...)
  * Confere validade do token e exibe formulário para definir nova senha.
  */
-session_start();require_once __DIR__ . '/class/Conexao.php';
-require_once __DIR__ . '/includes/functions.php';
+session_start();
+require_once __DIR__ . '/../vendor/autoload.php';
+use BioUBS\Conexao ;
 
 $token = $_GET['token'] ?? '';
 if (empty($token)){
   echo "<script>";
   echo "window.alert('Token inválido.');";
-  echo "window.location='login.php'";
+  echo "window.location='../login.php'";
   echo "</script>";
   die;
 } //exit('Token inválido.');

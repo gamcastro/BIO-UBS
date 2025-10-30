@@ -6,9 +6,8 @@
 
 include_once('includes/header.php');
 
-//-----------classes que serão usadas-----
-require_once('class/UbsCrudAll.php');
-require_once('class/Idade.php');
+
+require_once __DIR__ . '/vendor/autoload.php'; //-- Autoload do Composer - Carregamentos das Classes
 //----------------------------------------
 
 

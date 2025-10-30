@@ -4,8 +4,9 @@
  * Recebe a nova senha, valida, atualiza o hash do usuário e marca o token como usado.
  */
 session_start();
-require_once __DIR__ . '/class/Conexao.php';
-require_once __DIR__ . '/includes/functions.php';
+require_once __DIR__ . '/../vendor/autoload.php';
+
+use BioUBS\Conexao ;
 
 $token = $_POST['token'] ?? '';
 $pass  = $_POST['password'] ?? '';
@@ -31,11 +32,11 @@ if (!$row || new DateTime() > new DateTime($row['expires'])) {
 }
 
 //-----------------------------Atualiza senha do usuário
-$newHash = password_hash($pass, PASSWORD_DEFAULT);
-$upd = $db->prepare("UPDATE usuarios SET password_hash = :p WHERE id = :id");
+$newHash = password_hash($pass, PASSWORD_ARGON2ID);
+$upd = $db->prepare("UPDATE cadastro_profissional SET PASSWORD_HASH = :p WHERE id = :id");
 $upd->execute([':p' => $newHash, ':id' => $row['user_id']]);
 
 //-----------------------------Marca token como usado
 $db->prepare("UPDATE password_resets SET used = 1 WHERE id = :id")->execute([':id' => $row['id']]);
 
-echo "<script>alert('Senha redefinida com sucesso!');window.location='login.php';</script>";
+echo "<script>alert('Senha redefinida com sucesso!');window.location='../login.php';</script>";

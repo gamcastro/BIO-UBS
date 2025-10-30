@@ -6,11 +6,9 @@
  */
 
 session_start();
-require_once __DIR__ . '/class/Conexao.php';
-require_once __DIR__ . '/includes/functions.php';
-require_once __DIR__ . '/includes/csrf.php';
-require_once __DIR__ . '/includes/mailer.php';
+require_once __DIR__ . '/../vendor/autoload.php';
 
+use BioUBS\Conexao ;
 //-------------------------------------------------------
 //----------------------------- 1️ Validação do token CSRF
 //-------------------------------------------------------
@@ -18,7 +16,7 @@ if (!verify_csrf($_POST['csrf_token'] ?? '')) {
     // exit('CSRF inválido.');
     echo "<script>";
     echo "window.alert('CSRF inválido!');";
-    echo "window.location='login.php'";
+    echo "window.location='../login.php'";
     echo "</script>";
     //exit('Token expirado ou inválido.');
     exit;
@@ -32,7 +30,7 @@ if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
     // exit('E-mail inválido.');
     echo "<script>";
     echo "window.alert('E-mail inválido!');";
-    echo "window.location='login.php'";
+    echo "window.location='../login.php'";
     echo "</script>";
     exit;
 }
@@ -42,7 +40,7 @@ if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
 //-------------------------------------------------------
 // $db = db_conn();
 $db = Conexao::getConn();
-$stmt = $db->prepare("SELECT id FROM usuarios WHERE email = :e LIMIT 1");
+$stmt = $db->prepare("SELECT id FROM cadastro_profissional WHERE EMAIL = :e LIMIT 1");
 $stmt->execute([':e' => $email]);
 $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
@@ -50,7 +48,7 @@ $user = $stmt->fetch(PDO::FETCH_ASSOC);
 if (!$user) {
     echo "<script>";
     echo "window.alert('Se o e-mail estiver cadastrado, enviaremos um link!');";
-    echo "window.location='login.php'";
+    echo "window.location='../login.php'";
     echo "</script>";
     exit;
 }
@@ -79,7 +77,7 @@ if (send_reset_email($email, $token)) {
     // echo "<script>alert('Se o e-mail estiver cadastrado, enviaremos um link.');window.location='login.php';</script>";
     echo "<script>";
     echo "window.alert('Se o e-mail estiver cadastrado, enviaremos um link!');";
-    echo "window.location='login.php'";
+    echo "window.location='../login.php'";
     echo "</script>";
     exit;
 } else {
@@ -87,7 +85,7 @@ if (send_reset_email($email, $token)) {
     // echo "<script>alert('Falha ao enviar e-mail. Tente novamente.');history.back();</script>";
     echo "<script>";
     echo "window.alert('Falha ao enviar e-mail. Tente novamente!');";
-    echo "window.location='login.php'";
+    echo "window.location='../login.php'";
     echo "</script>";
     exit;
     

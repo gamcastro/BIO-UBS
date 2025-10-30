@@ -3,8 +3,7 @@
 // e salvar no banco de dados.
 
 // 1. Incluindo os arquivos que precisamos do nosso projeto
-require_once('class/Conexao.php');       // Para conectar no banco de dados
-require_once('class/UbsCrudAll.php');    // Para usar as funções de Inserir, Alterar, etc.
+require_once __DIR__ . '/../vendor/autoload.php';   // Para usar as funções de Inserir, Alterar, etc.
 
 $tabela = 'fila_atendimento'; //----tabela para a query
 // 2. Verificando se os dados vieram do formulário

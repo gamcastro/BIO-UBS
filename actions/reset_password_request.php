@@ -5,7 +5,7 @@
  * Gera um pedido de redefinição de senha enviando para reset_password_send.php
  */
 session_start();
-require_once __DIR__ . '/includes/csrf.php';
+require_once __DIR__ . '/../vendor/autoload.php';
 $csrf = generate_csrf();
 
 ?>
