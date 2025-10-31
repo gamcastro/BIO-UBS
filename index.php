@@ -23,17 +23,6 @@ include_once('includes/header.php');
 ?>
 
 
-
-
-
- 
-
-<center>
-<h1 style="color:#CCCCCC">PAGINA INICIAL</h1>
-</center>
-
-
-
 <?php
 // Define o título que será usado no <title> dentro do header.php
 

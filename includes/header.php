@@ -21,7 +21,7 @@ include_once( __DIR__ . '/authorization.php');
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
 <link rel="stylesheet" href="https://cdn.datatables.net/2.3.4/css/dataTables.bootstrap5.css">
 
-  <link rel="stylesheet" type="text/css" href="/BIO-UBS/css/custom.css"><!---arquivo de estilo personalizado-->
+  <link rel="stylesheet" type="text/css" href="<?= BASE_URL ?> /css/custom.css"><!---arquivo de estilo personalizado-->
 
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -48,7 +48,7 @@ include_once( __DIR__ . '/authorization.php');
   <!------------------menu inicial para testes---- modelo Bootstrap------------------>
  <nav class="navbar navbar-expand-lg navbar-light bg-light">
     <div class="container-fluid">
-      <a class="navbar-brand" href="#">BioUBS</a>
+      <a class="navbar-brand" href="<?= BASE_URL ; ?>\index.php">BioUBS</a>
 
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
@@ -56,9 +56,7 @@ include_once( __DIR__ . '/authorization.php');
 
       <div class="collapse navbar-collapse" id="navbarNavDropdown">
         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-          <li class="nav-item">
-            <a class="nav-link active" aria-current="page" href="index.php">Home</a>
-          </li>
+         
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
               Cadastros
