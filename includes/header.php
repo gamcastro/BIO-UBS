@@ -83,6 +83,37 @@ include_once( __DIR__ . '/authorization.php');
               <i class="bi bi-plus-circle-fill me-1"></i> Novo Acolhimento
             </a>
           </li>
+
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="navbarUserDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                <i class="bi bi-person-circle"></i>
+                
+                <span class="d-none d-lg-inline ms-1">
+                    <?= htmlspecialchars($_SESSION['username'] ?? 'Usuário') ?>
+                </span>
+            </a>
+            
+            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarUserDropdown">
+                <li><a class="dropdown-item" href="#">Meu Perfil</a></li>
+                <li><hr class="dropdown-divider"></li>
+                <li>
+                    <a class="dropdown-item" href="<?= BASE_URL ?>/logout.php">
+                        <i class="bi bi-box-arrow-right me-1"></i>Sair
+                    </a>
+                </li>
+            </ul>
+          </li>
+
+
+
+
+
+
+
+
+
+
+
         </ul>
       </div>
     </div>
