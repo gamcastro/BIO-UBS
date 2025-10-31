@@ -9,8 +9,7 @@
         "files": [
             "includes/functions.php",
             "includes/csrf.php",
-            "includes/auth_helper.php",
-            "includes/authorization.php",
+            "includes/auth_helper.php",           
             "includes/mailer.php"
         ]
     }

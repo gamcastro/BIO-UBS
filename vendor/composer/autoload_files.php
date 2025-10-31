@@ -9,6 +9,5 @@ return array(
     '79667749ed3ce80089a399fc6e1fd564' => $baseDir . '/includes/functions.php',
     '984d5ed396bb6abdf748571e9eee657e' => $baseDir . '/includes/csrf.php',
     '1f7e7b6793aaa0896317b4f8ad8aa006' => $baseDir . '/includes/auth_helper.php',
-    '8d9f0039d931740f499cfa09c486ccc3' => $baseDir . '/includes/authorization.php',
     'f229ba6731aa0968f773e87e559df1ba' => $baseDir . '/includes/mailer.php',
 );

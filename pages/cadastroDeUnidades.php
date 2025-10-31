@@ -2,8 +2,9 @@
 //----titulo da página------
 $tituloDaPagina = "Cadastro de Unidades";
 //---------------------------
+require_once __DIR__ . '/../vendor/autoload.php'; // Autoloader
+include_once(__DIR__ . '/../includes/header.php');
 
-include_once('includes/header.php'); // Já migrado para BS5
 
 //-----------classes que serão usadas-----
 use BioUBS\UbsCrudAll ;
@@ -15,17 +16,17 @@ use BioUBS\Idade ;
 /* Lógica PHP de salvar/editar/excluir (Mantida como está) */
 if($nivelAcesso == 1) {
     if(isset($_POST['salvar'])) {
-        include('querys/inserts/insertUnidades.php');
+        include(__DIR__ . '/../querys/inserts/insertUnidades.php');
     } elseif(isset($_POST['editar'])) {
-        include('querys/updates/updateUnidades.php');
+        include(__DIR__ . '/../querys/updates/updateUnidades.php');
     } elseif(isset($_POST['excluir'])) {
-        include('querys/deletes/deleteUnidades.php');
+        include(__DIR__ .'/../querys/deletes/deleteUnidades.php');
     }
 }
 ?>
 
-<script type="text/javascript" src="js/mask/funcaoMascaraGeralNumeros.js"></script>
-<script type="text/javascript" src="js/mask/funcaoLetrasMaiusculas.js"></script>
+<script type="text/javascript" src="../js/mask/funcaoMascaraGeralNumeros.js"></script>
+<script type="text/javascript" src="../js/mask/funcaoLetrasMaiusculas.js"></script>
 
 
 
@@ -44,7 +45,7 @@ if($nivelAcesso == 1) {
 
 <?php
 // Include da Tabela Principal (será migrada abaixo)
-include('table/tableCadastroDeUnidade.php');
+include(__DIR__ . '/../table/tableCadastroDeUnidade.php');
 ?>
 
 
@@ -54,10 +55,12 @@ include('table/tableCadastroDeUnidade.php');
 <?php
 // Include do Modal de Cadastro (será migrado abaixo)
 // O Modal completo está aqui, não apenas a casca
-include('modal/cadastro/modalCadastroDeUnidade.php');
+include(__DIR__ . '/../modal/cadastro/modalCadastroDeUnidade.php');
+
+include(__DIR__ . '/../includes/footer.php');
 ?>
 
 <?php
 // Footer já está migrado e é incluído no final
-include_once('includes/footer.php');
+
 ?>

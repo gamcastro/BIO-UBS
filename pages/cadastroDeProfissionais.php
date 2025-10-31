@@ -7,7 +7,7 @@
 include_once('includes/header.php');
 
 
-require_once __DIR__ . '/vendor/autoload.php'; //-- Autoload do Composer - Carregamentos das Classes
+require_once __DIR__ . '/../vendor/autoload.php'; //-- Autoload do Composer - Carregamentos das Classes
 //----------------------------------------
 
 

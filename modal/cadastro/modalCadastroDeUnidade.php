@@ -66,11 +66,11 @@
                 // para não ter 'require' dentro do HTML do modal.
                 // Mas mantendo a estrutura original por enquanto:
                 try {
-                    require('querys/ConsultaUnidadeFederativaSelect.php'); 
+                    require(__DIR__ . '/../../querys/ConsultaUnidadeFederativaSelect.php');
                 } catch(Exception $e) {
                     echo '<option value="" disabled>Erro ao carregar UFs</option>';
                 }
-                ?>
+                // ?>
               </select>
             </div>
           </div>

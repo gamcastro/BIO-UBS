@@ -1,4 +1,10 @@
-<?php require_once('includes/authorization.php'); ?>
+<?php 
+// require_once __DIR__ . '/../includes/authorization.php'; 
+require_once __DIR__ . '/../vendor/autoload.php'; // Autoloader
+
+use BioUBS\UbsCrudAll ;
+?>
+
 
 <div class="table-responsive">
     <table id="tableBioUBS" class="table table-striped table-hover table-bordered caption-top"> 
@@ -31,14 +37,14 @@
                         </button>
 
                         <?php if($nivelAcesso == 1): ?>
-                            <a href="modal/edicao/modalEdCadastroDeUnidades.php?id=<?= $id ?>" 
+                            <a href="../modal/edicao/modalEdCadastroDeUnidades.php?id=<?= $id ?>" 
                                class="btn btn-sm btn-outline-primary me-1" 
                                data-bs-toggle="modal" 
                                data-bs-target="#updateBioUBS"
                                title="Editar">
                                  <i class="bi bi-pencil-square"></i>
                             </a>
-                            <a href="modal/exclusao/modalExCadastroDeUnidades.php?id=<?= $id ?>" 
+                            <a href="../modal/exclusao/modalExCadastroDeUnidades.php?id=<?= $id ?>" 
                                class="btn btn-sm btn-outline-danger" 
                                data-bs-toggle="modal" 
                                data-bs-target="#deleteBioUBS"

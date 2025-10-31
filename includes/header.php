@@ -2,6 +2,10 @@
 
 require_once __DIR__ . '/../vendor/autoload.php';
 
+require_once __DIR__ . '/../config.php';
+
+include_once( __DIR__ . '/authorization.php');
+
 
 ?>
 
@@ -17,7 +21,7 @@ require_once __DIR__ . '/../vendor/autoload.php';
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
 <link rel="stylesheet" href="https://cdn.datatables.net/2.3.4/css/dataTables.bootstrap5.css">
 
-  <link rel="stylesheet" type="text/css" href="css/custom.css"><!---arquivo de estilo personalizado-->
+  <link rel="stylesheet" type="text/css" href="/BIO-UBS/css/custom.css"><!---arquivo de estilo personalizado-->
 
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -60,9 +64,9 @@ require_once __DIR__ . '/../vendor/autoload.php';
               Cadastros
             </a>
             <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-              <li><a class="dropdown-item" href="cadastroDePacientes.php">Pacientes</a></li>
-              <li><a class="dropdown-item" href="cadastroDeProfissionais.php">Profissionais</a></li>
-              <li><a class="dropdown-item" href="cadastroDeUnidades.php">Unidade</a></li>
+              <li><a class="dropdown-item" href="pages/cadastroDePacientes.php">Pacientes</a></li>
+              <li><a class="dropdown-item" href="pages/cadastroDeProfissionais.php">Profissionais</a></li>
+              <li><a class="dropdown-item" href="pages/cadastroDeUnidades.php">Unidade</a></li>
             </ul>
           </li>
           <li class="nav-item">

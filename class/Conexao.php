@@ -21,7 +21,7 @@ class Conexao{
 	public static function getConn(){
 		try{
 			if (!isset(self::$instance)) :
-			$config = require_once __DIR__ . '/../config.php';
+			$config = require __DIR__ . '/../config.php';
 			self::$local = $config['local'];
 			self::$banco = $config['banco'];
 			self::$usuario = $config['usuario'];

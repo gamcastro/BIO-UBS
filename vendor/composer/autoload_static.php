@@ -10,7 +10,6 @@ class ComposerStaticInit2185d2f99bcd56787481d9357a5972d3
         '79667749ed3ce80089a399fc6e1fd564' => __DIR__ . '/../..' . '/includes/functions.php',
         '984d5ed396bb6abdf748571e9eee657e' => __DIR__ . '/../..' . '/includes/csrf.php',
         '1f7e7b6793aaa0896317b4f8ad8aa006' => __DIR__ . '/../..' . '/includes/auth_helper.php',
-        '8d9f0039d931740f499cfa09c486ccc3' => __DIR__ . '/../..' . '/includes/authorization.php',
         'f229ba6731aa0968f773e87e559df1ba' => __DIR__ . '/../..' . '/includes/mailer.php',
     );
 
