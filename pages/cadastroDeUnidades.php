@@ -43,6 +43,37 @@ if($nivelAcesso == 1) {
     </div>
 <?php endif; ?>
 
+
+<!-----------casca da modal de edicao------------->
+  <div class="modal fade" id="#updateBioUBS" tabindex="-1" aria-labelledby="acolhimentoModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-body text-center">
+          <div class="spinner-border" role="status">
+            <span class="visually-hidden">Carregando...</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+<!-----------casca da modal de exclusão------------->
+<div id="deleteBioUBS" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+    <!-- contener da janela-->
+    <div class="modal-content">
+
+
+
+    </div>
+  </div>
+</div>      
+
+
+
+
+
+
 <?php
 // Include da Tabela Principal (será migrada abaixo)
 include(__DIR__ . '/../table/tableCadastroDeUnidade.php');

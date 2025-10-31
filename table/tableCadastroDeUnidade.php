@@ -37,10 +37,11 @@ use BioUBS\UbsCrudAll ;
                         </button>
 
                         <?php if($nivelAcesso == 1): ?>
-                            <a href="../modal/edicao/modalEdCadastroDeUnidades.php?id=<?= $id ?>" 
+                            <a href="#" 
                                class="btn btn-sm btn-outline-primary me-1" 
                                data-bs-toggle="modal" 
                                data-bs-target="#updateBioUBS"
+                               data-url="../modal/edicao/modalEdCadastroDeUnidades.php?id=<?= $id ?>"
                                title="Editar">
                                  <i class="bi bi-pencil-square"></i>
                             </a>

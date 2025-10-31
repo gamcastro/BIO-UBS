@@ -1,5 +1,7 @@
 <?php
-require_once('../../class/Conexao.php');
+require_once __DIR__ . '/../vendor/autoload.php'; // Autoloader
+
+
 
 if (isset($_GET['id'])): //----só sugirá o conteúdo se vier um ID
 
@@ -11,7 +13,7 @@ if (isset($_GET['id'])): //----só sugirá o conteúdo se vier um ID
     //----------------------------------------------
 
     //----------CONSULTA BÁSICA COM ID E OS CRITÉRIOS ACIMA
-    require_once('../../querys/ConsultaPorId.php');
+    require_once(__DIR__ . '/../../querys/ConsultaPorId.php');
 
     //-------buscando dados na tabela------------------   
     while ($rowsId = $buscaId->fetch(PDO::FETCH_ASSOC)) {

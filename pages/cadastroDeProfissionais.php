@@ -4,10 +4,12 @@
 
 //---------------------------
 
-include_once('includes/header.php');
+require_once __DIR__ . '/../vendor/autoload.php';  //-- Autoload do Composer - Carregamentos das Classes
+include_once(__DIR__ . '/../includes/header.php');
 
+use BioUBS\UbsCrudAll ;
+use BioUBS\Idade ;
 
-require_once __DIR__ . '/../vendor/autoload.php'; //-- Autoload do Composer - Carregamentos das Classes
 //----------------------------------------
 
 
@@ -19,19 +21,19 @@ if($nivelAcesso == 1):
     if(isset($_POST['salvar'])):
 
       //-----------------salvando o cadastro-----
-      include('querys/inserts/insertProfissionais.php');
+      include(__DIR__ . '/../querys/inserts/insertProfissionais.php');
       //********************************************************
 
     elseif(isset($_POST['editar'])):
 
       //-----------------editando o cadastro-----
-      include('querys/updates/updateProfissionais.php');
+      include(__DIR__ . '/..querys/updates/updateProfissionais.php');
       //********************************************************
 
     elseif(isset($_POST['excluir'])):
 
       //-----------------excluindo o cadastro-----
-      include('querys/deletes/deleteProfissionais.php');
+      include(__DIR__ . '/../querys/deletes/deleteProfissionais.php');
       //********************************************************
 
     endif;  
@@ -56,13 +58,13 @@ endif;//---fim para controle de acesso
 <!--------área para SCRIPTS---------------------------------->
 
 <!----------------chamando as funcoes de mascaras-------------------->
-<script type="text/javascript" src="js/mask/funcaoMascaraGeralNumeros.js"></script>
-<script type="text/javascript" src="js/mask/funcaoLetrasMaiusculas.js"></script>
+<script type="text/javascript" src="../js/mask/funcaoMascaraGeralNumeros.js"></script>
+<script type="text/javascript" src="../js/mask/funcaoLetrasMaiusculas.js"></script>
 <!------------------------------------------------------------------->
 
 
 <!------incluir esse arquivo onde for usar tabela dinamica-------------->
-<script type="text/javascript" src="js/jquery.dataTables.min.js"></script>
+
 <!---------------------------------------------------------------------->
 
 
@@ -76,44 +78,29 @@ endif;//---fim para controle de acesso
 
 <!--------área para CSS---------------------------------->
 <!------incluir esse arquivo onde for usar tabela dinamica-------------->
-<link rel="stylesheet" href="css/jquery.dataTables.min.css" />
+
 <!--------------------------------------------------------------->
 <!------------------------fim css------------------------------>
 
 
 
-        <h1 style="color:#CCCCCC; text-align:center">Cadastro de Profissionais</h1>
-
-<hr>
-
-
-<?php
-if($nivelAcesso == 1):
-/* verificando o nível de acesso para o Botão Cadastrar*/
-?>
-
-
-<!---------------botão para acionar a modal------------------>
-    <a
-      class="btn btn-primary pull-right" 
-      data-toggle="modal" data-target="#insertProfissional" 
-      id="btnCadPaciente" style="margin-top: -40px"
-    >
-      <span class="glyphicon glyphicon-plus-sign"></span> Novo Cadastro
-    </a>
-<!------------------------------------------------------------------>
-
-
-<?php endif;?>    
+   <h1 class="display-5 text-center text-muted mb-4">Cadastro da Profissiohal</h1>
+<hr class="mb-4">     
 
 
 
+<?php if($nivelAcesso == 1): ?>
+    <div class="d-flex justify-content-end mb-3">
+        <button type="button" class="btn btn-primary"
+           data-bs-toggle="modal"
+           data-bs-target="#insertProfissional">
+             <i class="bi bi-plus-circle me-1"></i> Novo Cadastro
+        </button>
+    </div>
+<?php endif; ?>
 
-<?php 
-///-----------------JANELA MODAL----------------------
-//-------------incluindo janela modal cadastro-----------------------------
-include('modal/cadastro/modalCadastroDeProfissional.php');
-?>
+
+
 
 <!-----------casca da modal de edicao------------->
 <div id="updateBioUBS" class="modal fade" role="dialog">
@@ -147,7 +134,7 @@ include('modal/cadastro/modalCadastroDeProfissional.php');
 
 //---------------------IMPORTANTE!!!!!!!!!!!!
 //-------------tabela principal--------------
-include('table/tableCadastroDeProfissional.php');
+include(__DIR__ . '/../table/tableCadastroDeProfissional.php');
 //-------------------------------------------
 
 
@@ -158,4 +145,10 @@ include('table/tableCadastroDeProfissional.php');
 
 ?>
 
+<?php 
+///-----------------JANELA MODAL----------------------
+//-------------incluindo janela modal cadastro-----------------------------
+include(__DIR__ .'/../modal/cadastro/modalCadastroDeProfissional.php');
 
+include(__DIR__ . '/../includes/footer.php');
+?>
