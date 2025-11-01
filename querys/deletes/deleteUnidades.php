@@ -22,7 +22,7 @@ $id = $_POST['id'];
 $tabela = 'cadastro_unidade'; //----tabela para a query
 
 // A classe UbsCrudAll já foi carregada pela página 'pai' (cadastroDeUnidades.php)
-$objeto = new \BioUBS\UbsCrudAll($tabela);
+$objeto = new UbsCrudAll($tabela);
 
 //---funcao deletar por id (seguindo o seu padrão)
 $deleteUbs = $objeto->deleteId($id); 

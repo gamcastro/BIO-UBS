@@ -10,7 +10,7 @@
 // Carrega o autoloader do Composer (que deve carregar a classe UbsCrudAll)
 require_once __DIR__ . '/../../vendor/autoload.php'; 
 
-USE BioUBS\UbsCrudAll;
+use BioUBS\UbsCrudAll;
 
 // --- VERIFICAÇÃO INICIAL ---
 // Apenas executa se o formulário foi enviado (name="editar" do botão Salvar)
@@ -54,7 +54,7 @@ if (isset($_POST['editar'])) {
 
     // 3. INSTANCIAR A SUPERCLASSE
     // Passamos a tabela e a whitelist de colunas para o construtor
-    $objeto = new \BioUBS\UbsCrudAll($tabela, $colunasPermitidas);
+    $objeto = new UbsCrudAll($tabela, $colunasPermitidas);
 
     // 4. CONSTRUÇÃO DINÂMICA DO ARRAY DE DADOS
     // Esta é a "mágica" da superclasse.

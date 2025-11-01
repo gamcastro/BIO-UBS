@@ -59,7 +59,7 @@ $colunasPermitidas = [
 // Para manter o padrão do seu template, vamos instanciar aqui.
 
 
-$objeto = new \BioUBS\UbsCrudAll($tabela, $colunasPermitidas);
+$objeto = new UbsCrudAll($tabela, $colunasPermitidas);
 
 // Mapeia os dados do $_POST para os nomes das colunas do BD
 $dados = [

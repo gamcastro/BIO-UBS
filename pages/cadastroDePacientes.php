@@ -104,10 +104,6 @@ include(__DIR__ . '/../modal/cadastro/modalCadastroDePacientes.php');
 ?>
 
 <?php
-// DEBUG: verificar se o fluxo chega até aqui e se o arquivo footer existe
-echo "<!-- DEBUG: before footer include -->\n";
-echo "<!-- DEBUG: footer exists? " . (file_exists(__DIR__ . '/../includes/footer.php') ? 'yes' : 'no') . " -->\n";
-
 // Inclui o FOOTER
 // Isso vai carregar o footer, o custom.js e o tableSimples.js,
 // que finalmente inicializará o seu DataTable.

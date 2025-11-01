@@ -47,7 +47,7 @@ if (isset($_POST['salvar'])) {
     ];
 
     // 6. INSTANCIAR A SUPERCLASSE
-    $objeto = new \BioUBS\UbsCrudAll($tabela, $colunasPermitidas);
+    $objeto = new UbsCrudAll($tabela, $colunasPermitidas);
 
     // 7. CONSTRUÇÃO DINÂMICA DO ARRAY DE DADOS
     $dados = []; // Array que será enviado para a superclasse

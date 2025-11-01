@@ -1,16 +1,17 @@
 <?php
+require_once __DIR__ . '/../../vendor/autoload.php';
+use BioUBS\UbsCrudAll;
 
       //-------ID -----------
         $id = $_POST['id'];
       //---------------------
 
-      
 
 //------------------apagar registro de paciente---------
 
     $tabela = 'cadastro_paciente'; 
 
-  $objeto = new \BioUBS\UbsCrudAll($tabela);
+  $objeto = new UbsCrudAll($tabela);
 
     $deleteUbs = $objeto->deleteId($id); //---funcao deletar por id
 

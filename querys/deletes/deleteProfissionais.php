@@ -13,7 +13,7 @@ use BioUBS\UbsCrudAll;
 
     $tabela = 'cadastro_profissional'; //----tabela para a query
 
-  $objeto = new \BioUBS\UbsCrudAll($tabela);
+  $objeto = new UbsCrudAll($tabela);
 
     $deleteUbs = $objeto->deleteId($id); //---funcao deletar por id
 

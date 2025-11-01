@@ -1,5 +1,5 @@
 <?php
-require_once '../vendor/autoload.php'; // Autoloader
+require_once __DIR__ . '/../vendor/autoload.php'; // Autoloader
 use BioUBS\Conexao;
 
 $sqlUfId = "SELECT * FROM ibge_ufs WHERE CD_UF = :cd_uf_rgb";

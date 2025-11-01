@@ -1,8 +1,8 @@
 <?php
 
 header('Content-Type: application/json; charset=utf-8');
-require_once('../class/Conexao.php');
-require_once('../class/UbsCrudAll.php');
+require_once __DIR__ . '/../vendor/autoload.php';
+use BioUBS\UbsCrudAll;
 
 $response = array();
 
@@ -12,7 +12,7 @@ if (isset($_POST['termo_busca'])) {
     $termo_busca = preg_replace('/[^0-9]/', '', $_POST['termo_busca']);
 
     try {
-    $crud = new \BioUBS\UbsCrudAll('cadastro_paciente');
+    $crud = new UbsCrudAll('cadastro_paciente');
 
        
         //  REPLACE() duas vezes para limpar a coluna CPF antes de comparar
