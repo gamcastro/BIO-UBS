@@ -7,39 +7,46 @@ if (isset($_GET['id'])): //----só surgirá o conteúdo se vier um ID
 
     //-----------criterios de consulta--------------
     $camposIdBio = "*";
-    $tabelaIdBio = "cadastro_profissional"; // <-- MUDANÇA: Tabela de profissionais
+    $tabelaIdBio = "cadastro_profissional"; // Tabela correta
     //----------------------------------------------
 
     //----------CONSULTA BÁSICA COM ID E OS CRITÉRIOS ACIMA
-    // Este script genérico busca na $tabelaIdBio pelo $id
     require_once(__DIR__ . '/../../querys/ConsultaPorId.php');
 
     //-------buscando dados na tabela------------------
-    // Inicializa as variáveis para evitar erros caso a consulta não retorne nada
-    $nome = $cpf = $rg = $dataNascimento = $tipoProfissional = $documentoConselho = $especialidade = '';
-    $telefone = $cep = $estado = $municipio = $bairro = $logradouro = $numero = $complemento = '';
+    // Inicializa as variáveis
+    $matricula = $nomeCompleto = $cpf = $cnsProfissional = $dataNascimento = $sexo = $perfil = '';
+    $email = $telefone = $conselhoClasse = $registroConselho = $estadoEmissorConselho = '';
+    $cep = $estadoEndereco = $municipio = $bairro = $logradouro = $numero = $complemento = $pontoReferencia = '';
 
     while ($rowsId = $buscaId->fetch(PDO::FETCH_ASSOC)) {
         // Dados Pessoais
-        $nome = $rowsId['NOME'];
+        $matricula = $rowsId['MATRICULA'];
+        $nomeCompleto = $rowsId['NOME_COMPLETO'];
         $cpf = $rowsId['CPF'];
-        $rg = $rowsId['RG'];
-        $dataNascimento = $rowsId['DATA_NASCIMENTO']; // Assumindo nome da coluna
-        $telefone = $rowsId['TELEFONE']; // Assumindo que você adicionará este campo
+        $cnsProfissional = $rowsId['CNS_PROFISSIONAL'];
+        $dataNascimento = $rowsId['DATA_NASCIMENTO'];
+        $sexo = $rowsId['SEXO'];
+        
+        // Dados de Contato
+        $email = $rowsId['EMAIL'];
+        $telefone = $rowsId['TELEFONE'];
 
         // Dados Profissionais
-        $tipoProfissional = $rowsId['TIPO_PROFISSIONAL']; // Assumindo
-        $documentoConselho = $rowsId['DOCUMENTO_CONSELHO']; // Assumindo
-        $especialidade = $rowsId['ESPECIALIDADE']; // Assumindo
+        $perfil = $rowsId['PERFIL']; // <-- Esta variável será usada no select
+        $conselhoClasse = $rowsId['CONSELHO_CLASSE'];
+        $registroConselho = $rowsId['REGISTRO_CONSELHO'];
+        $estadoEmissorConselho = $rowsId['ESTADO_EMISSOR_CONSELHO'];
 
-        // Endereço (vamos supor que os nomes das colunas são os mesmos da Unidade)
+        // Endereço
         $cep = $rowsId['CEP'];
-        $estado = $rowsId['ESTADO'];
+        $estadoEndereco = $rowsId['ESTADO_ENDERECO'];
         $municipio = $rowsId['MUNICIPIO'];
         $bairro = $rowsId['BAIRRO'];
         $logradouro = $rowsId['LOGRADOURO'];
         $numero = $rowsId['NUMERO'];
         $complemento = $rowsId['COMPLEMENTO'];
+        $pontoReferencia = $rowsId['PONTO_REFERENCIA'];
     }
 ?>
 
@@ -53,69 +60,120 @@ if (isset($_GET['id'])): //----só surgirá o conteúdo se vier um ID
 
         <div class="modal-body">
             <table class="table table-bordered">
+                
                 <tr class="table-info">
-                    <td colspan="4"><strong>DADOS DO PROFISSIONAL</strong></td>
+                    <td colspan="4"><strong>DADOS PESSOAIS</strong></td>
                 </tr>
 
                 <tr>
-                    <td colspan="4">Nome Completo:</td>
+                    <td colspan="3">Nome Completo:</td>
+                    <td>Matrícula:</td>
                 </tr>
                 <tr>
-                    <td colspan="4">
-                        <input class="form-control" type="text" id="nome" name="nome" required="required" placeholder="Nome completo do profissional" value="<?= htmlspecialchars($nome ?? '') ?>">
+                    <td colspan="3">
+                        <input class="form-control" type="text" id="NOME_COMPLETO" name="NOME_COMPLETO" required="required" placeholder="Nome completo do profissional" value="<?= htmlspecialchars($nomeCompleto ?? '') ?>">
+                    </td>
+                    <td>
+                        <input class="form-control" type="text" id="MATRICULA" name="MATRICULA" placeholder="Matrícula" value="<?= htmlspecialchars($matricula ?? '') ?>">
                     </td>
                 </tr>
 
                 <tr>
                     <td>CPF:</td>
-                    <td>RG:</td>
-                    <td colspan="2">Data de Nascimento:</td>
+                    <td>CNS:</td>
+                    <td>Data de Nascimento:</td>
+                    <td>Sexo:</td>
                 </tr>
                 <tr>
                     <td>
-                        <input class="form-control" type="text" id="cpf" name="cpf" required="required" placeholder="Somente números" value="<?= htmlspecialchars($cpf ?? '') ?>">
+                        <input class="form-control" type="text" id="CPF" name="CPF" required="required" placeholder="Somente números" value="<?= htmlspecialchars($cpf ?? '') ?>">
                     </td>
                     <td>
-                        <input class="form-control" type="text" id="rg" name="rg" placeholder="Somente números" value="<?= htmlspecialchars($rg ?? '') ?>">
+                        <input class="form-control" type="text" id="CNS_PROFISSIONAL" name="CNS_PROFISSIONAL" placeholder="Nº CNS" value="<?= htmlspecialchars($cnsProfissional ?? '') ?>">
                     </td>
-                    <td colspan="2">
-                        <input class="form-control" type="date" id="data_nascimento" name="data_nascimento" value="<?= htmlspecialchars($dataNascimento ?? '') ?>">
+                    <td>
+                        <input class="form-control" type="date" id="DATA_NASCIMENTO" name="DATA_NASCIMENTO" value="<?= htmlspecialchars($dataNascimento ?? '') ?>">
+                    </td>
+                    <td>
+                        <select name="SEXO" id="SEXO" class="form-control">
+                            <option value="">Selecione</option>
+                            <option value="Feminino" <?= ($sexo == 'Feminino') ? 'selected' : '' ?>>Feminino</option>
+                            <option value="Masculino" <?= ($sexo == 'Masculino') ? 'selected' : '' ?>>Masculino</option>
+                            <option value="Outro" <?= ($sexo == 'Outro') ? 'selected' : '' ?>>Outro</option>
+                        </select>
                     </td>
                 </tr>
 
+                <tr class="table-info">
+                    <td colspan="4"><strong>DADOS DE CONTATO</strong></td>
+                </tr>
+
                 <tr>
-                    <td>Telefone / Celular:</td>
-                    <td colspan="3">Tipo de Profissional:</td>
+                    <td colspan="2">Email:</td>
+                    <td colspan="2">Telefone / Celular:</td>
                 </tr>
                 <tr>
-                    <td>
-                         <input class="form-control" type="tel" id="telefone" name="telefone" placeholder="(99) 99999-9999" value="<?= htmlspecialchars($telefone ?? '') ?>">
+                    <td colspan="2">
+                         <input class="form-control" type="email" id="EMAIL" name="EMAIL" placeholder="email@exemplo.com" value="<?= htmlspecialchars($email ?? '') ?>">
                     </td>
-                    <td colspan="3">
-                        <select name="tipo_profissional" id="tipo_profissional" class="form-control" required>
-                            <option value="">Selecione o tipo</option>
-                            <option value="Atendente" <?= ($tipoProfissional == 'Atendente') ? 'selected' : '' ?>>Atendente</option>
-                            <option value="Técnico de Enfermagem" <?= ($tipoProfissional == 'Técnico de Enfermagem') ? 'selected' : '' ?>>Técnico de Enfermagem</option>
-                            <option value="Enfermeiro" <?= ($tipoProfissional == 'Enfermeiro') ? 'selected' : '' ?>>Enfermeiro(a)</option>
-                            <option value="Médico" <?= ($tipoProfissional == 'Médico') ? 'selected' : '' ?>>Médico(a)</option>
-                            <option value="Administrador" <?= ($tipoProfissional == 'Administrador') ? 'selected' : '' ?>>Administrador(a)</option>
+                    <td colspan="2">
+                         <input class="form-control" type="tel" id="TELEFONE" name="TELEFONE" placeholder="(99) 99999-9999" value="<?= htmlspecialchars($telefone ?? '') ?>">
+                    </td>
+                </tr>
+
+                <tr class="table-info">
+                    <td colspan="4"><strong>DADOS PROFISSIONAIS E ACESSO</strong></td>
+                </tr>
+                
+                <tr>
+                    <td colspan="4">Perfil de Acesso:</td>
+                </tr>
+                <tr>
+                    <td colspan="4">
+                        <select name="PERFIL" id="PERFIL" class="form-control" required>
+                            <option value="">Selecione um perfil...</option>
+                            <option value="MÉDICO" <?= ($perfil == 'MÉDICO') ? 'selected' : '' ?>>MÉDICO</option>
+                            <option value="ENFERMEIRO" <?= ($perfil == 'ENFERMEIRO') ? 'selected' : '' ?>>ENFERMEIRO</option>
+                            <option value="AUXILIAR/TÉCNICO ENFERMAGEM" <?= ($perfil == 'AUXILIAR/TÉCNICO ENFERMAGEM') ? 'selected' : '' ?>>AUXILIAR/TÉCNICO ENFERMAGEM</option>
+                            <option value="CIRURGIÃO DENTISTA" <?= ($perfil == 'CIRURGIÃO DENTISTA') ? 'selected' : '' ?>>CIRURGIÃO DENTISTA</option>
+                            <option value="ASB - AUXILIAR SAÚDE BUCAL" <?= ($perfil == 'ASB - AUXILIAR SAÚDE BUCAL') ? 'selected' : '' ?>>ASB - AUXILIAR SAÚDE BUCAL</option>
+                            <option value="TSB - TÉCNICO SAÚDE BUCAL" <?= ($perfil == 'TSB - TÉCNICO SAÚDE BUCAL') ? 'selected' : '' ?>>TSB - TÉCNICO SAÚDE BUCAL</option>
+                            <option value="ACS - AGENTE COMUNITÁRIO SAÚDE" <?= ($perfil == 'ACS - AGENTE COMUNITÁRIO SAÚDE') ? 'selected' : '' ?>>ACS - AGENTE COMUNITÁRIO SAÚDE</option>
+                            <option value="ACE - AGENTE COMBATE ENDEMIAS" <?= ($perfil == 'ACE - AGENTE COMBATE ENDEMIAS') ? 'selected' : '' ?>>ACE - AGENTE COMBATE ENDEMIAS</option>
+                            <option value="COORDENADOR UBS" <?= ($perfil == 'COORDENADOR UBS') ? 'selected' : '' ?>>COORDENADOR UBS</option>
+                            <option value="RECEPÇÃO" <?= ($perfil == 'RECEPÇÃO') ? 'selected' : '' ?>>RECEPÇÃO</option>
+                            <option value="OUTRO PROF. NÍVEL SUPERIOR" <?= ($perfil == 'OUTRO PROF. NÍVEL SUPERIOR') ? 'selected' : '' ?>>OUTRO PROF. NÍVEL SUPERIOR</option>
                         </select>
                     </td>
                 </tr>
 
                  <tr>
-                    <td>Documento do Conselho (CRM, COREN, etc.):</td>
-                    <td colspan="3">Especialidade (se aplicável):</td>
+                    <td>Conselho (CRM, COREN, etc.):</td>
+                    <td>Nº do Registro:</td>
+                    <td colspan="2">UF do Conselho:</td>
                 </tr>
                 <tr>
                     <td>
-                        <input class="form-control" type="text" id="documento_conselho" name="documento_conselho" placeholder="CRM/COREN/etc." value="<?= htmlspecialchars($documentoConselho ?? '') ?>">
+                        <input class="form-control" type="text" id="CONSELHO_CLASSE" name="CONSELHO_CLASSE" placeholder="Ex: CRM, COREN" value="<?= htmlspecialchars($conselhoClasse ?? '') ?>">
                     </td>
-                    <td colspan="3">
-                        <input class="form-control" type="text" id="especialidade" name="especialidade" placeholder="Ex: Clínico Geral, Pediatra" value="<?= htmlspecialchars($especialidade ?? '') ?>">
+                    <td>
+                        <input class="form-control" type="text" id="REGISTRO_CONSELHO" name="REGISTRO_CONSELHO" placeholder="Nº 12345" value="<?= htmlspecialchars($registroConselho ?? '') ?>">
+                    </td>
+                    <td colspan="2">
+                        <select name="ESTADO_EMISSOR_CONSELHO" id="ESTADO_EMISSOR_CONSELHO" class="form-control">
+                            <option value="">UF</option>
+                            <?php
+                            require(__DIR__ . '/../../querys/ConsultaUnidadeFederativaSelect.php');
+                            ?>
+                        </select>
+                        <script>
+                            var selectConselho = document.getElementById('ESTADO_EMISSOR_CONSELHO');
+                            if (selectConselho) {
+                                selectConselho.value = "<?= $estadoEmissorConselho ?>"; 
+                            }
+                        </script>
                     </td>
                 </tr>
-
 
                 <tr class="table-info">
                     <td colspan="4"><strong>ENDEREÇO</strong></td>
@@ -127,10 +185,10 @@ if (isset($_GET['id'])): //----só surgirá o conteúdo se vier um ID
                 </tr>
                 <tr>
                     <td>
-                        <input class="form-control" type="text" id="cep" name="cep" placeholder="00000-000" value="<?= htmlspecialchars($cep ?? '') ?>">
+                        <input class="form-control" type="text" id="CEP" name="CEP" placeholder="00000-000" value="<?= htmlspecialchars($cep ?? '') ?>">
                     </td>
                     <td colspan="3">
-                        <input class="form-control" type="text" id="logradouro" name="logradouro" value="<?= htmlspecialchars($logradouro ?? '') ?>">
+                        <input class="form-control" type="text" id="LOGRADOURO" name="LOGRADOURO" value="<?= htmlspecialchars($logradouro ?? '') ?>">
                     </td>
                 </tr>
                 <tr>
@@ -141,42 +199,42 @@ if (isset($_GET['id'])): //----só surgirá o conteúdo se vier um ID
                 </tr>
                 <tr>
                     <td>
-                        <input class="form-control" type="text" id="numero" name="numero" value="<?= htmlspecialchars($numero ?? '') ?>">
+                        <input class="form-control" type="text" id="NUMERO" name="NUMERO" value="<?= htmlspecialchars($numero ?? '') ?>">
                     </td>
                     <td>
-                        <input class="form-control" type="text" id="bairro" name="bairro" value="<?= htmlspecialchars($bairro ?? '') ?>">
+                        <input class="form-control" type="text" id="BAIRRO" name="BAIRRO" value="<?= htmlspecialchars($bairro ?? '') ?>">
                     </td>
                     <td colspan="2">
-                        <input class="form-control" type="text" id="complemento" name="complemento" placeholder="Apto, Bloco, Casa, etc." value="<?= htmlspecialchars($complemento ?? '') ?>">
+                        <input class="form-control" type="text" id="COMPLEMENTO" name="COMPLEMENTO" placeholder="Apto, Bloco, Casa, etc." value="<?= htmlspecialchars($complemento ?? '') ?>">
                     </td>
                 </tr>
 
                 <tr>
                     <td colspan="2">Município:</td>
                     <td>Estado (UF):</td>
+                    <td>Ponto de Referência:</td>
                 </tr>
                 <tr>
                     <td colspan="2">
-                        <input class="form-control" type="text" id="municipio" name="municipio" value="<?= htmlspecialchars($municipio ?? '') ?>">
+                        <input class="form-control" type="text" id="MUNICIPIO" name="MUNICIPIO" value="<?= htmlspecialchars($municipio ?? '') ?>">
                     </td>
                     <td>
-                        <select name="estado_endereco" id="estado_endereco" class="form-control">
+                        <select name="ESTADO_ENDERECO" id="ESTADO_ENDERECO" class="form-control">
                             <option value="">UF</option>
                             <?php
-                            // Reutiliza a consulta de estados
                             require(__DIR__ . '/../../querys/ConsultaUnidadeFederativaSelect.php');
                             ?>
                         </select>
 
                         <script>
-                            // Script corrigido (sem o 'DOMContentLoaded')
-                            // para executar imediatamente após a injeção do AJAX
-                            var select = document.getElementById('estado_endereco');
-                            if (select) {
-                                // Define o valor selecionado com base no que veio do banco
-                                select.value = "<?= $estado ?>"; 
+                            var selectEndereco = document.getElementById('ESTADO_ENDERECO');
+                            if (selectEndereco) {
+                                selectEndereco.value = "<?= $estadoEndereco ?>"; 
                             }
                         </script>
+                    </td>
+                    <td>
+                         <input class="form-control" type="text" id="PONTO_REFERENCIA" name="PONTO_REFERENCIA" value="<?= htmlspecialchars($pontoReferencia ?? '') ?>">
                     </td>
                 </tr>
             </table>
