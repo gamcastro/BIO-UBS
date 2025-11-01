@@ -8,10 +8,10 @@
 declare(strict_types=1);
 
 function db_conn(): PDO {
-    //--------------Ajuste host/db/user/pass conforme ambiente
-    $dsn = "mysql:host=localhost;dbname=bio_ubs;charset=utf8mb4";
-    $user = "root";
-    $pass = "";
+    $config = require __DIR__ . '/../config.php';
+    $dsn = "mysql:host={$config['local']};dbname={$config['banco']};charset=utf8mb4";
+    $user = $config['usuario'];
+    $pass = $config['senha'];
     $opt = [
         PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
         PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC
