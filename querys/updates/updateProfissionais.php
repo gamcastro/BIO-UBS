@@ -54,7 +54,7 @@ if (isset($_POST['editar'])) {
 
     // 3. INSTANCIAR A SUPERCLASSE
     // Passamos a tabela e a whitelist de colunas para o construtor
-    $objeto = new UbsCrudAll($tabela, $colunasPermitidas);
+    $objeto = new \BioUBS\UbsCrudAll($tabela, $colunasPermitidas);
 
     // 4. CONSTRUÇÃO DINÂMICA DO ARRAY DE DADOS
     // Esta é a "mágica" da superclasse.

@@ -10,7 +10,7 @@
 
     $tabela = 'cadastro_agente'; 
 
-    $objeto = new UbsCrudAll($tabela);
+  $objeto = new \BioUBS\UbsCrudAll($tabela);
 
     $deleteUbs = $objeto->deleteId($id); //---funcao deletar por id
 

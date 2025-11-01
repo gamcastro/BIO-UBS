@@ -12,7 +12,7 @@ if (isset($_POST['termo_busca'])) {
     $termo_busca = preg_replace('/[^0-9]/', '', $_POST['termo_busca']);
 
     try {
-        $crud = new UbsCrudAll('cadastro_paciente');
+    $crud = new \BioUBS\UbsCrudAll('cadastro_paciente');
 
        
         //  REPLACE() duas vezes para limpar a coluna CPF antes de comparar

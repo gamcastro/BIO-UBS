@@ -32,7 +32,7 @@
       'SSP'
     ];
 
-    $objeto = new UbsCrudAll($tabela, $colunasPermitidas);
+  $objeto = new \BioUBS\UbsCrudAll($tabela, $colunasPermitidas);
 
     $dados = ([
         'NOME'              => $nome,

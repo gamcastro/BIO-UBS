@@ -24,7 +24,7 @@
       'SSP'
     ]; //--nao informar ID chave primaria
 
-    $objeto = new UbsCrudAll($tabela, $colunasPermitidas); //---receberá a tabela e as colunas
+  $objeto = new \BioUBS\UbsCrudAll($tabela, $colunasPermitidas); //---receberá a tabela e as colunas
 
     $dados = ([
         'NOME'              => $nome,

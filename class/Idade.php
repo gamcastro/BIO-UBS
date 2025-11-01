@@ -1,6 +1,11 @@
 <?php
 namespace BioUBS; 
 
+use DateTime;
+use InvalidArgumentException;
+use PDO;
+use RuntimeException;
+
 class Idade{
 
 	private $data;
