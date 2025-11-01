@@ -1,118 +1,109 @@
 <?php
+/**
+ * Script para processar o CADASTRO (Insert) de um novo profissional.
+ * Recebe os dados do formulário modalCadastroDeProfissional.php.
+ */
+
+// 1. Importar a classe com seu Namespace
+
+require_once __DIR__ . '/../../vendor/autoload.php'; 
+use BioUBS\UbsCrudAll ;
+
+// 2. Carrega o autoloader do Composer
 
 
-//-------campos via post
-$nome = $_POST['nome_completo']; //---------o name no formulario é livre mas deve ser recebido aqui
+// 3. VERIFICAÇÃO INICIAL
+// Apenas executa se o formulário foi enviado (name="cadastrar" do botão Salvar)
+if (isset($_POST['salvar'])) {
 
-//---------------------- Dados Pessoais ----------------
-$data_nascimento = $_POST['data_nascimento'];
+    // 4. DADOS DE IDENTIFICAÇÃO
+    $tabela = 'cadastro_profissional';
 
-$cpf = $_POST['cpf'];
+    // 5. WHITELIST DE COLUNAS PERMITIDAS
+    // Define quais colunas do banco de dados este script tem permissão para inserir.
+    $colunasPermitidas = [
+        'NOME_COMPLETO',
+        'MATRICULA', 
+        'CPF',
+        'CNS_PROFISSIONAL',
+        'DATA_NASCIMENTO',
+        'SEXO',
+        'PERFIL',
+        'EMAIL',
+        'TELEFONE',
+        'CONSELHO_CLASSE',
+        'REGISTRO_CONSELHO',
+        'ESTADO_EMISSOR_CONSELHO',
+        'CEP',
+        'ESTADO_ENDERECO',
+        'MUNICIPIO',
+        'BAIRRO',
+        'LOGRADOURO',
+        'NUMERO',
+        'COMPLEMENTO',
+        'PONTO_REFERENCIA',
+        // <-- MUDANÇA: Nome da coluna corrigido para bater com o banco
+        'PASSWORD_HASH' 
+    ];
 
-$cns_profissional = $_POST['cns_profissional'];
+    // 6. INSTANCIAR A SUPERCLASSE
+    $objeto = new UbsCrudAll($tabela, $colunasPermitidas);
 
-$conselho = $_POST['conselho_classe'];
+    // 7. CONSTRUÇÃO DINÂMICA DO ARRAY DE DADOS
+    $dados = []; // Array que será enviado para a superclasse
+    
+    foreach ($colunasPermitidas as $coluna) {
+        // Verifica se a coluna existe no POST e NÃO é a senha
+        // <-- MUDANÇA: Nome da coluna corrigido
+        if (isset($_POST[$coluna]) && $coluna != 'PASSWORD_HASH') {
+            
+            $valor = $_POST[$coluna];
+            // Tratamento: Se o valor for uma string vazia (""), convertemos para NULL.
+            $dados[$coluna] = ($valor !== '') ? $valor : null;
+        }
+    }
 
-$sexo = $_POST['sexo'];
+    // 8. GERENCIAMENTO DA SENHA PADRÃO (COM ARGON2ID)
+    // O formulário não envia senha, então criamos uma senha padrão (o CPF).
+    
+    if (empty($dados['CPF'])) {
+        echo "<script>
+            window.alert('Erro: O campo CPF é obrigatório para gerar a senha inicial.');
+            window.history.back();
+        </script>";
+        die;
+    }
 
-$perfil = $_POST['perfil'] ;
-
-$registro_conselho = $_POST['registro_conselho'];
-
-$estado_conselho = $_POST['estado_emissor_conselho'];
-//----------------------
-
-//------------------ Dados para contato ----------------
-$email = $_POST['email'];
-$telefone = $_POST['telefone'];
-
-//---------------------- Dados do Conselho de Classe ----------------
-$conselho = $_POST['conselho_classe'];
-$registro_conselho = $_POST['registro_conselho'];
-$estado_conselho = $_POST['estado_emissor_conselho'];
-
-//---------------------- Dados do Endereço ----------------
-$cep = $_POST['cep'];
-$logradouro = $_POST['logradouro'];
-$numero = $_POST['numero'];
-$bairro = $_POST['bairro'];
-$complemento = $_POST['complemento'];
-$municipio = $_POST['municipio'];
-$estado_endereco = $_POST['estado_endereco'];
-$ponto_referencia = $_POST['ponto_referencia'];
-//----------------------
-
-//--------------------- Dados de Acesso ----------------
-$senha = $_POST['senha_hash'];
-
-
-//------------------inserindo na tabela profissionais---------
-
-$tabela = 'cadastro_profissional'; //----tabela para a query
-
-$colunasPermitidas =
-  [
-    'NOME_COMPLETO',
-    'CPF',
-    'CNS_PROFISSIONAL',
-    'DATA_NASCIMENTO',
-    'SEXO',
-    'PERFIL',
-    'EMAIL',
-    'TELEFONE',
-    'CONSELHO_CLASSE',
-    'REGISTRO_CONSELHO',
-    'ESTADO_EMISSOR_CONSELHO',
-    'CEP',
-    'ESTADO_ENDERECO',
-    'MUNICIPIO',
-    'BAIRRO',
-    'LOGRADOURO',
-    'NUMERO',
-    'COMPLEMENTO',
-    'PONTO_REFERENCIA',
-    'SENHA_HASH'
-
-  ]; //--nao informar ID chave primaria
-
-$objeto = new UbsCrudAll($tabela, $colunasPermitidas); //---receberá a tabela e as colunas
-
-$dados = ([
-  'NOME_COMPLETO'              => $nome,
-  'CPF'               => $cpf,
-  'CNS_PROFISSIONAL'  => $cns_profissional,
-  'DATA_NASCIMENTO'   => $data_nascimento,
-  'SEXO'              => $sexo,
-  'PERFIL'            => $perfil,
-  'EMAIL'             => $email,
-  'TELEFONE'          => $telefone,
-  'CONSELHO_CLASSE'   => $conselho,
-  'REGISTRO_CONSELHO' => $registro_conselho,
-  'ESTADO_EMISSOR_CONSELHO' => $estado_conselho,
-  'CEP'               => $cep,
-  'ESTADO_ENDERECO'  => $estado_endereco,
-  'MUNICIPIO'        => $municipio,
-  'BAIRRO'           => $bairro,
-  'LOGRADOURO'        => $logradouro,
-  'NUMERO'           => $numero,
-  'COMPLEMENTO'      => $complemento,
-  'PONTO_REFERENCIA' => $ponto_referencia,
-  'SENHA_HASH'            => $senha
+    // Limpa o CPF (remove pontos, traços, etc.)
+    $cpfLimpo = preg_replace('/[^0-9]/', '', $dados['CPF']);
+    
+    // <-- MUDANÇA: Usando Argon2id (como solicitado) e salvando na coluna correta 'PASSWORD_HASH'
+    $dados['PASSWORD_HASH'] = password_hash($cpfLimpo, PASSWORD_ARGON2ID);
 
 
-]);
+    // 9. EXECUTAR A INCLUSÃO
+    $insertUbs = $objeto->inserir($dados); 
 
-$isertUbs = $objeto->inserir($dados);
+    // 10. RESPOSTA AO USUÁRIO
+    if ($insertUbs) {
+        // Sucesso: Informa ao admin a senha padrão.
+        echo "<script>
+            window.alert('Cadastro efetuado com sucesso! A senha inicial é o CPF (somente números).');
+            window.location='cadastroDeProfissionais.php';
+        </script>";
+    } else {
+        // Falha (Ex: CPF/Matrícula duplicado)
+        echo "<script>
+            window.alert('Erro ao efetuar o cadastro. Verifique se o CPF ou a Matrícula já existem.');
+            window.history.back();
+        </script>";
+    }
 
-//--------------------------------------------------------  
+    die; 
 
-//----------mensagem de confirmacao-----------------------
-/**/
-echo "<script>
-  window.alert('Cadastro efetuado com sucesso!');
-  window.location='cadastroDeProfissionais.php'
-  </script>";
-
-//----------------------------------------------------------  
-
-die;//----- se entrar para o código aqui
+} else {
+    // Acesso direto ao arquivo
+    header('Location: cadastroDeProfissionais.php');
+    die;
+}
+?>

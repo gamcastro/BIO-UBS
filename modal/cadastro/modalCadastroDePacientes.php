@@ -8,11 +8,8 @@
 
             <!-------------CABEÇALHO DA JANELA------------------------->
             <div class="modal-header">
-
-              <button type="button" class="close" data-dismiss="modal">&times;</button><!------botao fechar------>
-              
               <h4 class="modal-title">Cadastrando novo Paciente</h4>
-
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <!-------------------------------------------------------->
 
@@ -65,12 +62,12 @@
                     </td>
 
                     <td>
-                      <select name="uf_rg" class="form-control">
+                      <select name="uf_rg" class="form-select">
                         <option value="">UF</option>
                         <?php
-                          require_once('querys/ConsultaUnidadeFederativaSelect.php');
+                          require_once(__DIR__ . '/../../querys/ConsultaUnidadeFederativaSelect.php');
                         ?>
-                      </select>  
+                      </select>
                     </td>
 
                     <td>
@@ -101,8 +98,8 @@
             
             <!---------------RODAPÉ DA JANELA---------------------->
             <div class="modal-footer">
-              <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
-              <button type="submit" name="salvar" class="btn btn-success" >Salvar</button>
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+              <button type="submit" name="salvar" class="btn btn-success">Salvar</button>
             </div>
       
       </form><!----fim formulario--->

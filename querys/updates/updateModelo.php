@@ -1,5 +1,6 @@
 <?php
-
+require_once __DIR__ . '/../../vendor/autoload.php';
+use BioUBS\UbsCrudAll;
 
       //-------ID -----------
         $id = $_POST['id']; 
@@ -32,7 +33,7 @@
       'SSP'
     ];
 
-    $objeto = new UbsCrudAll($tabela, $colunasPermitidas);
+  $objeto = new UbsCrudAll($tabela, $colunasPermitidas);
 
     $dados = ([
         'NOME'              => $nome,

@@ -23,22 +23,11 @@ include_once('includes/header.php');
 ?>
 
 
-
-
-
- 
-
-<center>
-<h1 style="color:#CCCCCC">PAGINA INICIAL</h1>
-</center>
-
-
-
 <?php
 // Define o título que será usado no <title> dentro do header.php
-$tituloDaPagina = "BIO-UBS - Página Inicial";
+
 // Inclui o header.php (que agora abre a tag <main class="flex-grow-1 container py-4">)
-include_once('includes/header.php');
+
 ?>
 
 <div class="text-center">

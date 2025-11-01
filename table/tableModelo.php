@@ -1,5 +1,10 @@
-<?php  require_once('includes/authorization.php');  
+<?php
+// Garante o autoload do Composer e o arquivo de autorização
+require_once __DIR__ . '/../vendor/autoload.php';
+require_once __DIR__ . '/../includes/authorization.php';
 
+use BioUBS\UbsCrudAll;
+use BioUBS\Idade;
 
 ?>
 

@@ -5,6 +5,8 @@
 // 1. Incluindo os arquivos que precisamos do nosso projeto
 require_once __DIR__ . '/../vendor/autoload.php';   // Para usar as funções de Inserir, Alterar, etc.
 
+use BioUBS\UbsCrudAll;
+
 $tabela = 'fila_atendimento'; //----tabela para a query
 // 2. Verificando se os dados vieram do formulário
 // Checamos se a página foi acessada usando o método POST e se o 'paciente_id' não está vazio.

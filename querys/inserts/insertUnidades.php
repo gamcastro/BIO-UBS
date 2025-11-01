@@ -1,6 +1,7 @@
 <?php
 
-
+require_once  __DIR__ . '/../../vendor/autoload.php'; // Autoloader
+use BioUBS\UbsCrudAll ;
 //-------campos via post
 //---------o name no formulario é livre mas deve ser recebido aqui
 

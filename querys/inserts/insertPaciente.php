@@ -1,7 +1,8 @@
 <?php
+require_once __DIR__ . '/../../vendor/autoload.php';
+use BioUBS\UbsCrudAll;
 
-
-      //-------campos via post
+  //-------campos via post
         $nome = $_POST['nome']; //---------o name no formulario é livre mas deve ser recebido aqui
         $data_nascimento = $_POST['data_nascimento'];
         $cpf = $_POST['cpf'];
@@ -24,7 +25,8 @@
       'SSP'
     ]; //--nao informar ID chave primaria
 
-    $objeto = new UbsCrudAll($tabela, $colunasPermitidas); //---receberá a tabela e as colunas
+  // Instancia a classe do namespace BioUBS explicitamente
+  $objeto = new UbsCrudAll($tabela, $colunasPermitidas); //---receberá a tabela e as colunas
 
     $dados = ([
         'NOME'              => $nome,
