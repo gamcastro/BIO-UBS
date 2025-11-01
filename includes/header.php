@@ -62,9 +62,9 @@ include_once( __DIR__ . '/authorization.php');
               Cadastros
             </a>
             <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-              <li><a class="dropdown-item" href="pages/cadastroDePacientes.php">Pacientes</a></li>
-              <li><a class="dropdown-item" href="pages/cadastroDeProfissionais.php">Profissionais</a></li>
-              <li><a class="dropdown-item" href="pages/cadastroDeUnidades.php">Unidade</a></li>
+              <li><a class="dropdown-item" href="<?= BASE_URL ?>/pages/cadastroDePacientes.php">Pacientes</a></li>
+              <li><a class="dropdown-item" href="<?= BASE_URL ?>/pages/cadastroDeProfissionais.php">Profissionais</a></li>
+              <li><a class="dropdown-item" href="<?= BASE_URL ?>/pages/cadastroDeUnidades.php">Unidade</a></li>
             </ul>
           </li>
           <li class="nav-item">
@@ -77,7 +77,7 @@ include_once( __DIR__ . '/authorization.php');
 
         <ul class="navbar-nav">
           <li class="nav-item acolhimento-action">
-            <a class="nav-link" href="#" data-url="modal/fluxos/modalAcolhimento.php"
+            <a class="nav-link" href="#" data-url="../modal/fluxos/modalAcolhimento.php"
               data-bs-toggle="modal"
               data-bs-target="#acolhimentoBioUBS">
               <i class="bi bi-plus-circle-fill me-1"></i> Novo Acolhimento

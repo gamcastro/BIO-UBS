@@ -85,7 +85,7 @@ class UbsCrudAll {
 
             } catch (\PDOException $e) {
             
-                echo 'Falha ao inserir registro';
+                echo $e->getMessage() . ' Falha ao inserir registro';
 
             }
         }    

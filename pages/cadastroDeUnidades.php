@@ -93,7 +93,3 @@ include(__DIR__ . '/../modal/cadastro/modalCadastroDeUnidade.php');
 include(__DIR__ . '/../includes/footer.php');
 ?>
 
-<?php
-// Footer já está migrado e é incluído no final
-
-?>

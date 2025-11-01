@@ -108,7 +108,7 @@
               <label for="cad-estado_emissor_conselho" class="form-label">UF Emissor</label>
               <select id="cad-estado_emissor_conselho" name="estado_emissor_conselho" class="form-select">
                 <option value="" selected>Selecione...</option>
-                <?php try { require('querys/ConsultaUnidadeFederativaSelect.php'); } catch(Exception $e) { echo '<option value="" disabled>Erro</option>'; } ?>
+                <?php try { require __DIR__ .'/../../querys/ConsultaUnidadeFederativaSelect.php'; } catch(Exception $e) { echo '<option value="" disabled>Erro</option>'; } ?>
               </select>
             </div>
           </div> 
@@ -126,7 +126,7 @@
               <label for="cad-estado_endereco-prof" class="form-label">Estado (UF)</label>
               <select id="cad-estado_endereco-prof" name="estado_endereco" class="form-select">
                 <option value="" selected>Selecione...</option>
-                 <?php try { require('querys/ConsultaUnidadeFederativaSelect.php'); } catch(Exception $e) { echo '<option value="" disabled>Erro</option>'; } ?>
+                 <?php try { require __DIR__ .'/../../querys/ConsultaUnidadeFederativaSelect.php'; } catch(Exception $e) { echo '<option value="" disabled>Erro</option>'; } ?>
               </select>
             </div>
              <div class="col-12">

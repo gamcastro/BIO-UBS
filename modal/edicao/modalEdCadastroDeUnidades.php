@@ -1,10 +1,8 @@
 <?php
+// Caminho corrigido (subindo 2 níveis)
 require_once __DIR__ . '/../../vendor/autoload.php';
 
-
-
 if (isset($_GET['id'])): //----só sugirá o conteúdo se vier um ID
-
     $id = $_GET['id'];
 
     //-----------criterios de consulta--------------
@@ -15,7 +13,10 @@ if (isset($_GET['id'])): //----só sugirá o conteúdo se vier um ID
     //----------CONSULTA BÁSICA COM ID E OS CRITÉRIOS ACIMA
     require_once(__DIR__ . '/../../querys/ConsultaPorId.php');
 
-    //-------buscando dados na tabela------------------   
+    //-------buscando dados na tabela------------------  
+    // Inicializa as variáveis para evitar erros caso a consulta não retorne nada
+    $nomeUnidade = $cnes = $cnpj = $telefone = $cep = $estado = $municipio = $bairro = $logradouro = $numero = $complemento = '';
+
     while ($rowsId = $buscaId->fetch(PDO::FETCH_ASSOC)) {
         $nomeUnidade = $rowsId['NOME'];
         $cnes = $rowsId['CNES'];
@@ -31,9 +32,6 @@ if (isset($_GET['id'])): //----só sugirá o conteúdo se vier um ID
     }
 ?>
 
-    <!----------------------------janela modal--------------------------------------------------------->
-
-    <!-------------CABEÇALHO DA JANELA------------------------->
     <div class="modal-header">
         <h5 class="modal-title" id="updateModalLabel">Editando cadastro de Unidade</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -47,10 +45,69 @@ if (isset($_GET['id'])): //----só sugirá o conteúdo se vier um ID
                 <tr class="table-info">
                     <td colspan="4"><strong>DADOS DA UNIDADE</strong></td>
                 </tr>
+
                 <tr>
+                    <td colspan="2">Nome :</td>
+                    <td>CNPJ :</td>
                 </tr>
+                <tr>
+                    <td colspan="2">
+                        <input class="form-control" type="text" id="nome" name="nome" required="required" placeholder="Nome da unidade" value="<?= htmlspecialchars($nomeUnidade ?? '') ?>">
+                    </td>
+                    <td colspan="2">
+                        <input class="form-control" type="text" id="cnpj" name="cnpj" required="required" value="<?= htmlspecialchars($cnpj ?? '') ?>">
+                    </td>
+                </tr>
+                <tr>
+                    <td>CNES :</td>
+                    <td colspan="2">Telefone:</td>
+                </tr>
+                <tr>
+                    <td>
+                        <input class="form-control" type="text" id="cnes" name="cnes" placeholder="Cadastro Nacional de Estabelecimentos de Saúde" value="<?= htmlspecialchars($cnes ?? '') ?>">
+                    </td>
+                    <td colspan="2">
+                        <input class="form-control" type="tel" id="telefone" name="telefone" placeholder="(99) 99999-9999" value="<?= htmlspecialchars($telefone ?? '') ?>">
+                    </td>
+                </tr>
+
                 <tr class="table-info">
                     <td colspan="4"><strong>ENDEREÇO</strong></td>
+                </tr>
+
+                <tr>
+                    <td>CEP:</td>
+                    <td colspan="3">Logradouro (Rua, Av, etc.):</td>
+                </tr>
+                <tr>
+                    <td>
+                        <input class="form-control" type="text" id="cep" name="cep" placeholder="00000-000" value="<?= htmlspecialchars($cep ?? '') ?>">
+                    </td>
+                    <td colspan="3">
+                        <input class="form-control" type="text" id="logradouro" name="logradouro" value="<?= htmlspecialchars($logradouro ?? '') ?>">
+                    </td>
+                </tr>
+                <tr>
+                    <td>Número:</td>
+                    <td>Bairro:</td>
+                    <td colspan="2">Complemento:</td>
+
+                </tr>
+                <tr>
+                    <td>
+                        <input class="form-control" type="text" id="numero" name="numero" value="<?= htmlspecialchars($numero ?? '') ?>">
+                    </td>
+                    <td>
+                        <input class="form-control" type="text" id="bairro" name="bairro" value="<?= htmlspecialchars($bairro ?? '') ?>">
+                    </td>
+                    <td colspan="2">
+                        <input class="form-control" type="text" id="complemento" name="complemento" placeholder="Apto, Bloco, Casa, etc." value="<?= htmlspecialchars($complemento ?? '') ?>">
+                    </td>
+                </tr>
+
+                <tr>
+                    <td colspan="2">Município:</td>
+                    <td>Estado (UF):</td>
                 </tr>
                 <tr>
                     <td colspan="2">
@@ -63,11 +120,14 @@ if (isset($_GET['id'])): //----só sugirá o conteúdo se vier um ID
                             require(__DIR__ . '/../../querys/ConsultaUnidadeFederativaSelect.php');
                             ?>
                         </select>
+
                         <script>
-                            document.addEventListener('DOMContentLoaded', function() {
-                                        var select = document.getElementById('estado_endereco');
-                                        if (select) select.value = "<?= $estado ?>";
-                            });
+                            // Script corrigido (sem o 'DOMContentLoaded')
+                            // para executar imediatamente após a injeção do AJAX
+                            var select = document.getElementById('estado_endereco');
+                            if (select) {
+                                select.value = "<?= $estado ?>";
+                            }
                         </script>
                     </td>
                 </tr>

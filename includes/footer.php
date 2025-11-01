@@ -19,7 +19,7 @@
 
 <script src="https://cdn.datatables.net/2.3.4/js/dataTables.bootstrap5.js"></script>
 
-<script src="/BIO-UBS/js/custom.js"></script> 
+<script src="<?= BASE_URL ?>/js/custom.js"></script> 
 
 <script src="<?= BASE_URL ?>/tableScript/tableSimples.js"></script>
 
