@@ -61,36 +61,49 @@ function create_remember_token(PDO $db, int $user_id): void {
     ]);
 }
 
-function try_remember_login(PDO $db): ?array { // Esta função é chamada pelo index.php
-    if (empty($_COOKIE['remember_me'])) return null;
+function try_remember_login(PDO $db): ?array 
+{
+    if (empty($_COOKIE['remember_me'])) {
+        return null;
+    }
+    
     $parts = explode(':', $_COOKIE['remember_me'], 2);
-    if (count($parts) !== 2) return null;
+    if (count($parts) !== 2) {
+        return null;
+    }
 
-    [$selector, $validator] = $parts;
-    $stmt = $db->prepare("SELECT * FROM remember_tokens WHERE selector = :s");
+    list($selector, $validator) = $parts;
+
+    // 1. Busca o token no banco
+    $stmt = $db->prepare("SELECT * FROM remember_tokens WHERE selector = :s AND expires_at > NOW() LIMIT 1");
     $stmt->execute([':s' => $selector]);
     
-    // $token será um objeto
-    $token = $stmt->fetch(); 
+    $token = $stmt->fetch(); // Assumindo FETCH_OBJ por padrão
 
-    // *** CORREÇÃO AQUI *** (Usar ->chave)
+    // 2. Compara o validador com o hash do banco
     if ($token && hash_equals($token->token_hash, hash('sha256', $validator))) {
-        if (new DateTime() < new DateTime($token->expires)) {
-            
-            // *** CORREÇÃO NA CONSULTA: Buscar em cadastro_profissional ***
-            // E retornar como ARRAY (FETCH_ASSOC) para ser compatível com o index.php
-            $u = $db->prepare("SELECT ID as id, matricula as username 
-                              FROM cadastro_profissional 
-                              WHERE ID = :id AND is_active = 1"); // Usar ID, não id
-            $u->execute([':id' => $token->user_id]); // Usar ->user_id
-            
-            // Forçar o retorno como array associativo aqui, pois o index.php espera um array
-            return $u->fetch(PDO::FETCH_ASSOC); 
-        }
+        
+        // SUCESSO! Token é válido.
+        
+        // 3. Busca os dados COMPLETOS do profissional
+        // *** CORREÇÃO PRINCIPAL ***
+        // Buscamos todos os 4 campos necessários para a sessão,
+        // alinhando com o que o 'auth.php' faz.
+        $u = $db->prepare("SELECT ID, MATRICULA, NOME_COMPLETO, PERFIL 
+                           FROM cadastro_profissional 
+                           WHERE ID = :id AND IS_ACTIVE = 1");
+        $u->execute([':id' => $token->user_id]); // ->user_id está correto
+        
+        // Retorna o array associativo (ou false se não encontrar, que vira null)
+        $profissional_data = $u->fetch(PDO::FETCH_ASSOC);
+        
+        return $profissional_data ?: null;
     }
+    
+    // Se o token for inválido ou expirado, limpa o cookie
+    setcookie('remember_me', '', time() - 3600, '/');
     return null;
 }
-
 function logout_user(PDO $db, bool $clearCookie = true): void {
     if (!empty($_COOKIE['remember_me'])) {
         [$selector] = explode(':', $_COOKIE['remember_me']);
