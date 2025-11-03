@@ -1,129 +1,83 @@
-<?php  require_once('includes/authorization.php');  
+<?php 
+// O authorization.php já deve ter sido incluído pela página principal
+// (ex: cadastroDePacientes.php), mas o autoload é bom garantir.
+require_once __DIR__ . '/../vendor/autoload.php'; 
 
-
+use BioUBS\UbsCrudAll;
+use BioUBS\Idade;
 ?>
 
-<table id="tableBioUBS" class="display" style="width:100%">
-
-        <thead>
-
+<div class="table-responsive">
+    <table id="tableBioUBS" class="table table-striped table-hover table-bordered caption-top">
+        <caption class="text-muted small">Lista de Pacientes Cadastrados</caption>
+        <thead class="table-light">
             <tr>
-                
                 <th>Nome</th>
-                <th>Data_Nascimento</th>
+                <th>Data de Nascimento</th>
                 <th>Idade</th>
                 <th>CPF</th>
-                <th>Ações</th>
-
+                <th class="text-center" style="width: 120px;">Ações</th>
             </tr>
-
         </thead>
 
         <tbody>
-
         <?php
+        $tabela = "cadastro_paciente";
         
-        //-----------criterios de consulta--------------
-          
-          $tabela = "cadastro_paciente";//--------tabela como parametro 
+        try {
+            $cadPaciente = new UbsCrudAll($tabela);
+            $dataBR = new Idade();
+            $UbsQuery = $cadPaciente->listarTodos(); 
 
-          $cadUbs = new UbsCrudAll($tabela);//----objeto classe UbsCrudAll(parametro)
+            foreach ($UbsQuery as $registrosUbs) {
+                $id = $registrosUbs['ID'];
+                $nome = $registrosUbs['NOME'];
+                $data_nascimento = $registrosUbs['DATA_NASCIMENTO'];
+                $cpf = $registrosUbs['CPF'];
 
-          $dataBR = new Idade(); //---------------objeto classe Idade   
-
-        //----------------------------------------------
-
-        //----------CONSULTA BÁSICA SEM CRITÉRIOS
-
-        $UbsQuery = $cadUbs->listarTodos(); 
-
-        foreach ($UbsQuery as $registrosUbs) {
-
-            $id =               $registrosUbs['ID'];
-
-            $nome =             $registrosUbs['NOME'];
-            $data_nascimento =  $registrosUbs['DATA_NASCIMENTO'];
-            $cpf =              $registrosUbs['CPF'];
-
-            $dataBR->setIdade($data_nascimento);//---setando data
+                $dataBR->setIdade($data_nascimento);
         ?>
 
 
             <tr>
-                <td><?=$nome?></td>
-
-                <td>
-                  <?php 
-                      //-------------formatando data
-                       echo $dataBR->dataBr();
-                  ?>    
-                </td>
-
-                <td>
-                  <?php 
-
-                      //----------usando a funcao idade Anos
-                       echo $dataBR->IdadeAnos();
-                       
-                       //-----exemplo de idade completa
-                       echo " ou (".$dataBR->IdadeCompleta().")";
-                  ?>    
-                </td>
-
-                <td><?=$cpf?></td>
+                <td><?= htmlspecialchars($nome ?? '') ?></td>
+                <td><?= $dataBR->dataBr() ?></td>
+                <td><?= $dataBR->IdadeAnos() ?></td>
+                <td><?= htmlspecialchars($cpf ?? '') ?></td>
                 
-                <td>
-                  <!-------botão iimprimir------->
-                  <a 
-                    href="#"
-                    id="btnImpPaciente"
-                  >
-                    <span class="glyphicon glyphicon-print"></span>
-                  </a>
-                  .
+                <td class="text-center">
+                    <button type="button" class="btn btn-sm btn-outline-secondary me-1" title="Imprimir" onclick="alert('Função Imprimir não implementada');">
+                        <i class="bi bi-printer"></i>
+                    </button>
 
-      <?php 
-        /* verificando o nível de acesso para os botões Editar e Excluir*/ 
-        if($nivelAcesso == 1):
-      ?>
-                <!-------botão editar------->
-                  <a 
-                    href="modal/edicao/modalEdCadastroDePacientes.php?id=<?=$id?>" 
-                    data-toggle="modal" data-target="#updateBioUBS" 
-                    data-backdrop="static" data-keyboard="false"
-                    id="btnEdPaciente"
-                  >
-                    <span class="glyphicon glyphicon-edit"></span>
-                  </a>
-                <!-------------------------->
-
-                  .
-                <!-------botão excluir------->
-                  <a 
-                    href="modal/exclusao/modalExCadastroDePacientes.php?id=<?=$id?>" 
-                    data-toggle="modal" data-target="#deleteBioUBS" 
-                    data-backdrop="static" data-keyboard="false"
-                    id="btnExPaciente"
-                  >
-                    <span class="glyphicon glyphicon-trash"></span>
-                  </a>
-                <!-------------------------->
-
-      <?php endif;//---fim controle de acesso?>
-
+                    <?php if($nivelAcesso == 1): ?>
+                        <a href="#" 
+                           class="btn btn-sm btn-outline-primary me-1" 
+                           data-bs-toggle="modal" 
+                           data-bs-target="#updateBioUBS"
+                           data-url="../modal/edicao/modalEdCadastroDePacientes.php?id=<?= $id ?>"
+                           title="Editar">
+                            <i class="bi bi-pencil-square"></i>
+                        </a>
+                        
+                        <a href="#" 
+                           class="btn btn-sm btn-outline-danger" 
+                           data-bs-toggle="modal" 
+                           data-bs-target="#deleteBioUBS"
+                           data-url="../modal/exclusao/modalExCadastroDePacientes.php?id=<?= $id ?>"
+                           title="Excluir">
+                            <i class="bi bi-trash3"></i>
+                        </a>
+                    <?php endif; ?>
                 </td>
-                
             </tr>
-
-        <?php
-        
-        }//while 
-        
+        <?php 
+            }
+            
+        } catch (Exception $e) {
+            echo '<tr><td colspan="5" class="text-danger text-center">Erro ao buscar pacientes: ' . $e->getMessage() . '</td></tr>';
+        }
         ?>
-
         </tbody>
-       
     </table>
-
-<!-----function da table---->
-<script src="tableScript/tableSimples.js"></script>
+</div>

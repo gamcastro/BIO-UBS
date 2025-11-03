@@ -1,4 +1,7 @@
 <?php
+
+namespace BioUBS; 
+
 class DataPrazo {
 
     private $data;    //----------Data inicial (YYYY-MM-DD)

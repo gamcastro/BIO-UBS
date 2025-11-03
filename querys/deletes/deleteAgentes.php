@@ -1,6 +1,8 @@
 <?php
+require_once __DIR__ . '/../../vendor/autoload.php';
+use BioUBS\UbsCrudAll;
 
-      //-------ID -----------
+  //-------ID -----------
         $id = $_POST['id'];
       //---------------------
 
@@ -10,7 +12,7 @@
 
     $tabela = 'cadastro_agente'; 
 
-    $objeto = new UbsCrudAll($tabela);
+  $objeto = new UbsCrudAll($tabela);
 
     $deleteUbs = $objeto->deleteId($id); //---funcao deletar por id
 

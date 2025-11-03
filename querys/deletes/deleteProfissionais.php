@@ -1,5 +1,8 @@
 <?php
 
+require_once __DIR__ . '/../../vendor/autoload.php'; // Autoloader
+use BioUBS\UbsCrudAll;
+
       //-------ID -----------
         $id = $_POST['id'];
       //---------------------
@@ -10,7 +13,7 @@
 
     $tabela = 'cadastro_profissional'; //----tabela para a query
 
-    $objeto = new UbsCrudAll($tabela);
+  $objeto = new UbsCrudAll($tabela);
 
     $deleteUbs = $objeto->deleteId($id); //---funcao deletar por id
 

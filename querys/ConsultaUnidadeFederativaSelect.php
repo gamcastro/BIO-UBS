@@ -1,4 +1,7 @@
 <?php
+require_once __DIR__ .'/../vendor/autoload.php';
+use BioUBS\Conexao ;
+
 $sqlUf = "SELECT * FROM ibge_ufs ORDER BY DS_UF_SIGLA";
 $buscaUf = Conexao::getConn()->prepare($sqlUf);
 $buscaUf->execute();

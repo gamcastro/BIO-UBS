@@ -1,9 +1,10 @@
 
 
 <?php
-require_once('../../class/Conexao.php');
+require_once __DIR__ . '/../../vendor/autoload.php';
+use BioUBS\Conexao;
 
-if(isset($_GET['id'])): //----só sugirá o conteúdo de vier um ID
+if(isset($_GET['id'])): //----só sugirá o conteúdo se vier um ID
   
           $id = $_GET['id'];
 
@@ -26,7 +27,7 @@ if(isset($_GET['id'])): //----só sugirá o conteúdo de vier um ID
                       //---------uf do RG salva no cadastro----------------------
                         $cd_uf_rg = $rowsId['UF_RG'];
 
-                          require_once('../../querys/ConsultaUnidadeFederativaPorID.php');
+                          require_once __DIR__ . '/../../querys/ConsultaUnidadeFederativaPorID.php';
 
                           while($rowsUfRg = $buscaUfId->fetch(PDO::FETCH_ASSOC)){
                             $uf_rg = $rowsUfRg['DS_UF_SIGLA'];
@@ -102,7 +103,7 @@ if(isset($_GET['id'])): //----só sugirá o conteúdo de vier um ID
                       <select name="uf_rg" class="form-control">
                         <option value="<?=$cd_uf_rg?>"><?=$uf_rg . " - " . $uf_nome_rg?></option>
                           <?php
-                            require_once('../../querys/ConsultaUnidadeFederativaSelect.php');
+                            require_once __DIR__ . '/../../querys/ConsultaUnidadeFederativaSelect.php';
                           ?>
                       </select>  
                     </td>

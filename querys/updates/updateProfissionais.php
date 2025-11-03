@@ -1,107 +1,108 @@
 <?php
+/**
+ * Script para processar a ATUALIZAÇÃO (Update) de um profissional.
+ * Recebe os dados do formulário modalEdCadastroDeProfissional.php.
+ */
+
+// Iniciamos a sessão (boa prática para futuras mensagens de status)
 
 
-      //-------ID -----------
-        $id = $_POST['id']; 
-      //---------------------
+// Carrega o autoloader do Composer (que deve carregar a classe UbsCrudAll)
+require_once __DIR__ . '/../../vendor/autoload.php'; 
 
+use BioUBS\UbsCrudAll;
 
-      /*-------campos do formulário 
-      via post
-      */
-        $nome = $_POST['nome_completo']; // nome do profissional
-        $data_nascimento = $_POST['data_nascimento'];
-        $cpf = $_POST['cpf'];
-        $cns_profissional = $_POST['cns_profissional'];
-        $conselho = $_POST['conselho_classe'];
-        $sexo = $_POST['sexo'];
-        $perfil = $_POST['perfil'] ;
-        $registro_conselho = $_POST['registro_conselho'];
-        $estado_conselho = $_POST['estado_emissor_conselho'];
+// --- VERIFICAÇÃO INICIAL ---
+// Apenas executa se o formulário foi enviado (name="editar" do botão Salvar)
+if (isset($_POST['editar'])) {
 
-        //------------------ Dados para contato ----------------
-        $email = $_POST['email'];
-        $telefone = $_POST['telefone'];
+    // 1. DADOS DE IDENTIFICAÇÃO
+    // O ID do registro que queremos atualizar
+    $id = $_POST['id']; 
+    // O nome da tabela
+    $tabela = 'cadastro_profissional';
 
-        //---------------------- Dados do Endereço ----------------
-        $cep = $_POST['cep'];
-        $logradouro = $_POST['logradouro'];
-        $numero = $_POST['numero'];
-        $bairro = $_POST['bairro'];
-        $complemento = $_POST['complemento'];
-        $municipio = $_POST['municipio'];
-        $estado_endereco = $_POST['estado_endereco'];
-        $ponto_referencia = $_POST['ponto_referencia'];
-        //----------------------
-
-        //--------------------- Dados de Acesso ----------------
-        $senha = $_POST['senha_hash'];
-
-      //------------------alterando os dados do profissional---------
-
-
-    $tabela = 'cadastro_profissional'; //--- nome da tabela
-
+    // 2. WHITELIST DE COLUNAS PERMITIDAS
+    // Define quais colunas do banco de dados este script tem permissão para atualizar.
+    // Os nomes aqui DEVEM ser idênticos às colunas do banco e aos atributos 'name' do formulário.
     $colunasPermitidas = [
-      'NOME_COMPLETO',
-      'CPF',
-      'CNS_PROFISSIONAL',
-      'DATA_NASCIMENTO',
-      'SEXO',
-      'PERFIL',
-      'EMAIL',
-      'TELEFONE',
-      'CONSELHO_CLASSE',
-      'REGISTRO_CONSELHO',
-      'ESTADO_EMISSOR_CONSELHO',
-      'CEP',
-      'ESTADO_ENDERECO',
-      'MUNICIPIO',
-      'BAIRRO',
-      'LOGRADOURO',
-      'NUMERO',
-      'COMPLEMENTO',
-      'PONTO_REFERENCIA',
-      'SENHA_HASH'
+        'NOME_COMPLETO',
+        'MATRICULA', // <-- Adicionado (estava faltando no script antigo)
+        'CPF',
+        'CNS_PROFISSIONAL',
+        'DATA_NASCIMENTO',
+        'SEXO',
+        'PERFIL',
+        'EMAIL',
+        'TELEFONE',
+        'CONSELHO_CLASSE',
+        'REGISTRO_CONSELHO',
+        'ESTADO_EMISSOR_CONSELHO',
+        'CEP',
+        'ESTADO_ENDERECO',
+        'MUNICIPIO',
+        'BAIRRO',
+        'LOGRADOURO',
+        'NUMERO',
+        'COMPLEMENTO',
+        'PONTO_REFERENCIA',
+        // 'SENHA_HASH' foi REMOVIDA PROPOSITALMENTE.
+        // Nunca atualize a senha em um formulário de edição de perfil,
+        // a menos que seja uma tela específica de "Alterar Senha".
+        // Manter isso aqui apagaria a senha do usuário.
     ];
 
+    // 3. INSTANCIAR A SUPERCLASSE
+    // Passamos a tabela e a whitelist de colunas para o construtor
     $objeto = new UbsCrudAll($tabela, $colunasPermitidas);
 
-    $dados = [
-      'NOME_COMPLETO'              => $nome,
-      'CPF'                        => $cpf,
-      'CNS_PROFISSIONAL'           => $cns_profissional,
-      'DATA_NASCIMENTO'            => $data_nascimento,
-      'SEXO'                       => $sexo,
-      'PERFIL'                     => $perfil,
-      'EMAIL'                      => $email,
-      'TELEFONE'                   => $telefone,
-      'CONSELHO_CLASSE'            => $conselho,
-      'REGISTRO_CONSELHO'          => $registro_conselho,
-      'ESTADO_EMISSOR_CONSELHO'    => $estado_conselho,
-      'CEP'                        => $cep,
-      'ESTADO_ENDERECO'            => $estado_endereco,
-      'MUNICIPIO'                  => $municipio,
-      'BAIRRO'                     => $bairro,
-      'LOGRADOURO'                 => $logradouro,
-      'NUMERO'                     => $numero,
-      'COMPLEMENTO'                => $complemento,
-      'PONTO_REFERENCIA'           => $ponto_referencia,
-      'SENHA_HASH'                 => $senha
-    ];
+    // 4. CONSTRUÇÃO DINÂMICA DO ARRAY DE DADOS
+    // Esta é a "mágica" da superclasse.
+    // Em vez de pegar $_POST por $_POST, lemos a whitelist
+    // e puxamos apenas os dados permitidos que vieram do formulário.
+    
+    $dados = []; // Array que será enviado para a superclasse
+    
+    foreach ($colunasPermitidas as $coluna) {
+        // Verifica se a coluna existe no que foi enviado via POST
+        if (isset($_POST[$coluna])) {
+            
+            // Pega o valor do POST
+            $valor = $_POST[$coluna];
+            
+            // Tratamento importante: Se o valor for uma string vazia (""),
+            // convertemos para NULL. Isso evita erros ao salvar no banco
+            // em campos que não aceitam string vazia (como 'date' ou 'int').
+            $dados[$coluna] = ($valor !== '') ? $valor : null;
+        }
+    }
 
+    // 5. EXECUTAR A ATUALIZAÇÃO
+    // Chama o método 'atualizar', passando o ID do registro e o array de dados
+    $updateUbs = $objeto->atualizar($id, $dados); 
 
-    $updateUbs = $objeto->atualizar($id, $dados); //---funcao atualizar com 2 parametros
+    // 6. RESPOSTA AO USUÁRIO
+    // Verifica se a superclasse retornou sucesso (true)
+    if ($updateUbs) {
+        // Sucesso: Alerta o usuário e redireciona para a página de listagem
+        echo "<script>
+            window.alert('Cadastro alterado com sucesso!');
+            window.location='cadastroDeProfissionais.php';
+        </script>";
+    } else {
+        // Falha: Alerta o usuário e o mantém na página anterior (para corrigir)
+        echo "<script>
+            window.alert('Erro ao alterar o cadastro. Verifique os dados e tente novamente.');
+            window.history.back(); // Volta para a página anterior
+        </script>";
+    }
 
-//--------------------------------------------------------  
+    die; // Encerra o script após a operação
 
-//----------mensagem de confirmacao-----------------------
-/**/
-  echo "<script>
-  window.alert('Cadastro alterado com sucesso!');
-  window.location='cadastroDeProfissionais.php'
-  </script>";
-  
-//----------------------------------------------------------  
-
-  die;//----- se entrar para o código aqui
+} else {
+    // Se alguém tentar acessar este arquivo diretamente pela URL (sem ser via POST)
+    // redireciona de volta para a listagem.
+    header('Location: cadastroDeProfissionais.php');
+    die;
+}
+?>

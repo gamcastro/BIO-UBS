@@ -1,0 +1,14 @@
+html, body {
+  height: 100%; /* Garante que html e body possam ocupar toda a altura */
+}
+
+body {
+  display: flex; /* Transforma o body em um container flexível */
+  flex-direction: column; /* Organiza os filhos (header, main, footer) em coluna */
+  min-height: 100vh; /* Garante que o body tenha pelo menos a altura da tela */
+}
+
+/* Classe que vamos adicionar ao conteúdo principal */
+.flex-grow-1 {
+  flex-grow: 1; /* Faz este elemento crescer para ocupar o espaço disponível */
+}

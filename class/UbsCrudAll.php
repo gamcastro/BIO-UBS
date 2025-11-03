@@ -1,4 +1,13 @@
-﻿<?php
+<?php
+namespace BioUBS; // <-- ADICIONAR ISTO
+
+// Adicionar 'use' para cada classe nativa ou classe do mesmo namespace
+use PDO; 
+use PDOException;
+use InvalidArgumentException;
+use RuntimeException;
+
+
 class UbsCrudAll {
     private $UbsPDO;
     private $tabela;
@@ -76,7 +85,7 @@ class UbsCrudAll {
 
             } catch (\PDOException $e) {
             
-                echo 'Falha ao inserir registro';
+                echo $e->getMessage() . ' Falha ao inserir registro';
 
             }
         }    
