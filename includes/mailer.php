@@ -12,8 +12,10 @@ use PHPMailer\PHPMailer\Exception;
 require_once __DIR__ . '/../vendor/autoload.php';
 
 function send_reset_email(string $email, string $token): bool {
-    //---------Em produção, troque para o nosso domínio HTTPS.
-    $resetLink = "http://localhost/bio-ubs/actions/reset_password_form.php?token=" . urlencode($token);
+    // Carrega as configurações do arquivo config.php
+    $config = require __DIR__ . '/../config.php';
+    $resetUrl = $config['reset_url'];
+    $resetLink = $resetUrl . "/actions/reset_password_form.php?token=" . urlencode($token);
 
     // >>> CONFIGURAR AQUI <<<
     $MAIL_HOST = 'smtp.gmail.com';
