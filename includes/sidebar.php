@@ -1,154 +1,127 @@
 <?php
 /**
  * includes/sidebar.php
- * * A nova barra de navegação lateral.
- * Este arquivo é incluído pelo 'header.php'.
- * Ele assume que $BASE_URL e $_SESSION já estão disponíveis.
+ * * A barra de navegação lateral principal do sistema.
+ * Esta versão usa o tema CLARO (light) e remove o botão "Novo Acolhimento".
  */
+
+// Pega o nome da página atual para saber qual link "ativar"
+$currentPage = basename($_SERVER['PHP_SELF']);
+
+// Pega os dados da sessão para o menu do usuário
+// Pega o nome completo da sessão (ex: "Markleny Martins Pinheiro")
+$userFullName = htmlspecialchars($_SESSION['user_nome'] ?? 'Usuário');
+// Quebra o nome em partes usando o espaço
+$userNameParts = explode(' ', $userFullName);
+// Pega apenas a primeira parte (ex: "Markleny")
+$userName = $userNameParts[0]; 
+$userProfile = htmlspecialchars($_SESSION['user_perfil'] ?? 'Perfil');
+
 ?>
-<!-- 
-    CSS para a sidebar. 
-    (Idealmente, mova isso para o seu 'custom.css' depois) 
--->
-<style>
-    .sidebar {
-        width: 280px; /* Largura da barra lateral */
-        height: 100vh; /* Altura total da tela */
-        position: sticky; /* Fica presa no lugar ao rolar */
-        top: 0;
-        background-color: #ffffff; /* Cor de fundo */
-        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05); /* Sombra suave */
-        z-index: 1020; /* Fica acima de outros elementos */
-    }
-
-    .sidebar .nav-link {
-        color: #343a40;
-        font-weight: 500;
-        padding: 0.75rem 1.5rem;
-    }
-
-    .sidebar .nav-link:hover,
-    .sidebar .nav-link.active {
-        background-color: #e9f0fd; /* Cor de hover/ativo */
-        color: #0d6efd; /* Cor primária do Bootstrap */
-    }
-
-    .sidebar .nav-link .bi {
-        margin-right: 0.75rem;
-        font-size: 1.1rem;
-        color: #6c757d; /* Cor dos ícones */
-    }
-
-    .sidebar .nav-link:hover .bi,
-    .sidebar .nav-link.active .bi {
-        color: #0d6efd;
-    }
-
-    /* Estilo do submenu (dropdown) */
-    .sidebar-submenu {
-        padding-left: 2.5rem; /* Indentação */
-    }
-    .sidebar-submenu .nav-link {
-        padding-top: 0.5rem;
-        padding-bottom: 0.5rem;
-        font-size: 0.9rem;
-    }
-</style>
 
 <!-- 
-    A 'sidebar' é um 'd-flex flex-column' para empurrar 
-    o menu do usuário para o final usando 'mb-auto' na lista <ul>
+  Classes do tema claro (light)
+  - Adicionado 'bg-white' e 'border-end' para um visual limpo.
 -->
-<aside class="d-flex flex-column p-3 sidebar">
+<div class="sidebar vh-100 d-flex flex-column bg-white border-end p-3" style="width: 280px;">
     
-    <!-- 1. Logo/Marca -->
-    <a class="navbar-brand d-flex align-items-center mb-3 text-dark text-decoration-none" href="<?= BASE_URL ; ?>/index.php">
-        <i class="bi bi-heart-pulse-fill me-2" style="font-size: 1.5rem; color: #0d6efd;"></i>
-        <span class="fs-4 fw-bold">BioUBS</span>
+    <!-- 1. Logo e Nome da UBS -->
+    <!-- MUDANÇA: Adicionado 'justify-content-center' para centralizar -->
+    <a href="<?= BASE_URL ?>/index.php" class="d-flex align-items-center justify-content-center mb-3 text-dark text-decoration-none">
+        <!-- MUDANÇA: Adicionado 'text-primary' para a cor azul -->
+        <i class="bi bi-heart-pulse-fill fs-4 me-2 text-primary"></i>
+        <span class="fs-4 fw-bold text-primary">BioUBS</span>
     </a>
-    <hr class="mt-0">
 
-    <!-- 2. Botão de Ação Principal (Novo Acolhimento) -->
-    <div class="nav-item acolhimento-action mb-2">
-        <a class="btn btn-primary w-100 p-2" href="#" data-url="../modal/fluxos/modalAcolhimento.php"
-            data-bs-toggle="modal"
-            data-bs-target="#acolhimentoBioUBS">
-            <i class="bi bi-plus-circle-fill me-1"></i> Novo Acolhimento
-        </a>
+    <!-- 2. Nome da UBS e Data/Hora -->
+    <!-- MUDANÇA: Adicionado 'text-center' para centralizar -->
+    <div class="sidebar-header border-top border-bottom pt-3 pb-3 mb-3 text-center">
+        <h6 class="text-muted small text-uppercase">UBS - Central</h6>
+        <!-- O ID 'live-datetime-sidebar' é usado pelo 'datetime-updater.js' -->
+        <div id="live-datetime-sidebar" class="small">Carregando data...</div>
     </div>
-    <hr>
 
-    <!-- 3. Lista de Navegação Principal -->
-    <!-- 'mb-auto' empurra esta lista para cima e o dropdown do usuário para baixo -->
+    <!-- 3. Menu de Navegação Principal -->
     <ul class="nav nav-pills flex-column mb-auto">
-        
-        <!-- Link do Dashboard (Index) -->
         <li class="nav-item">
-            <a href="<?= BASE_URL ?>/index.php" class="nav-link">
-                <i class="bi bi-grid-fill"></i>
+            <a href="<?= BASE_URL ?>/index.php" 
+               class="nav-link <?= ($currentPage == 'index.php') ? 'active' : 'text-dark' ?>">
+                <i class="bi bi-grid-fill me-2"></i>
                 Dashboard
             </a>
         </li>
-
+        
         <!-- Dropdown de Cadastros -->
         <li class="nav-item">
-            <a class="nav-link d-flex justify-content-between align-items-center" href="#cadastros-submenu" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="cadastros-submenu">
+            <a href="#cadastroSubmenu" data-bs-toggle="collapse" 
+               class="nav-link text-dark d-flex justify-content-between align-items-center">
                 <span>
-                    <i class="bi bi-person-badge"></i>
+                    <i class="bi bi-folder-fill me-2"></i>
                     Cadastros
                 </span>
                 <i class="bi bi-chevron-down small"></i>
             </a>
-            <div class="collapse" id="cadastros-submenu">
-                <ul class="nav flex-column sidebar-submenu">
-                    <li><a class="nav-link" href="<?= BASE_URL ?>/pages/cadastroDePacientes.php">Pacientes</a></li>
-                    <li><a class="nav-link" href="<?= BASE_URL ?>/pages/cadastroDeProfissionais.php">Profissionais</a></li>
-                    <li><a class="nav-link" href="<?= BASE_URL ?>/pages/cadastroDeUnidades.php">Unidade</a></li>
+            <!-- Sub-itens -->
+            <div class="collapse ps-4" id="cadastroSubmenu">
+                <ul class="nav flex-column">
+                    <li class="nav-item">
+                        <a href="<?= BASE_URL ?>/pages/cadastroDePacientes.php" 
+                           class="nav-link <?= ($currentPage == 'cadastroDePacientes.php') ? 'active' : 'text-muted' ?> py-1">
+                           Pacientes
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="<?= BASE_URL ?>/pages/cadastroDeProfissionais.php" 
+                           class="nav-link <?= ($currentPage == 'cadastroDeProfissionais.php') ? 'active' : 'text-muted' ?> py-1">
+                           Profissionais
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="<?= BASE_URL ?>/pages/cadastroDeUnidades.php" 
+                           class="nav-link <?= ($currentPage == 'cadastroDeUnidades.php') ? 'active' : 'text-muted' ?> py-1">
+                           Unidades
+                        </a>
+                    </li>
                 </ul>
             </div>
         </li>
         
         <li class="nav-item">
-            <a class="nav-link" href="#">
-                <i class="bi bi-file-earmark-text-fill"></i>
+            <a href="#" class="nav-link text-dark">
+                <i class="bi bi-file-earmark-text-fill me-2"></i>
                 Documentos
             </a>
         </li>
-        
         <li class="nav-item">
-            <a class="nav-link" href="#">
-                <i class="bi bi-graph-up-arrow"></i>
+            <a href="#" class="nav-link text-dark">
+                <i class="bi bi-graph-up-arrow me-2"></i>
                 Relatórios
             </a>
         </li>
-
     </ul>
     
-    <!-- 4. Menu do Usuário (no final) -->
+    <!-- 4. Menu do Usuário (Rodapé da Sidebar) -->
     <hr>
     <div class="dropdown">
-        <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" id="navbarUserDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-            <i class="bi bi-person-circle fs-3 me-2"></i>
-            <div class="d-flex flex-column text-start">
-                <span class="fw-bold" style="line-height: 1;">
-                     <!-- Usando 'user_nome' (Nome Completo) para ser mais amigável -->
-                    <?= htmlspecialchars(explode(' ', $_SESSION['user_nome'] ?? 'Usuário')[0]) ?>
-                </span>
-                <small class="text-muted" style="font-size: 0.8rem;">
-                    <?= htmlspecialchars($_SESSION['user_perfil'] ?? 'Perfil') ?>
-                </small>
+        <a href="#" class="d-flex align-items-center text-dark text-decoration-none dropdown-toggle" id="dropdownUser" data-bs-toggle="dropdown" aria-expanded="false">
+            <i class="bi bi-person-circle fs-4 me-2"></i>
+            <div>
+                <!-- Esta linha agora exibirá apenas o primeiro nome -->
+                <strong class="d-block"><?= $userName ?></strong>
+                <small class="text-muted"><?= $userProfile ?></small>
             </div>
         </a>
-        <ul class="dropdown-menu dropdown-menu-end shadow-lg" aria-labelledby="navbarUserDropdown">
-            <li><a class="dropdown-item" href="#">
-                <i class="bi bi-person-fill me-2"></i>Meu Perfil
-            </a></li>
+        
+        <ul class="dropdown-menu text-small shadow" aria-labelledby="dropdownUser">
+            <li><a class="dropdown-item" href="#">Meu Perfil</a></li>
+            <li><a class="dropdown-item" href="#">Configurações</a></li>
             <li><hr class="dropdown-divider"></li>
             <li>
-                <a class="dropdown-item text-danger" href="<?= BASE_URL ?>/logout.php">
+                <a class="dropdown-item" href="<?= BASE_URL ?>/logout.php">
                     <i class="bi bi-box-arrow-right me-2"></i>Sair
                 </a>
             </li>
         </ul>
     </div>
-</aside>
+</div>
+
