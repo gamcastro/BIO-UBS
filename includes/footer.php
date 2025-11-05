@@ -9,9 +9,9 @@
         'mt-auto' (margin-top: auto) empurra ele para o rodapé do <main>
         ==================================================================
         -->
-        <footer class="bg-dark text-white text-center py-3 mt-auto">
+        <!-- <footer class="bg-dark text-white text-center py-3 mt-auto">
             &copy; 2025 Copyright: <a href="<?= BASE_URL ?>/index.php" class="text-white text-decoration-none">BIO UBS</a>
-        </footer>
+        </footer> -->
 
     </main> <!-- Fecha a tag <main class="... d-flex flex-column ..."> aberta no header.php -->
     
@@ -32,7 +32,7 @@ SCRIPTS JAVASCRIPT GLOBAIS
 
 <!-- Scripts do DataTables -->
 <script src="https://cdn.datatables.net/2.3.4/js/dataTables.js"></script>
-<script src="httpsa://cdn.datatables.net/2.3.4/js/dataTables.bootstrap5.js"></script>
+<script src="https://cdn.datatables.net/2.3.4/js/dataTables.bootstrap5.js"></script>
 
 <!-- Scripts personalizados do sistema -->
 <script src="<?= BASE_URL ?>/js/custom.js"></script> 

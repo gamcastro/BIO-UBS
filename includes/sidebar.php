@@ -2,7 +2,8 @@
 /**
  * includes/sidebar.php
  * * A barra de navegação lateral principal do sistema.
- * Esta versão usa o tema CLARO (light) e remove o botão "Novo Acolhimento".
+ * Esta versão usa o tema CLARO (light), centraliza o logo,
+ * estiliza o "Info Card" de UBS/Data e exibe a inicial do usuário.
  */
 
 // Pega o nome da página atual para saber qual link "ativar"
@@ -14,31 +15,43 @@ $userFullName = htmlspecialchars($_SESSION['user_nome'] ?? 'Usuário');
 // Quebra o nome em partes usando o espaço
 $userNameParts = explode(' ', $userFullName);
 // Pega apenas a primeira parte (ex: "Markleny")
-$userName = $userNameParts[0]; 
+$userName = ucfirst(strtolower($userNameParts[0])); 
 $userProfile = htmlspecialchars($_SESSION['user_perfil'] ?? 'Perfil');
+
+// Pega a primeira letra do nome e a torna maiúscula (seguro para UTF-8)
+$userInitial = mb_strtoupper(mb_substr($userName, 0, 1));
 
 ?>
 
 <!-- 
   Classes do tema claro (light)
-  - Adicionado 'bg-white' e 'border-end' para um visual limpo.
+  - 'bg-white' e 'border-end' para um visual limpo.
 -->
 <div class="sidebar vh-100 d-flex flex-column bg-white border-end p-3" style="width: 280px;">
     
     <!-- 1. Logo e Nome da UBS -->
-    <!-- MUDANÇA: Adicionado 'justify-content-center' para centralizar -->
+    <!-- 'justify-content-center' para centralizar -->
     <a href="<?= BASE_URL ?>/index.php" class="d-flex align-items-center justify-content-center mb-3 text-dark text-decoration-none">
-        <!-- MUDANÇA: Adicionado 'text-primary' para a cor azul -->
+        <!-- 'text-primary' para a cor azul -->
         <i class="bi bi-heart-pulse-fill fs-4 me-2 text-primary"></i>
-        <span class="fs-4 fw-bold text-primary">BioUBS</span>
+        <span class="fs-4 fw-bold">BioUBS</span>
     </a>
 
-    <!-- 2. Nome da UBS e Data/Hora -->
-    <!-- MUDANÇA: Adicionado 'text-center' para centralizar -->
-    <div class="sidebar-header border-top border-bottom pt-3 pb-3 mb-3 text-center">
-        <h6 class="text-muted small text-uppercase">UBS - Central</h6>
-        <!-- O ID 'live-datetime-sidebar' é usado pelo 'datetime-updater.js' -->
-        <div id="live-datetime-sidebar" class="small">Carregando data...</div>
+    <!-- 
+      2. Info Card da UBS e Data/Hora 
+      MUDANÇA: Estilizado como um "card" (bg-light) com ícones.
+    -->
+    <div class="sidebar-header bg-light rounded p-2 mb-3" style="font-size: 0.9rem;">
+        <div class="d-flex align-items-center">
+            <i class="bi bi-building me-2 text-primary"></i>
+            <h6 class="text-dark small fw-bold text-uppercase mb-0">UBS - Central</h6>
+        </div>
+        <hr class="my-1"> <!-- Linha fina de separação -->
+        <div class="d-flex align-items-center">
+            <i class="bi bi-clock me-2 text-muted"></i>
+            <!-- O ID 'live-datetime-sidebar' é usado pelo 'datetime-updater.js' -->
+            <div id="live-datetime-sidebar" class="small text-muted">Carregando data...</div>
+        </div>
     </div>
 
     <!-- 3. Menu de Navegação Principal -->
@@ -104,9 +117,18 @@ $userProfile = htmlspecialchars($_SESSION['user_perfil'] ?? 'Perfil');
     <hr>
     <div class="dropdown">
         <a href="#" class="d-flex align-items-center text-dark text-decoration-none dropdown-toggle" id="dropdownUser" data-bs-toggle="dropdown" aria-expanded="false">
-            <i class="bi bi-person-circle fs-4 me-2"></i>
+            
+            <!-- 
+              Avatar com a letra inicial
+              - Fundo cinza escuro sutil e letra em azul claro
+            -->
+            <div class="me-2" 
+                 style="width: 38px; height: 38px; border-radius: 50%; background-color: #6c757d; color: #add8e6; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 1.1rem;">
+                <?= $userInitial ?>
+            </div>
+            
             <div>
-                <!-- Esta linha agora exibirá apenas o primeiro nome -->
+                <!-- Apenas o primeiro nome -->
                 <strong class="d-block"><?= $userName ?></strong>
                 <small class="text-muted"><?= $userProfile ?></small>
             </div>
@@ -124,4 +146,3 @@ $userProfile = htmlspecialchars($_SESSION['user_perfil'] ?? 'Perfil');
         </ul>
     </div>
 </div>
-
