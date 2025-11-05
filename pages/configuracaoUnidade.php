@@ -2,8 +2,8 @@
 /**
  * pages/configuracaoUnidade.php
  * * Página para GERENCIAR a única unidade do sistema (ID = 1).
- * * Esta versão CORRIGIDA lida tanto com a CRIAÇÃO (INSERT) 
- * * quanto com a EDIÇÃO (UPDATE) da unidade.
+ * * ESTA VERSÃO FOI CORRIGIDA para usar a sintaxe de OBJETO (->)
+ * * ao ler os dados, corrigindo o erro 'Cannot use object as array'.
  */
 
 $tituloDaPagina = "Dados da Unidade - BIO-UBS";
@@ -72,41 +72,39 @@ if (isset($_POST['salvar'])) {
 
     // *** LÓGICA DE DECISÃO (INSERT vs UPDATE) ***
     
-    // 1. Verifica se a unidade ID=1 já existe
-    // NOTA: É importante que o construtor da sua UbsCrudAll
-    // possa receber a conexão $db ou ela falhará aqui.
-    // Assumindo: public function __construct(string $tabela, array $permitidas = [], PDO $db = null)
-    // E que Conexao::getConn() seja estático.
-    $checkObj = new UbsCrudAll($tabela, ['ID']); // Removido $db se o construtor não o pega
-    $unidadeExistente = $checkObj->buscarPorId($id_unidade_fixo);
+    // Instancia o objeto
+    $objetoOperacao = new UbsCrudAll($tabela, $colunasPermitidas);
+    
+    // Precisamos definir a chave primária correta ('ID') para o UbsCrudAll
+    // (Esta linha é necessária por causa da lógica dentro de 'atualizar()')
+    $objetoOperacao->chavePrimaria = 'ID'; 
+
+    // Verifica se a unidade já existe
+    $unidadeExistente = $objetoOperacao->buscarPorId($id_unidade_fixo);
 
     if ($unidadeExistente) {
         // --- MODO UPDATE (A unidade já existe) ---
-        $objetoUpdate = new UbsCrudAll($tabela, $colunasPermitidas);
+        // A função 'atualizar()' retorna um booleano (true/false)
+        $sucesso = $objetoOperacao->atualizar($id_unidade_fixo, $dados);
         
-        // --- INÍCIO DA CORREÇÃO ---
-        // "Avisamos" à superclasse que a nossa chave primária é 'ID' (maiúsculo),
-        // corrigindo o bug do 'id' (minúsculo) na função 'atualizar'.
-        $objetoUpdate->chavePrimaria = 'ID';
-        // --- FIM DA CORREÇÃO ---
-        
-        if ($objetoUpdate->atualizar($id_unidade_fixo, $dados)) {
+        if ($sucesso) {
             $mensagem = "Dados da unidade atualizados com sucesso!";
             $tipoMensagem = "success";
         } else {
             $mensagem = "Erro ao atualizar os dados. Tente novamente.";
             $tipoMensagem = "danger";
         }
+
     } else {
         // --- MODO INSERT (A unidade NÃO existe) ---
-        
-        // Adiciona o ID fixo aos dados, já que é uma inserção
         $dados['ID'] = $id_unidade_fixo; 
-        // Adiciona 'ID' às colunas permitidas para a inserção
-        $colunasPermitidas[] = 'ID'; 
+        // Adiciona ID à whitelist para o INSERT
+        $objetoOperacao->setColunasPermitidas(array_merge($colunasPermitidas, ['ID'])); 
 
-        $objetoInsert = new UbsCrudAll($tabela, $colunasPermitidas);
-        if ($objetoInsert->inserir($dados)) {
+        // A função 'inserir()' retorna o ID (string) ou '0'
+        $novoId = $objetoOperacao->inserir($dados);
+        
+        if ($novoId === (string)$id_unidade_fixo) {
             $mensagem = "Dados da unidade criados com sucesso!";
             $tipoMensagem = "success";
         } else {
@@ -119,35 +117,28 @@ if (isset($_POST['salvar'])) {
 
 // 4. LÓGICA DE SELECT (Busca dados para preencher o formulário)
 // =============================================
-// Esta lógica roda *depois* do update/insert,
-// então ela sempre pega os dados mais recentes.
 $tabela = 'cadastro_unidade';
-$colunasPermitidas = ['*'];
-$objetoSelect = new UbsCrudAll($tabela, $colunasPermitidas);
+$objetoSelect = new UbsCrudAll($tabela); 
 
-// Busca sempre pelo ID fixo (função corrigida por você)
-$dadosUnidade = $objetoSelect->buscarPorId($id_unidade_fixo);
+// --- CORREÇÃO DE BUSCA: 'buscarPorId' ---
+// Você corrigiu para 'buscarPorId', que é o método correto.
+$dadosUnidade = $objetoSelect->buscarPorId($id_unidade_fixo); 
+// $dadosUnidade AGORA É UM OBJETO (stdClass)
 
-if (!$dadosUnidade) {
-    // Se não houver dados (mesmo após uma tentativa de INSERT),
-    // a página carregará com o formulário vazio.
-    $nome = $cnes = $cnpj = $telefone = $cep = $uf = $municipio = $bairro = $logradouro = $numero = $complemento = '';
-} else {
-    // *** A CORREÇÃO ESTÁ AQUI ***
-    // Mudamos de $dadosUnidade['NOME'] para $dadosUnidade->NOME
-    // (Linha 126 original)
-    $nome = $dadosUnidade->NOME;
-    $cnes = $dadosUnidade->CNES;
-    $cnpj = $dadosUnidade->CNPJ;
-    $telefone = $dadosUnidade->TELEFONE;
-    $cep = $dadosUnidade->CEP;
-    $uf = $dadosUnidade->ESTADO;
-    $municipio = $dadosUnidade->MUNICIPIO;
-    $bairro = $dadosUnidade->BAIRRO;
-    $logradouro = $dadosUnidade->LOGRADOURO;
-    $numero = $dadosUnidade->NUMERO;
-    $complemento = $dadosUnidade->COMPLEMENTO;
-}
+// --- CORREÇÃO DO ERRO 'stdClass as array' ---
+// Trocamos a sintaxe de array (['NOME']) para objeto (->NOME)
+// Isso corrige o erro da linha 126
+$nome = $dadosUnidade->NOME ?? '';
+$cnes = $dadosUnidade->CNES ?? '';
+$cnpj = $dadosUnidade->CNPJ ?? '';
+$telefone = $dadosUnidade->TELEFONE ?? '';
+$cep = $dadosUnidade->CEP ?? '';
+$uf = $dadosUnidade->ESTADO ?? ''; // Coluna 'ESTADO' no banco
+$municipio = $dadosUnidade->MUNICIPIO ?? '';
+$bairro = $dadosUnidade->BAIRRO ?? '';
+$logradouro = $dadosUnidade->LOGRADOURO ?? '';
+$numero = $dadosUnidade->NUMERO ?? '';
+$complemento = $dadosUnidade->COMPLEMENTO ?? '';
 
 ?>
 
@@ -255,9 +246,11 @@ INÍCIO: Conteúdo HTML da Página
                     </div>
                     <div class="col-md-4">
                         <label for="uf" class="form-label">Estado (UF)</label>
+                        <!-- O nome do form é 'uf' mas a coluna do banco é 'ESTADO' -->
                         <select id="uf" name="uf" class="form-select"> 
                             <option value="" selected>Selecione...</option>
                             <?php 
+                            // O header.php já carregou o autoload.php
                             require('../querys/ConsultaUnidadeFederativaSelect.php');
                             ?>
                         </select>
@@ -294,6 +287,6 @@ INÍCIO: Conteúdo HTML da Página
 
 
 <?php
-// Inclui o footer.php (do seu Canvas)
+// Inclui o footer.php
 include_once('../includes/footer.php');
 ?>
