@@ -4,22 +4,23 @@
 function updateLiveDateTime() {
     // Encontra os elementos
     const elSidebar = document.getElementById('live-datetime-sidebar');
-    
-    // Se o elemento da sidebar existir, atualiza
+    const elTop = document.getElementById('live-datetime-top');
+    // Calcula data/hora uma vez e atualiza onde houver elemento
+    const now = new Date();
+    // Formata a data (ex: Terça, 04/11/2025)
+    const optionsDate = { weekday: 'long', year: 'numeric', month: 'numeric', day: 'numeric' };
+    const dateStr = new Intl.DateTimeFormat('pt-BR', optionsDate).format(now);
+    // Formata a hora (ex: 11:30:05)
+    const timeStr = now.toLocaleTimeString('pt-BR');
+    // Capitaliza o dia da semana
+    const finalStr = dateStr.charAt(0).toUpperCase() + dateStr.slice(1);
+
     if (elSidebar) {
-        const now = new Date();
-        
-        // Formata a data (ex: Terça, 04/11/2025)
-        const optionsDate = { weekday: 'long', year: 'numeric', month: 'numeric', day: 'numeric' };
-        // Usando 'pt-BR' para garantir o formato em português
-        const dateStr = new Intl.DateTimeFormat('pt-BR', optionsDate).format(now);
-        
-        // Formata a hora (ex: 11:30:05)
-        const timeStr = now.toLocaleTimeString('pt-BR');
-        
-        // Coloca no HTML (Capitaliza o dia da semana)
-        const finalStr = dateStr.charAt(0).toUpperCase() + dateStr.slice(1);
         elSidebar.innerHTML = `${finalStr} | ${timeStr}`;
+    }
+
+    if (elTop) {
+        elTop.innerHTML = `${finalStr} | ${timeStr}`;
     }
 }
 

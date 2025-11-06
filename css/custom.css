@@ -12,3 +12,54 @@ body {
 .flex-grow-1 {
   flex-grow: 1; /* Faz este elemento crescer para ocupar o espaço disponível */
 }
+
+/* Estilo mínimo para a topbar da unidade (includes/unit-topbar.php) */
+.unit-topbar {
+  padding: 0.65rem 1rem; /* espaçamento interno */
+  background: #fff; /* mantém contraste com o fundo */
+  border: 1px solid rgba(0,0,0,0.06);
+  border-radius: 0.5rem;
+}
+
+.unit-topbar .small {
+  font-size: 0.9rem;
+}
+
+/* Responsividade: em telas pequenas o conteúdo empilha */
+@media (max-width: 768px) {
+  .unit-topbar {
+    flex-direction: column;
+    gap: 0.35rem;
+    align-items: flex-start;
+  }
+
+  .unit-topbar .text-end {
+    align-self: stretch;
+    text-align: left !important;
+  }
+}
+
+/* Avatar do usuário (círculo com inicial) */
+.user-avatar {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background-color: var(--bs-primary, #0d6efd); /* usa cor primaria do bootstrap */
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 1.05rem;
+  /* transição suave para hover/focus */
+  transition: transform 150ms ease, box-shadow 150ms ease;
+  will-change: transform;
+}
+
+/* Efeito sutil ao passar o mouse / foco via teclado */
+.user-avatar:hover,
+.user-avatar:focus,
+.user-avatar:focus-visible {
+  transform: translateY(-2px) scale(1.06);
+  box-shadow: 0 8px 18px rgba(13,110,253,0.12);
+}

@@ -2,6 +2,10 @@
 require_once __DIR__ .'/../vendor/autoload.php';
 use BioUBS\Conexao ;
 
+// Permite passar uma variável $selectedUf do arquivo que inclui este script.
+// Exemplo antes do require: $selectedUf = '21';
+$selectedUf = isset($selectedUf) ? (string)$selectedUf : '';
+
 $sqlUf = "SELECT * FROM ibge_ufs ORDER BY DS_UF_SIGLA";
 $buscaUf = Conexao::getConn()->prepare($sqlUf);
 $buscaUf->execute();
@@ -13,8 +17,9 @@ $buscaUf->execute();
 	            $cd_uf = $rowsUf['CD_UF'];
 	            $ds_uf_nome = $rowsUf['DS_UF_NOME'];
 	?>
-
-		<option value="<?=$cd_uf?>"><?=$uf . " - " . $ds_uf_nome?></option>
+    
+	<?php $isSel = ((string)$cd_uf === (string)$selectedUf) ? ' selected' : ''; ?>
+	<option value="<?=$cd_uf?>"<?=$isSel?>><?=$uf . " - " . $ds_uf_nome?></option>
 
 	<?php 
 	}

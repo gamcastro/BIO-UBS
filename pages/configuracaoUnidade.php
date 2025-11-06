@@ -4,15 +4,19 @@
  * * Página para GERENCIAR a única unidade do sistema.
  * * ESTRATÉGIA ROBUSTA: Esta versão busca a *primeira linha* da tabela,
  * * independentemente do seu ID, em vez de usar um ID fixo.
- * * Também foi corrigido para usar SINTAXE DE ARRAY (['NOME']),
- * * pois 'buscaLivreParams' retorna FETCH_ASSOC.
+ * *
+ * * VERSÃO ATUAL: Corrigida a lógica do 'ESTADO' (UF) para usar o ID
+ * * (ex: 21) em vez da sigla (ex: 'MA'), alinhando com o script
+ * * 'ConsultaUnidadeFederativaSelect.php'.
+ * *
+ * * VERSÃO ATUAL 2: Troca 'DOMContentLoaded' por 'window.load'
+ * * para garantir que o script rode após todos os plugins.
  */
 
 $tituloDaPagina = "Dados da Unidade - BIO-UBS";
 
 // 1. INCLUDES E AUTORIZAÇÃO
 // =============================================
-// --- MUDANÇA: Usando __DIR__ para um caminho absoluto e robusto ---
 include_once(__DIR__ . '/../includes/header.php'); 
 use BioUBS\Conexao; 
 use BioUBS\UbsCrudAll; 
@@ -28,7 +32,6 @@ if (!$isAdmin) {
     echo '  <h4 class="alert-heading">Acesso Negado</h4>';
     echo '  <p>Você não tem permissão para acessar esta página.</p>';
     echo '</div>';
-    // --- MUDANÇA: Usando __DIR__ para um caminho absoluto e robusto ---
     include_once(__DIR__ . '/../includes/footer.php');
     exit; 
 }
@@ -40,7 +43,6 @@ try {
     $db = Conexao::getConn();
 } catch (PDOException $e) {
     echo '<div class="alert alert-danger" role="alert">Erro fatal de conexão com o banco.</div>';
-    // --- MUDANÇA: Usando __DIR__ para um caminho absoluto e robusto ---
     include_once(__DIR__ . '/../includes/footer.php');
     exit;
 }
@@ -64,6 +66,7 @@ if (isset($_POST['salvar'])) {
         'CNPJ' => $_POST['cnpj'] ?? null,
         'TELEFONE' => $_POST['telefone'] ?? null,
         'CEP' => $_POST['cep'] ?? null,
+        // O formulário (name="uf") envia o ID (ex: 21)
         'ESTADO' => $_POST['uf'] ?? null, 
         'MUNICIPIO' => $_POST['municipio'] ?? null,
         'BAIRRO' => $_POST['bairro'] ?? null,
@@ -83,24 +86,19 @@ if (isset($_POST['salvar'])) {
 
     if ($unidadeExistente) {
         // --- MODO UPDATE (A unidade já existe) ---
-        
-        // Pega o ID real da unidade que encontramos
         $id_real_da_unidade = $unidadeExistente['ID']; 
-        
         $sucesso = $objetoOperacao->atualizar($id_real_da_unidade, $dados);
         
         if ($sucesso) {
             $mensagem = "Dados da unidade atualizados com sucesso!";
             $tipoMensagem = "success";
         } else {
-            // Se 'atualizar' retornar 0 (nenhuma linha afetada), não é um erro.
             $mensagem = "Dados salvos. Nenhuma alteração foi detectada.";
             $tipoMensagem = "info"; 
         }
 
     } else {
         // --- MODO INSERT (A unidade NÃO existe) ---
-        
         $novoId = $objetoOperacao->inserir($dados);
         
         if ($novoId && $novoId !== '0') {
@@ -121,7 +119,6 @@ $objetoSelect = new UbsCrudAll($tabela);
 // --- Busca a *primeira linha* da tabela, não um ID fixo ---
 $resultadoBusca = $objetoSelect->buscaLivreParams("LIMIT 1");
 $dadosUnidade = !empty($resultadoBusca) ? $resultadoBusca[0] : null;
-// $dadosUnidade É UM ARRAY ASSOCIATIVO (FETCH_ASSOC)
 
 // --- Usando sintaxe de ARRAY (['NOME']) ---
 $nome = $dadosUnidade['NOME'] ?? '';
@@ -129,7 +126,12 @@ $cnes = $dadosUnidade['CNES'] ?? '';
 $cnpj = $dadosUnidade['CNPJ'] ?? '';
 $telefone = $dadosUnidade['TELEFONE'] ?? '';
 $cep = $dadosUnidade['CEP'] ?? '';
-$uf = $dadosUnidade['ESTADO'] ?? ''; // Coluna 'ESTADO' no banco
+// Garantir que o valor do ESTADO seja um número válido
+$uf = $dadosUnidade['ESTADO'] ?? '';
+// Se não for um número válido, define como 21 (Maranhão)
+if (!is_numeric($uf) || $uf <= 0) {
+    $uf = '21'; // Maranhão
+}
 $municipio = $dadosUnidade['MUNICIPIO'] ?? '';
 $bairro = $dadosUnidade['BAIRRO'] ?? '';
 $logradouro = $dadosUnidade['LOGRADOURO'] ?? '';
@@ -242,25 +244,16 @@ INÍCIO: Conteúdo HTML da Página
                     </div>
                     <div class="col-md-4">
                         <label for="uf" class="form-label">Estado (UF)</label>
-                        <!-- O nome do form é 'uf' mas a coluna do banco é 'ESTADO' -->
+                        <!-- O name é 'uf' (que envia o ID, ex: 21) -->
                         <select id="uf" name="uf" class="form-select"> 
-                            <option value="" selected>Selecione...</option>
+                            <option value="">Selecione...</option>
                             <?php 
-                            // --- MUDANÇA: Usando __DIR__ para um caminho absoluto e robusto ---
+                            // Define o option selecionado (server-side) antes de incluir o script
+                            $selectedUf = $uf ?? '';
+                            // Este script gera <option value="21">MA - Maranhão</option>
                             require(__DIR__ . '/../querys/ConsultaUnidadeFederativaSelect.php');
                             ?>
                         </select>
-                        
-                        <script>
-                            // Este script roda DEPOIS que o HTML é carregado
-                            document.addEventListener('DOMContentLoaded', function() {
-                                var selectUF = document.getElementById('uf');
-                                if (selectUF) {
-                                    // Define o valor do <select> com base no que veio do banco
-                                    selectUF.value = "<?= htmlspecialchars($uf); ?>";
-                                }
-                            });
-                        </script>
                     </div>
                 </div>
 
@@ -283,6 +276,5 @@ INÍCIO: Conteúdo HTML da Página
 
 
 <?php
-// --- MUDANÇA: Usando __DIR__ para um caminho absoluto e robusto ---
 include_once(__DIR__ . '/../includes/footer.php');
 ?>
