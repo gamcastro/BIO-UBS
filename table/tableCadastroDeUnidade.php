@@ -1,6 +1,7 @@
 <?php
-// require_once __DIR__ . '/../includes/authorization.php'; 
+
 require_once __DIR__ . '/../vendor/autoload.php'; // Autoloader
+require_once __DIR__ . '/../includes/authorization.php';
 
 use BioUBS\UbsCrudAll;
 ?>
@@ -19,9 +20,17 @@ use BioUBS\UbsCrudAll;
         </thead>
         <tbody>
             <?php
-            $tabela = "cadastro_unidade";
+            
+            //-----------criterios de consulta--------------
+            
+            $tabela = "cadastro_unidade";//--------tabela como parametro
+            
+            //----------------------------------------------
+            
+            //----------CONSULTA BÁSICA SEM CRITÉRIOS
+            
             try {
-                $cadUbs = new UbsCrudAll($tabela);
+                $cadUbs = new UbsCrudAll($tabela);//----objeto classe UbsCrudAll(parametro)
                 $UbsQuery = $cadUbs->listarTodos();
 
                 foreach ($UbsQuery as $registrosUbs) {
@@ -35,12 +44,17 @@ use BioUBS\UbsCrudAll;
                         <td><?= htmlspecialchars($cnes ?? '') ?></td>
                         <td><?= htmlspecialchars($municipio ?? '') ?></td>
                         <td class="text-center">
+                          <!-------botão iimprimir------->
                             <button type="button" class="btn btn-sm btn-outline-secondary me-1" title="Imprimir" onclick="alert('Função Imprimir não implementada');">
                                 <i class="bi bi-printer"></i>
                             </button>
 
-                            <?php if ($nivelAcesso == 1): ?>
+      <?php 
+        /* verificando o nível de acesso para os botões Editar e Excluir*/ 
+        if ($nivelAcesso == 1):
+      ?>
 
+                <!-------botão editar------->
                                 <a href="#"
                                     class="btn btn-sm btn-outline-primary me-1"
                                     data-bs-toggle="modal"
@@ -49,7 +63,9 @@ use BioUBS\UbsCrudAll;
                                     title="Editar">
                                     <i class="bi bi-pencil-square"></i>
                                 </a>
+                <!-------------------------->
 
+                <!-------botão excluir------->
                                 <a href="#"
                                     class="btn btn-sm btn-outline-danger"
                                     data-bs-toggle="modal"
@@ -58,13 +74,15 @@ use BioUBS\UbsCrudAll;
                                     title="Excluir">
                                     <i class="bi bi-trash3"></i>
                                 </a>
+                <!-------------------------->
 
 
-                            <?php endif; ?>
+      <?php endif;//---fim controle de acesso ?>
                         </td>
                     </tr>
             <?php
-                } // Fim foreach 
+                }//while
+                
             } catch (Exception $e) {
                 echo '<tr><td colspan="4" class="text-danger text-center">Erro ao buscar unidades: ' . $e->getMessage() . '</td></tr>';
             }

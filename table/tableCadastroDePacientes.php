@@ -1,7 +1,7 @@
 <?php 
-// O authorization.php já deve ter sido incluído pela página principal
-// (ex: cadastroDePacientes.php), mas o autoload é bom garantir.
-require_once __DIR__ . '/../vendor/autoload.php'; 
+
+require_once __DIR__ . '/../vendor/autoload.php'; // Autoloader
+
 
 use BioUBS\UbsCrudAll;
 use BioUBS\Idade;
@@ -22,11 +22,20 @@ use BioUBS\Idade;
 
         <tbody>
         <?php
-        $tabela = "cadastro_paciente";
+        
+        //-----------criterios de consulta--------------
+          
+          $tabela = "cadastro_paciente";//--------tabela como parametro 
+
+          $cadPaciente = new UbsCrudAll($tabela);//----objeto classe UbsCrudAll(parametro)
+
+          $dataBR = new Idade(); //---------------objeto classe Idade   
+
+        //----------------------------------------------
+
+        //----------CONSULTA BÁSICA SEM CRITÉRIOS
         
         try {
-            $cadPaciente = new UbsCrudAll($tabela);
-            $dataBR = new Idade();
             $UbsQuery = $cadPaciente->listarTodos(); 
 
             foreach ($UbsQuery as $registrosUbs) {
@@ -35,22 +44,44 @@ use BioUBS\Idade;
                 $data_nascimento = $registrosUbs['DATA_NASCIMENTO'];
                 $cpf = $registrosUbs['CPF'];
 
-                $dataBR->setIdade($data_nascimento);
+                $dataBR->setIdade($data_nascimento);//---setando data
         ?>
 
 
             <tr>
                 <td><?= htmlspecialchars($nome ?? '') ?></td>
-                <td><?= $dataBR->dataBr() ?></td>
-                <td><?= $dataBR->IdadeAnos() ?></td>
+
+                <td>
+                  <?php 
+                      //-------------formatando data
+                       echo $dataBR->dataBr();
+                  ?>    
+                </td>
+
+                <td>
+                  <?php 
+
+                      //----------usando a funcao idade Anos
+                       echo $dataBR->IdadeAnos();
+                       
+                       //-----exemplo de idade completa
+                       echo " ou (".$dataBR->IdadeCompleta().")";
+                  ?>    
+                </td>
+
                 <td><?= htmlspecialchars($cpf ?? '') ?></td>
                 
                 <td class="text-center">
+                  <!-------botão iimprimir------->
                     <button type="button" class="btn btn-sm btn-outline-secondary me-1" title="Imprimir" onclick="alert('Função Imprimir não implementada');">
                         <i class="bi bi-printer"></i>
                     </button>
 
-                    <?php if($nivelAcesso == 1): ?>
+      <?php 
+        /* verificando o nível de acesso para os botões Editar e Excluir*/ 
+        if($nivelAcesso == 1):
+      ?>
+                <!-------botão editar------->
                         <a href="#" 
                            class="btn btn-sm btn-outline-primary me-1" 
                            data-bs-toggle="modal" 
@@ -59,7 +90,9 @@ use BioUBS\Idade;
                            title="Editar">
                             <i class="bi bi-pencil-square"></i>
                         </a>
+                <!-------------------------->
                         
+                <!-------botão excluir------->
                         <a href="#" 
                            class="btn btn-sm btn-outline-danger" 
                            data-bs-toggle="modal" 
@@ -68,11 +101,13 @@ use BioUBS\Idade;
                            title="Excluir">
                             <i class="bi bi-trash3"></i>
                         </a>
-                    <?php endif; ?>
+                <!-------------------------->
+
+      <?php endif;//---fim controle de acesso?>
                 </td>
             </tr>
         <?php 
-            }
+            }//while
             
         } catch (Exception $e) {
             echo '<tr><td colspan="5" class="text-danger text-center">Erro ao buscar pacientes: ' . $e->getMessage() . '</td></tr>';

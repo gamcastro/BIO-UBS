@@ -20,7 +20,7 @@ $csrf = generate_csrf();
 <div class="container py-5">
   <div class="mx-auto bg-white p-4 rounded shadow" style="max-width:400px">
     <h3 class="text-center mb-4">Esqueceu a senha?</h3>
-    <form method="POST" action="reset_password_send.php">
+    <form method="POST" action="<?= BASE_URL ?>/actions/reset_password_send.php">
       <!-------- Proteção CSRF ---------->
       <input type="hiddenn" name="csrf_token" value="<?= $csrf ?>">
       <div class="mb-3">

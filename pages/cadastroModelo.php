@@ -56,13 +56,13 @@ endif;//---fim para controle de acesso
 <!--------área para SCRIPTS---------------------------------->
 
 <!----------------chamando as funcoes de mascaras-------------------->
-<script type="text/javascript" src="js/mask/funcaoMascaraGeralNumeros.js"></script>
-<script type="text/javascript" src="js/mask/funcaoLetrasMaiusculas.js"></script>
+<script type="text/javascript" src="<?= BASE_URL ?>/js/mask/funcaoMascaraGeralNumeros.js"></script>
+<script type="text/javascript" src="<?= BASE_URL ?>/js/mask/funcaoLetrasMaiusculas.js"></script>
 <!------------------------------------------------------------------->
 
 
 <!------incluir esse arquivo onde for usar tabela dinamica-------------->
-<script type="text/javascript" src="js/jquery.dataTables.min.js"></script>
+<script type="text/javascript" src="<?= BASE_URL ?>/js/jquery.dataTables.min.js"></script>
 <!---------------------------------------------------------------------->
 
 
@@ -76,7 +76,7 @@ endif;//---fim para controle de acesso
 
 <!--------área para CSS---------------------------------->
 <!------incluir esse arquivo onde for usar tabela dinamica-------------->
-<link rel="stylesheet" href="css/jquery.dataTables.min.css" />
+<link rel="stylesheet" href="<?= BASE_URL ?>/css/jquery.dataTables.min.css" />
 <!--------------------------------------------------------------->
 <!------------------------fim css------------------------------>
 

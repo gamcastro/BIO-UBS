@@ -7,7 +7,7 @@ require_once __DIR__ . '/../../vendor/autoload.php';
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
 
- <form id="cad" name="cad" action="cadastroDeProfissionais.php" method="post">
+ <form id="cad" name="cad" action="<?= BASE_URL ?>/pages/cadastroDeProfissionais.php" method="post">
 
             <div class="modal-header">
                 

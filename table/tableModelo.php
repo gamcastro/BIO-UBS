@@ -93,7 +93,7 @@ use BioUBS\Idade;
       ?>
                 <!-------botão editar------->
                   <a 
-                    href="modal/edicao/modalEdCadastroDePacientes.php?id=<?=$id?>" 
+                    href="<?= BASE_URL ?>/modal/edicao/modalEdCadastroDePacientes.php?id=<?=$id?>" 
                     data-toggle="modal" data-target="#updateBioUBS" 
                     data-backdrop="static" data-keyboard="false"
                     id="btnEdPaciente"
@@ -105,7 +105,7 @@ use BioUBS\Idade;
                   .
                 <!-------botão excluir------->
                   <a 
-                    href="modal/exclusao/modalExCadastroDePacientes.php?id=<?=$id?>" 
+                    href="<?= BASE_URL ?>/modal/exclusao/modalExCadastroDePacientes.php?id=<?=$id?>" 
                     data-toggle="modal" data-target="#deleteBioUBS" 
                     data-backdrop="static" data-keyboard="false"
                     id="btnExPaciente"
@@ -131,4 +131,4 @@ use BioUBS\Idade;
     </table>
 
 <!-----function da table---->
-<script src="tableScript/tableSimples.js"></script>
+<script src="<?= BASE_URL ?>/tableScript/tableSimples.js"></script>

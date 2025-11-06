@@ -7,7 +7,7 @@
 </div>
 
 <div class="modal-body">
-  <form action="processa_acolhimento.php" method="POST">
+  <form action="<?= BASE_URL ?>/actions/processa_acolhimento.php" method="POST">
 
     <div class="mb-3"> 
       <label for="buscaPaciente" class="form-label fw-bold">1. Identificar Paciente</label> 

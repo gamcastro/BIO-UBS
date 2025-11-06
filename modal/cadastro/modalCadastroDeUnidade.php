@@ -6,7 +6,7 @@ require_once __DIR__ . '/../../vendor/autoload.php';
 <div class="modal fade" id="insertUnidade" tabindex="-1" aria-labelledby="insertUnidadeLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
-            <form id="cadUnidadeForm" name="cadUnidade" action="cadastroDeUnidades.php" method="post">
+            <form id="cadUnidadeForm" name="cadUnidade" action="<?= BASE_URL ?>/pages/cadastroDeUnidades.php" method="post">
                 <div class="modal-header">
                     <h5 class="modal-title" id="insertUnidadeLabel">Cadastrando Nova Unidade</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
