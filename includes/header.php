@@ -12,6 +12,8 @@ include_once( __DIR__ . '/authorization.php'); // Controla o login e "Lembrar-me
 // Pega o nome do usuário da sessão para usar na sidebar
 $user_nome_completo = $_SESSION['user_nome'] ?? 'Usuário';
 $user_perfil = $_SESSION['user_perfil'] ?? 'Perfil';
+// Pega o nome da UBS para exibir no topo
+$ubsNome = htmlspecialchars($_SESSION['ubs_nome'] ?? 'UBS - Central');
 ?>
 <!DOCTYPE html>
 <html lang="pt-BR">
@@ -51,7 +53,12 @@ $user_perfil = $_SESSION['user_perfil'] ?? 'Perfil';
           flexível em coluna. Isso é ESSENCIAL para que o rodapé 
           (com 'mt-auto') grude no final desta área.
         -->
-        <main class="flex-grow-1 d-flex flex-column p-4 main-content">
+    <main class="flex-grow-1 d-flex flex-column p-4 main-content">
+        <?php
+        // Partial: topbar com dados da UBS (nome + data/hora)
+        // Permite que a variável $ubsNome seja passada antes do include.
+        include_once __DIR__ . '/unit-topbar.php';
+        ?>
             <!-- 
               A partir daqui, o conteúdo da página (ex: index.php) é carregado.
               O <footer> e o </body> são fechados pelo 'footer.php'.

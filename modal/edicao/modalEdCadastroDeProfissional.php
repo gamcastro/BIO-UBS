@@ -55,6 +55,66 @@ if (isset($_GET['id'])): //----só surgirá o conteúdo se vier um ID
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
     </div>
 
+    <!-- Script: preenche selects de UF quando o modal for exibido (tentativas repetidas) -->
+    <script>
+    (function(){
+        function setUFValueIfPossible(selectId, ufValue) {
+            var selectUF = document.getElementById(selectId);
+            if (!selectUF || !ufValue) return false;
+            // Garante que o valor seja numérico
+            ufValue = String(ufValue).replace(/\D/g, '');
+            if (ufValue === '') ufValue = '21';
+            // Adiciona zero à esquerda se necessário
+            ufValue = ufValue.padStart(2, '0');
+            // Verifica se a opção existe e seta o valor
+            var optionExists = Array.from(selectUF.options).some(function(opt){ return opt.value === ufValue; });
+            if (optionExists) {
+                selectUF.value = ufValue;
+                selectUF.dispatchEvent(new Event('change'));
+                return true;
+            }
+            return false;
+        }
+
+        var estadoEmissorConselho = "<?= htmlspecialchars($estadoEmissorConselho) ?>";
+        var estadoEndereco = "<?= htmlspecialchars($estadoEndereco) ?>";
+
+        function trySetAll() {
+            var a = setUFValueIfPossible('ESTADO_EMISSOR_CONSELHO', estadoEmissorConselho);
+            var b = setUFValueIfPossible('ESTADO_ENDERECO', estadoEndereco);
+            return a && b;
+        }
+
+        function startAttempts(limit, interval) {
+            limit = limit || 20; // número de tentativas
+            interval = interval || 100; // ms
+            var tries = 0;
+            if (trySetAll()) return; // já setado
+            var id = setInterval(function(){
+                tries++;
+                if (trySetAll() || tries >= limit) {
+                    clearInterval(id);
+                }
+            }, interval);
+        }
+
+        // Tenta quando o modal for exibido
+        document.addEventListener('shown.bs.modal', function(ev){
+            try {
+                // se o modal contém nossos selects, começa as tentativas
+                if (ev.target && ev.target.querySelector && (ev.target.querySelector('#ESTADO_EMISSOR_CONSELHO') || ev.target.querySelector('#ESTADO_ENDERECO'))) {
+                    startAttempts(20, 100);
+                }
+            } catch (e) {
+                // silencioso
+            }
+        }, true);
+
+        // Também tenta imediatamente (caso o modal já esteja no DOM e visível)
+        startAttempts(20, 100);
+    })();
+    </script>
+
     <form id="ed" name="ed" action="" method="post">
         <input type="hidden" name="id" value="<?= $id ?>">
 
@@ -163,15 +223,11 @@ if (isset($_GET['id'])): //----só surgirá o conteúdo se vier um ID
                         <select name="ESTADO_EMISSOR_CONSELHO" id="ESTADO_EMISSOR_CONSELHO" class="form-control">
                             <option value="">UF</option>
                             <?php
+                            // Define o valor selecionado antes de incluir o script
+                            $selectedUf = $estadoEmissorConselho ?? '';
                             require(__DIR__ . '/../../querys/ConsultaUnidadeFederativaSelect.php');
                             ?>
                         </select>
-                        <script>
-                            var selectConselho = document.getElementById('ESTADO_EMISSOR_CONSELHO');
-                            if (selectConselho) {
-                                selectConselho.value = "<?= $estadoEmissorConselho ?>"; 
-                            }
-                        </script>
                     </td>
                 </tr>
 
@@ -222,20 +278,14 @@ if (isset($_GET['id'])): //----só surgirá o conteúdo se vier um ID
                         <select name="ESTADO_ENDERECO" id="ESTADO_ENDERECO" class="form-control">
                             <option value="">UF</option>
                             <?php
+                            // Define o valor selecionado antes de incluir o script
+                            $selectedUf = $estadoEndereco ?? '';
                             require(__DIR__ . '/../../querys/ConsultaUnidadeFederativaSelect.php');
                             ?>
                         </select>
-
-                        <script>
-                            var selectEndereco = document.getElementById('ESTADO_ENDERECO');
-                            if (selectEndereco) {
-                                selectEndereco.value = "<?= $estadoEndereco ?>"; 
-                            }
-                        </script>
                     </td>
                     <td>
                          <input class="form-control" type="text" id="PONTO_REFERENCIA" name="PONTO_REFERENCIA" value="<?= htmlspecialchars($pontoReferencia ?? '') ?>">
-                    </td>
                 </tr>
             </table>
         </div>

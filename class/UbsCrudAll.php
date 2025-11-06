@@ -13,6 +13,7 @@ class UbsCrudAll {
     private $tabela;
     protected array $colunasPermitidas = [];
 
+    public string $chavePrimaria = 'ID';
     
     public function __construct(string $tabela, array $permitidas = []) {
         $this->UbsPDO = Conexao::getConn();
@@ -142,9 +143,9 @@ class UbsCrudAll {
         }
 
         //--------------------Permite customizar o pk se a classe tiver a propriedade $chavePrimaria; padrão 'id'
-        $pk = property_exists($this, 'chavePrimaria') && $this->chavePrimaria
+       $pk = property_exists($this, 'chavePrimaria') && $this->chavePrimaria
             ? $this->chavePrimaria
-            : 'id';
+            : 'ID';
 
         if (!preg_match('/^[A-Za-z_][A-Za-z0-9_]*$/', $pk)) {
             throw new RuntimeException('Nome de chave primária inválido.');
