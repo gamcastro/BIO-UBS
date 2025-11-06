@@ -1,16 +1,19 @@
 <?php
 /**
  * pages/configuracaoUnidade.php
- * * Página para GERENCIAR a única unidade do sistema (ID = 1).
- * * ESTA VERSÃO FOI CORRIGIDA para usar a sintaxe de OBJETO (->)
- * * ao ler os dados, corrigindo o erro 'Cannot use object as array'.
+ * * Página para GERENCIAR a única unidade do sistema.
+ * * ESTRATÉGIA ROBUSTA: Esta versão busca a *primeira linha* da tabela,
+ * * independentemente do seu ID, em vez de usar um ID fixo.
+ * * Também foi corrigido para usar SINTAXE DE ARRAY (['NOME']),
+ * * pois 'buscaLivreParams' retorna FETCH_ASSOC.
  */
 
 $tituloDaPagina = "Dados da Unidade - BIO-UBS";
 
 // 1. INCLUDES E AUTORIZAÇÃO
 // =============================================
-include_once('../includes/header.php'); 
+// --- MUDANÇA: Usando __DIR__ para um caminho absoluto e robusto ---
+include_once(__DIR__ . '/../includes/header.php'); 
 use BioUBS\Conexao; 
 use BioUBS\UbsCrudAll; 
 
@@ -25,12 +28,10 @@ if (!$isAdmin) {
     echo '  <h4 class="alert-heading">Acesso Negado</h4>';
     echo '  <p>Você não tem permissão para acessar esta página.</p>';
     echo '</div>';
-    include_once('../includes/footer.php');
+    // --- MUDANÇA: Usando __DIR__ para um caminho absoluto e robusto ---
+    include_once(__DIR__ . '/../includes/footer.php');
     exit; 
 }
-
-// Define o ID fixo da nossa unidade.
-$id_unidade_fixo = 1;
 
 $mensagem = null; 
 $tipoMensagem = null; 
@@ -39,15 +40,16 @@ try {
     $db = Conexao::getConn();
 } catch (PDOException $e) {
     echo '<div class="alert alert-danger" role="alert">Erro fatal de conexão com o banco.</div>';
-    include_once('../includes/footer.php');
+    // --- MUDANÇA: Usando __DIR__ para um caminho absoluto e robusto ---
+    include_once(__DIR__ . '/../includes/footer.php');
     exit;
 }
+
+$tabela = 'cadastro_unidade';
 
 // 3. LÓGICA DE UPDATE ou INSERT (Processa o formulário)
 // =============================================
 if (isset($_POST['salvar'])) {
-    
-    $tabela = 'cadastro_unidade';
     
     // Nomes das colunas do banco que podem ser atualizadas/criadas
     $colunasPermitidas = [
@@ -72,39 +74,36 @@ if (isset($_POST['salvar'])) {
 
     // *** LÓGICA DE DECISÃO (INSERT vs UPDATE) ***
     
-    // Instancia o objeto
     $objetoOperacao = new UbsCrudAll($tabela, $colunasPermitidas);
-    
-    // Precisamos definir a chave primária correta ('ID') para o UbsCrudAll
-    // (Esta linha é necessária por causa da lógica dentro de 'atualizar()')
-    $objetoOperacao->chavePrimaria = 'ID'; 
+    $objetoOperacao->chavePrimaria = 'ID'; // Define a PK para 'atualizar()'
 
-    // Verifica se a unidade já existe
-    $unidadeExistente = $objetoOperacao->buscarPorId($id_unidade_fixo);
+    // --- Verifica a *primeira linha* em vez de um ID fixo ---
+    $resultadoBusca = $objetoOperacao->buscaLivreParams("LIMIT 1");
+    $unidadeExistente = !empty($resultadoBusca) ? $resultadoBusca[0] : null;
 
     if ($unidadeExistente) {
         // --- MODO UPDATE (A unidade já existe) ---
-        // A função 'atualizar()' retorna um booleano (true/false)
-        $sucesso = $objetoOperacao->atualizar($id_unidade_fixo, $dados);
+        
+        // Pega o ID real da unidade que encontramos
+        $id_real_da_unidade = $unidadeExistente['ID']; 
+        
+        $sucesso = $objetoOperacao->atualizar($id_real_da_unidade, $dados);
         
         if ($sucesso) {
             $mensagem = "Dados da unidade atualizados com sucesso!";
             $tipoMensagem = "success";
         } else {
-            $mensagem = "Erro ao atualizar os dados. Tente novamente.";
-            $tipoMensagem = "danger";
+            // Se 'atualizar' retornar 0 (nenhuma linha afetada), não é um erro.
+            $mensagem = "Dados salvos. Nenhuma alteração foi detectada.";
+            $tipoMensagem = "info"; 
         }
 
     } else {
         // --- MODO INSERT (A unidade NÃO existe) ---
-        $dados['ID'] = $id_unidade_fixo; 
-        // Adiciona ID à whitelist para o INSERT
-        $objetoOperacao->setColunasPermitidas(array_merge($colunasPermitidas, ['ID'])); 
-
-        // A função 'inserir()' retorna o ID (string) ou '0'
+        
         $novoId = $objetoOperacao->inserir($dados);
         
-        if ($novoId === (string)$id_unidade_fixo) {
+        if ($novoId && $novoId !== '0') {
             $mensagem = "Dados da unidade criados com sucesso!";
             $tipoMensagem = "success";
         } else {
@@ -117,28 +116,25 @@ if (isset($_POST['salvar'])) {
 
 // 4. LÓGICA DE SELECT (Busca dados para preencher o formulário)
 // =============================================
-$tabela = 'cadastro_unidade';
 $objetoSelect = new UbsCrudAll($tabela); 
 
-// --- CORREÇÃO DE BUSCA: 'buscarPorId' ---
-// Você corrigiu para 'buscarPorId', que é o método correto.
-$dadosUnidade = $objetoSelect->buscarPorId($id_unidade_fixo); 
-// $dadosUnidade AGORA É UM OBJETO (stdClass)
+// --- Busca a *primeira linha* da tabela, não um ID fixo ---
+$resultadoBusca = $objetoSelect->buscaLivreParams("LIMIT 1");
+$dadosUnidade = !empty($resultadoBusca) ? $resultadoBusca[0] : null;
+// $dadosUnidade É UM ARRAY ASSOCIATIVO (FETCH_ASSOC)
 
-// --- CORREÇÃO DO ERRO 'stdClass as array' ---
-// Trocamos a sintaxe de array (['NOME']) para objeto (->NOME)
-// Isso corrige o erro da linha 126
-$nome = $dadosUnidade->NOME ?? '';
-$cnes = $dadosUnidade->CNES ?? '';
-$cnpj = $dadosUnidade->CNPJ ?? '';
-$telefone = $dadosUnidade->TELEFONE ?? '';
-$cep = $dadosUnidade->CEP ?? '';
-$uf = $dadosUnidade->ESTADO ?? ''; // Coluna 'ESTADO' no banco
-$municipio = $dadosUnidade->MUNICIPIO ?? '';
-$bairro = $dadosUnidade->BAIRRO ?? '';
-$logradouro = $dadosUnidade->LOGRADOURO ?? '';
-$numero = $dadosUnidade->NUMERO ?? '';
-$complemento = $dadosUnidade->COMPLEMENTO ?? '';
+// --- Usando sintaxe de ARRAY (['NOME']) ---
+$nome = $dadosUnidade['NOME'] ?? '';
+$cnes = $dadosUnidade['CNES'] ?? '';
+$cnpj = $dadosUnidade['CNPJ'] ?? '';
+$telefone = $dadosUnidade['TELEFONE'] ?? '';
+$cep = $dadosUnidade['CEP'] ?? '';
+$uf = $dadosUnidade['ESTADO'] ?? ''; // Coluna 'ESTADO' no banco
+$municipio = $dadosUnidade['MUNICIPIO'] ?? '';
+$bairro = $dadosUnidade['BAIRRO'] ?? '';
+$logradouro = $dadosUnidade['LOGRADOURO'] ?? '';
+$numero = $dadosUnidade['NUMERO'] ?? '';
+$complemento = $dadosUnidade['COMPLEMENTO'] ?? '';
 
 ?>
 
@@ -250,8 +246,8 @@ INÍCIO: Conteúdo HTML da Página
                         <select id="uf" name="uf" class="form-select"> 
                             <option value="" selected>Selecione...</option>
                             <?php 
-                            // O header.php já carregou o autoload.php
-                            require('../querys/ConsultaUnidadeFederativaSelect.php');
+                            // --- MUDANÇA: Usando __DIR__ para um caminho absoluto e robusto ---
+                            require(__DIR__ . '/../querys/ConsultaUnidadeFederativaSelect.php');
                             ?>
                         </select>
                         
@@ -287,6 +283,6 @@ INÍCIO: Conteúdo HTML da Página
 
 
 <?php
-// Inclui o footer.php
-include_once('../includes/footer.php');
+// --- MUDANÇA: Usando __DIR__ para um caminho absoluto e robusto ---
+include_once(__DIR__ . '/../includes/footer.php');
 ?>
