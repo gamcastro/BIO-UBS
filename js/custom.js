@@ -98,7 +98,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
 // =========================================================================
-// FUNÇÃO DE EVENTOS DO MODAL DE ACOLHIMENTO (AGORA CORRIGIDA)
+// FUNÇÃO DE EVENTOS DO MODAL DE ACOLHIMENTO
 // =========================================================================
 function setupModalEventListeners(modalElement) {
     var btnBuscar = modalElement.querySelector('#btnBuscar');
@@ -126,7 +126,7 @@ function setupModalEventListeners(modalElement) {
     }
 
     if (txtQueixa) {
-        // CORREÇÃO: Removido um 'ar' que estava sobrando antes desta linha
+       
         txtQueixa.addEventListener('input', checkEnableSubmit);
     }
 

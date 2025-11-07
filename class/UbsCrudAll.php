@@ -307,10 +307,10 @@ class UbsCrudAll {
                 elseif ($v === null) $type = PDO::PARAM_NULL;
 
                 if (is_int($k)) {
-                    //--------------------posicionais: 1-based
+                   
                     $stmt->bindValue($k + 1, $v, $type);
                 } else {
-                    //--------------------------------nomeados
+                   
                     $param = ($k[0] === ':') ? $k : ':' . $k;
                     $stmt->bindValue($param, $v, $type);
                 }

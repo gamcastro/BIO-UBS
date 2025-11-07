@@ -49,11 +49,15 @@ if (isset($_GET['id'])): //----só surgirá o conteúdo se vier um ID
         $pontoReferencia = $rowsId['PONTO_REFERENCIA'];
     }
 ?>
+ 
+    <!------------------janela modal-------------------------------------------->
 
+            <!-------------CABEÇALHO DA JANELA------------------------->
     <div class="modal-header">
         <h5 class="modal-title" id="updateModalLabel">Editando cadastro de Profissional</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
     </div>
+            <!-------------------------------------------------------->
 
     <!-- Script: preenche selects de UF quando o modal for exibido (tentativas repetidas) -->
     <script>
@@ -115,9 +119,10 @@ if (isset($_GET['id'])): //----só surgirá o conteúdo se vier um ID
     })();
     </script>
 
-    <form id="ed" name="ed" action="" method="post">
+    <form id="ed" name="ed" action="" method="post"><!----formulario-------->   
         <input type="hidden" name="id" value="<?= $id ?>">
 
+        <!----------------CORPO DA JANELA------------------------->
         <div class="modal-body">
             <table class="table table-bordered">
                 
@@ -289,11 +294,17 @@ if (isset($_GET['id'])): //----só surgirá o conteúdo se vier um ID
                 </tr>
             </table>
         </div>
+        <!--------------------------------------------------------->
+
+        <!---------------RODAPÉ DA JANELA---------------------->
         <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
             <button type="submit" name="editar" class="btn btn-success">Salvar</button>
         </div>
     </form>
+            <!----------------------------------------------------->
+    
+<!----------------------------fim da da janela modal----------------------------->
 <?php
 endif;
 ?>

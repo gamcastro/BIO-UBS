@@ -31,15 +31,20 @@ if (isset($_GET['id'])): //----só sugirá o conteúdo se vier um ID
         $complemento = $rowsId['COMPLEMENTO'];
     }
 ?>
+ 
+    <!------------------janela modal-------------------------------------------->
 
+            <!-------------CABEÇALHO DA JANELA------------------------->
     <div class="modal-header">
         <h5 class="modal-title" id="updateModalLabel">Editando cadastro de Unidade</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
     </div>
+            <!-------------------------------------------------------->
 
-    <form id="ed" name="ed" action="" method="post">
+    <form id="ed" name="ed" action="" method="post"><!----formulario-------->   
         <input type="hidden" name="id" value="<?= $id ?>">
 
+        <!----------------CORPO DA JANELA------------------------->
         <div class="modal-body">
             <table class="table table-bordered">
                 <tr class="table-info">
@@ -133,11 +138,17 @@ if (isset($_GET['id'])): //----só sugirá o conteúdo se vier um ID
                 </tr>
             </table>
         </div>
+        <!--------------------------------------------------------->
+
+        <!---------------RODAPÉ DA JANELA---------------------->
         <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
             <button type="submit" name="editar" class="btn btn-success">Salvar</button>
         </div>
     </form>
+            <!----------------------------------------------------->
+    
+<!----------------------------fim da da janela modal----------------------------->
 <?php
 endif;
 ?>
