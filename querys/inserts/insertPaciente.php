@@ -5,7 +5,7 @@ use BioUBS\UbsCrudAll;
   //-------campos via post
   $nome = $_POST['nome']; //---------o name no formulario é livre mas deve ser recebido aqui
         $data_nascimento = $_POST['data_nascimento'];
-        $cpf = $_POST['cpf'];
+  $cpf = $_POST['cpf'];
         $rg = $_POST['rg'];
         $uf_rg = $_POST['uf_rg'];
         $ssp = $_POST['ssp'];
@@ -18,6 +18,9 @@ use BioUBS\UbsCrudAll;
   $nome = trim(preg_replace('/\s+/u', ' ', (string)$nome));
   $nome = mb_convert_case(mb_strtolower($nome, 'UTF-8'), MB_CASE_TITLE, 'UTF-8');
   $ssp  = mb_strtoupper((string)$ssp, 'UTF-8');
+  // CPF apenas dígitos
+  if (!function_exists('sanitize_cpf')) { require_once __DIR__ . '/../../includes/functions.php'; }
+  $cpf = sanitize_cpf($cpf);
 
 //------------------inserindo na tabela pacientes---------
 

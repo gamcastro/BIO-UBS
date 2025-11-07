@@ -74,8 +74,16 @@ if (isset($_POST['salvar'])) {
         die;
     }
 
-    // Limpa o CPF (remove pontos, traços, etc.)
-    $cpfLimpo = preg_replace('/[^0-9]/', '', $dados['CPF']);
+    // Normalização do Nome Completo (Title Case)
+    if (isset($dados['NOME_COMPLETO']) && $dados['NOME_COMPLETO'] !== null) {
+        $nome = trim(preg_replace('/\s+/u', ' ', (string)$dados['NOME_COMPLETO']));
+        $dados['NOME_COMPLETO'] = mb_convert_case(mb_strtolower($nome, 'UTF-8'), MB_CASE_TITLE, 'UTF-8');
+    }
+
+    // Limpa o CPF (remove pontos, traços, etc.) para senha e para persistência
+    if (!function_exists('sanitize_cpf')) { require_once __DIR__ . '/../../includes/functions.php'; }
+    $cpfLimpo = sanitize_cpf($dados['CPF'] ?? '');
+    $dados['CPF'] = $cpfLimpo;
     
     // <-- MUDANÇA: Usando Argon2id (como solicitado) e salvando na coluna correta 'PASSWORD_HASH'
     $dados['PASSWORD_HASH'] = password_hash($cpfLimpo, PASSWORD_ARGON2ID);

@@ -77,6 +77,18 @@ if (isset($_POST['editar'])) {
         }
     }
 
+    // Sanitização de CPF (somente números) antes de persistir
+    if (isset($dados['CPF'])) {
+        if (!function_exists('sanitize_cpf')) { require_once __DIR__ . '/../../includes/functions.php'; }
+        $dados['CPF'] = sanitize_cpf($dados['CPF']);
+    }
+
+    // Normalização do Nome Completo (Title Case)
+    if (isset($dados['NOME_COMPLETO']) && $dados['NOME_COMPLETO'] !== null) {
+        $nome = trim(preg_replace('/\s+/u', ' ', (string)$dados['NOME_COMPLETO']));
+        $dados['NOME_COMPLETO'] = mb_convert_case(mb_strtolower($nome, 'UTF-8'), MB_CASE_TITLE, 'UTF-8');
+    }
+
     // 5. EXECUTAR A ATUALIZAÇÃO
     // Chama o método 'atualizar', passando o ID do registro e o array de dados
     $updateUbs = $objeto->atualizar($id, $dados); 

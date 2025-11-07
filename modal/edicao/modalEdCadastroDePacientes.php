@@ -92,7 +92,7 @@ if(isset($_GET['id'])): //----só sugirá o conteúdo se vier um ID
                   <tr>
 
                     <td>
-                      <input class="form-control" type="" name="cpf" placeholder="ex: 000.000.000-00" onkeypress="return mascaras(event, this, '###.###.###-##');" value="<?=$cpf?>">
+                      <input class="form-control" type="" name="cpf" placeholder="ex: 000.000.000-00" onkeypress="return mascaras(event, this, '###.###.###-##');" value="<?= htmlspecialchars(function_exists('format_cpf') ? format_cpf($cpf ?? '') : $cpf) ?>">
                     </td>
 
                     <td>

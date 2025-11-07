@@ -6,7 +6,8 @@
 		
 		if (charCode == 8) return true; //permitindo backspace
 		if (charCode == 9) return true; //permitindo TAB
-		if (charCode !=46 && (charCode <48 || charCode >57)) return false; //apenas números
+		// BLOQUEANDO pontos e traços (charCode 46 = ponto, 45 = traço) - apenas números permitidos
+		if (charCode <48 || charCode >57) return false; //apenas números de 0-9
 		
 		campo.maxLength = padrao.length; //tamanho do campo de acordo com fornecido
 		

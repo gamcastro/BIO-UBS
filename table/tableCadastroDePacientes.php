@@ -69,7 +69,7 @@ use BioUBS\Idade;
                   ?>    
                 </td>
 
-                <td><?= htmlspecialchars($cpf ?? '') ?></td>
+                <td><?= htmlspecialchars(function_exists('format_cpf') ? format_cpf($cpf ?? '') : $cpf) ?></td>
                 
                 <td class="text-center">
                   <!-------botão iimprimir------->

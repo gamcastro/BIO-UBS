@@ -57,8 +57,9 @@ endif;//---fim para controle de acesso
 <h1 class="display-5 text-center text-muted mb-4">Cadastro de Pacientes</h1>
 <hr class="mb-4">
 
-<!-- Funções de máscara/utilidades (Title Case para nome, etc.) -->
+<!-- Funções de máscara/utilidades (Title Case para nome e máscara de CPF) -->
 <script type="text/javascript" src="<?= BASE_URL ?>/js/mask/funcaoLetrasMaiusculas.js"></script>
+<script type="text/javascript" src="<?= BASE_URL ?>/js/mask/funcaoMascaraGeralNumeros.js"></script>
 
 <?php
 if ($nivelAcesso == 1):

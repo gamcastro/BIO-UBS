@@ -44,7 +44,7 @@ require_once __DIR__ . '/../../vendor/autoload.php';
                 </tr>
                 <tr>
                     <td colspan="3">
-                        <input class="form-control" type="text" id="NOME_COMPLETO" name="NOME_COMPLETO" required="required" placeholder="Nome completo do profissional">
+                        <input class="form-control" type="text" id="NOME_COMPLETO" name="NOME_COMPLETO" required="required" placeholder="Nome completo do profissional" onkeyup="alteraNomeProfissional()">
                     </td>
                     <td>
                         <input class="form-control" type="text" id="MATRICULA" name="MATRICULA" placeholder="Matrícula">
@@ -59,7 +59,7 @@ require_once __DIR__ . '/../../vendor/autoload.php';
                 </tr>
                 <tr>
                     <td>
-                        <input class="form-control" type="text" id="CPF" name="CPF" required="required" placeholder="Somente números">
+                        <input class="form-control" type="text" id="CPF" name="CPF" required="required" placeholder="000.000.000-00" onkeypress="return mascaras(event, this, '###.###.###-##');">
                     </td>
                     <td>
                         <input class="form-control" type="text" id="CNS_PROFISSIONAL" name="CNS_PROFISSIONAL" placeholder="Nº CNS">

@@ -41,6 +41,10 @@ endif;//---fim para controle de acesso
 <h1 class="display-5 text-center text-muted mb-4">Cadastro de Profissionais</h1>
 <hr class="mb-4">
 
+<!-- Funções de máscara/utilidades -->
+<script type="text/javascript" src="<?= BASE_URL ?>/js/mask/funcaoMascaraGeralNumeros.js"></script>
+<script type="text/javascript" src="<?= BASE_URL ?>/js/mask/funcaoLetrasMaiusculas.js"></script>
+
 <?php
 if ($nivelAcesso == 1):
 /* verificando o nível de acesso para o Botão Cadastrar*/
