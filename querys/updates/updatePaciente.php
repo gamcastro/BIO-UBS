@@ -15,6 +15,11 @@ $uf_rg = $_POST['uf_rg'];
 $ssp = $_POST['ssp'];
 //----------------------
 
+// Normalizações no servidor para consistência
+$nome = trim(preg_replace('/\s+/u', ' ', (string)$nome));
+$nome = mb_convert_case(mb_strtolower($nome, 'UTF-8'), MB_CASE_TITLE, 'UTF-8');
+$ssp  = mb_strtoupper((string)$ssp, 'UTF-8');
+
 //------------------alterado os dados do pacientes---------
 $tabela = 'cadastro_paciente';
 
