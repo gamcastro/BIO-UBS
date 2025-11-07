@@ -27,16 +27,21 @@ if (isset($_GET['id'])): //----só sugirá o conteúdo se vier um ID
     $cnes = $rowsId['CNES'];
   }  
 ?> 
+<!----------------------------janela modal--------------------------------------------------------->
 
-      <div class="modal-header bg-danger text-white">
+      <!-------------CABEÇALHO DA JANELA------------------------->
+    <div class="modal-header bg-danger text-white">
         <h5 class="modal-title" id="deleteModalLabel">Excluir Cadastro de Unidade</h5>
             <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
   </div>
-    <form id="ex" name="ex" action="" method="post">
+      <!-------------------------------------------------------->
+
+  <form id="ex" name="ex" action="" method="post"><!----formulario-------->
     
         <input type="hidden" name="id" value="<?= $id ?>">
-      
-        <div class="modal-body">
+        
+    <!----------------CORPO DA JANELA------------------------->
+    <div class="modal-body">
             <div class="alert alert-danger" role="alert">
                 <h4 class="alert-heading"><i class="bi bi-exclamation-triangle-fill"></i> Atenção!</h4>
                 <p>Você está prestes a **EXCLUIR** um registro do Banco de Dados. Esta operação não poderá ser desfeita.</p>
@@ -48,12 +53,16 @@ if (isset($_GET['id'])): //----só sugirá o conteúdo se vier um ID
                 <small class="text-muted"><strong>CNES:</strong> <?= htmlspecialchars($cnes) ?></small>
             </h5>
     </div>
-            <div class="modal-footer">
+      <!--------------------------------------------------------->
+
+      <!---------------RODAPÉ DA JANELA---------------------->
+      <div class="modal-footer">
                   <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
             
                   <button type="submit" name="excluir" class="btn btn-danger">Confirmar Exclusão</button>
     </div>
-      </form>
+    </form>
+<!----------------------------fim da da janela modal----------------------------->
     <?php 
 endif;
 ?>

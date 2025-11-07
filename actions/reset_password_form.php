@@ -47,7 +47,7 @@ if (!$reset || new DateTime() > new DateTime($reset['expires'])) {
 <div class="container py-5">
   <div class="mx-auto bg-white p-4 rounded shadow" style="max-width:400px">
     <h3 class="text-center mb-4">Definir nova senha</h3>
-    <form method="POST" action="reset_password_update.php">
+    <form method="POST" action="<?= BASE_URL ?>/actions/reset_password_update.php">
       <!--------- Importante: envia o token novamente ------------>
       <input type="hidden" name="token" value="<?= htmlspecialchars($token) ?>">
       <div class="mb-3">

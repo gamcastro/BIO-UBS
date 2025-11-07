@@ -3,15 +3,22 @@
 require_once __DIR__ . '/../../vendor/autoload.php';
 ?>
 
+<!----------------------------janela modal--------------------------------------------------------->
+
 <div class="modal fade" id="insertUnidade" tabindex="-1" aria-labelledby="insertUnidadeLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg">
+    <div class="modal-dialog modal-lg"> <!------aqui consigo mudar o tamanho da modal para modal-lg modal-sm------>
+        <!-- contener da janela-->
         <div class="modal-content">
-            <form id="cadUnidadeForm" name="cadUnidade" action="cadastroDeUnidades.php" method="post">
+            <form id="cadUnidadeForm" name="cadUnidade" action="<?= BASE_URL ?>/pages/cadastroDeUnidades.php" method="post"><!--------------formulário------->
+
+                <!-------------CABEÇALHO DA JANELA------------------------->
                 <div class="modal-header">
                     <h5 class="modal-title" id="insertUnidadeLabel">Cadastrando Nova Unidade</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
+                <!-------------------------------------------------------->
 
+                <!----------------CORPO DA JANELA------------------------->
                 <div class="modal-body">
                     <table class="table table-bordered">
                         <tr class="table-info">
@@ -101,12 +108,16 @@ require_once __DIR__ . '/../../vendor/autoload.php';
                         </tr>
                     </table>
                 </div>
+                <!--------------------------------------------------------->
 
+                <!---------------RODAPÉ DA JANELA---------------------->
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
                     <button type="submit" name="salvar" class="btn btn-success">Salvar Unidade</button>
                 </div>
-            </form>
+            </form><!----fim formulario--->
+            <!----------------------------------------------------->
         </div>
     </div>
 </div>
+<!----------------------------fim da da janela modal----------------------------->

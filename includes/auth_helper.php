@@ -10,7 +10,7 @@ use BioUBS\Conexao;
 
 // NÃO execute getConn() aqui globalmente. Obtenha a conexão DENTRO das funções
 // ou passe-a como parâmetro. O script auth.php já obtém e passa $db.
-// $db = Conexao::getConn(); // REMOVER ESTA LINHA GLOBAL
+
 
 function increment_attempt(PDO $db, string $ip): void {
     $stmt = $db->prepare("INSERT INTO login_attempts (ip, attempts, last_attempt)
@@ -33,8 +33,7 @@ function is_locked(PDO $db, string $ip, int $limit = 5, int $minutes = 15): bool
     
     if (!$row) return false; // Se não houver registo, não está bloqueado
 
-    // *** CORREÇÃO LINHA 31 ***
-    // Usar sintaxe de objeto ->chave em vez de array ['chave']
+   
     $attempts = (int)$row->attempts; 
     $last = strtotime($row->last_attempt ?? '1970-01-01');
 
@@ -86,8 +85,7 @@ function try_remember_login(PDO $db): ?array
         // SUCESSO! Token é válido.
         
         // 3. Busca os dados COMPLETOS do profissional
-        // *** CORREÇÃO PRINCIPAL ***
-        // Buscamos todos os 4 campos necessários para a sessão,
+          // Buscamos todos os 4 campos necessários para a sessão,
         // alinhando com o que o 'auth.php' faz.
         $u = $db->prepare("SELECT ID, MATRICULA, NOME_COMPLETO, PERFIL 
                            FROM cadastro_profissional 

@@ -1,13 +1,19 @@
 <?php
 // Conteúdo do modal de Acolhimento (Bootstrap 5)
 ?>
+<!------------------janela modal-------------------------------------------->
+
+            <!-------------CABEÇALHO DA JANELA------------------------->
 <div class="modal-header">
   <h5 class="modal-title" id="acolhimentoModalLabel">Acolhimento à Demanda Espontânea</h5>
   <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 </div>
 
+            <!-------------------------------------------------------->
+
+<!----------------CORPO DA JANELA------------------------->
 <div class="modal-body">
-  <form action="processa_acolhimento.php" method="POST">
+  <form action="<?= BASE_URL ?>/actions/processa_acolhimento.php" method="POST"><!--------------formulário------->
 
     <div class="mb-3"> 
       <label for="buscaPaciente" class="form-label fw-bold">1. Identificar Paciente</label> 
@@ -30,6 +36,9 @@
 
     <div class="d-grid"> <button type="submit" class="btn btn-success btn-lg" id="btnEncaminhar" disabled> <i class="bi bi-arrow-right-circle-fill"></i> Encaminhar para Triagem </button>
     </div>
-    </form> </div> <div class="modal-footer">
+    </form><!----fim formulario---> </div> 
+    <!--------------------------------------------------------->
+<div class="modal-footer">
   <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
 </div>
+<!----------------------------fim da da janela modal----------------------------->

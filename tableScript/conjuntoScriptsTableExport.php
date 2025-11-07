@@ -1,16 +1,16 @@
   <!-----------controle geral------>
-  <script src="export/dataTables.buttons.min.js"></script>
+  <script src="<?= BASE_URL ?>/export/dataTables.buttons.min.js"></script>
 
-  <script src="export/jszip.min.js"></script>
+  <script src="<?= BASE_URL ?>/export/jszip.min.js"></script>
 
   <!----pdf--------------------
-  <script src="export/pdfmake.min.js"></script>-->
+  <script src="<?= BASE_URL ?>/export/pdfmake.min.js"></script>-->
 
   <!----pdf--------------------->
-  <script src="export/vfs_fonts.js"></script>
+  <script src="<?= BASE_URL ?>/export/vfs_fonts.js"></script>
   
   <!----demais botoes--------------------->
-  <script src="export/buttons.html5.min.js"></script>
+  <script src="<?= BASE_URL ?>/export/buttons.html5.min.js"></script>
 
   <!----print--------------------->
-  <script src="export/buttons.print.min.js"></script>
+  <script src="<?= BASE_URL ?>/export/buttons.print.min.js"></script>

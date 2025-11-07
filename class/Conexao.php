@@ -2,8 +2,8 @@
 
 namespace BioUBS;
 
-use PDO; // <-- ADICIONAR ISTO
-use PDOException; // <-- ADICIONAR ISTO
+use PDO; 
+use PDOException; 
 
 class Conexao{
 

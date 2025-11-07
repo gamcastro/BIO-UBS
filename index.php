@@ -10,8 +10,8 @@
  */
 
 session_start();
-require_once __DIR__ . '/vendor/autoload.php';
-require_once __DIR__ . '/includes/auth_helper.php'; // Garante que a função try_remember_login exista
+require_once __DIR__ . '/vendor/autoload.php'; //Autoload do Composer
+require_once __DIR__ . '/includes/auth_helper.php'; 
 use BioUBS\Conexao; // Importa a classe de conexão
 
 // Tenta obter a conexão com o banco de dados
@@ -22,7 +22,6 @@ try {
 }
 
 // Se não houver sessão, tenta autenticar via remember-me
-// (Lógica que já validamos e sabemos que está correta)
 if (empty($_SESSION['user_id'])) {
     
     $user = try_remember_login($db);
@@ -47,7 +46,7 @@ if (empty($_SESSION['user_id'])) {
 // Define o título e inclui o header
 // O header.php agora carrega o sidebar.php e abre o <main>
 $tituloDaPagina = "Dashboard - BIO-UBS" ;
-include_once('includes/header.php');
+include_once(__DIR__ . '/includes/header.php');
 
 // Pega o perfil e o nome da sessão para usar no dashboard
 $user_perfil = $_SESSION['user_perfil'] ?? '';
@@ -77,8 +76,7 @@ Este layout é COMPLEMENTAR à sidebar, não redundante.
     <div class="row g-4">
 
         <?php
-        // --- Lógica de Permissão para os Cards ---
-        // Com base nos perfis do arquivo 'image_ed13e7.png'
+        // --- Lógica de Permissão para os Cards ---       
 
         // Perfis de Atendimento Clínico
         $perfis_clinicos = ['MÉDICO', 'ENFERMEIRO', 'AUXILIAR/TÉCNICO ENFERMAGEM', 'CIRURGIÃO DENTISTA', 'ASB - AUXILIAR SAÚDE BUCAL', 'TSB - TÉCNICO SAÚDE BUCAL'];
@@ -99,7 +97,7 @@ Este layout é COMPLEMENTAR à sidebar, não redundante.
             <!-- Card 1: Fila de Atendimento -->
             <div class="col-md-6 col-lg-4">
                 <div class="card h-100 shadow-sm border-0">
-                    <a href="pages/painelAtendimento.php" class="text-decoration-none text-dark d-flex flex-column h-100">
+                    <a href="<?= BASE_URL ?>/pages/painelAtendimento.php" class="text-decoration-none text-dark d-flex flex-column h-100">
                         <div class="card-body d-flex flex-column justify-content-center text-center p-4">
                             <i class="bi bi-clipboard2-pulse-fill text-primary" style="font-size: 3rem;"></i>
                             <h5 class="card-title fw-bold mt-3 mb-2">Fila de Atendimento</h5>
@@ -112,7 +110,7 @@ Este layout é COMPLEMENTAR à sidebar, não redundante.
             <!-- Card 2: Minha Agenda -->
             <div class="col-md-6 col-lg-4">
                 <div class="card h-100 shadow-sm border-0">
-                    <a href="pages/agenda.php" class="text-decoration-none text-dark d-flex flex-column h-100">
+                    <a href="<?= BASE_URL ?>/pages/agenda.php" class="text-decoration-none text-dark d-flex flex-column h-100">
                         <div class="card-body d-flex flex-column justify-content-center text-center p-4">
                             <i class="bi bi-calendar-week text-success" style="font-size: 3rem;"></i>
                             <h5 class="card-title fw-bold mt-3 mb-2">Minha Agenda</h5>
@@ -132,8 +130,8 @@ Este layout é COMPLEMENTAR à sidebar, não redundante.
             <div class="col-md-6 col-lg-4">
                 <div class="card h-100 shadow-sm border-0">
                     <!-- Aciona a mesma modal do botão da sidebar -->
-                    <a href="#" data-bs-toggle="modal" data-bs-target="#acolhimentoBioUBS" data-url="../modal/fluxos/modalAcolhimento.php" 
-                       class="text-decoration-none text-dark d-flex flex-column h-100">
+                          <a href="#" data-bs-toggle="modal" data-bs-target="#acolhimentoBioUBS" data-url="<?= BASE_URL ?>/modal/fluxos/modalAcolhimento.php" 
+                              class="text-decoration-none text-dark d-flex flex-column h-100">
                         <div class="card-body d-flex flex-column justify-content-center text-center p-4">
                             <i class="bi bi-person-plus-fill text-primary" style="font-size: 3rem;"></i>
                             <h5 class="card-title fw-bold mt-3 mb-2">Novo Acolhimento</h5>
@@ -146,7 +144,7 @@ Este layout é COMPLEMENTAR à sidebar, não redundante.
             <!-- Card 2: Buscar Paciente -->
             <div class="col-md-6 col-lg-4">
                 <div class="card h-100 shadow-sm border-0">
-                    <a href="pages/cadastroDePacientes.php" class="text-decoration-none text-dark d-flex flex-column h-100">
+                    <a href="<?= BASE_URL ?>/pages/cadastroDePacientes.php" class="text-decoration-none text-dark d-flex flex-column h-100">
                         <div class="card-body d-flex flex-column justify-content-center text-center p-4">
                             <i class="bi bi-people-fill text-info" style="font-size: 3rem;"></i>
                             <h5 class="card-title fw-bold mt-3 mb-2">Buscar Paciente</h5>
@@ -165,7 +163,7 @@ Este layout é COMPLEMENTAR à sidebar, não redundante.
             <!-- Card 1: Gerenciar Profissionais -->
             <div class="col-md-6 col-lg-4">
                 <div class="card h-100 shadow-sm border-0">
-                    <a href="pages/cadastroDeProfissionais.php" class="text-decoration-none text-dark d-flex flex-column h-100">
+                    <a href="<?= BASE_URL ?>/pages/cadastroDeProfissionais.php" class="text-decoration-none text-dark d-flex flex-column h-100">
                         <div class="card-body d-flex flex-column justify-content-center text-center p-4">
                             <i class="bi bi-person-badge text-warning" style="font-size: 3rem;"></i>
                             <h5 class="card-title fw-bold mt-3 mb-2">Gerenciar Profissionais</h5>
@@ -178,7 +176,7 @@ Este layout é COMPLEMENTAR à sidebar, não redundante.
             <!-- Card 2: Relatórios Rápidos -->
             <div class="col-md-6 col-lg-4">
                 <div class="card h-100 shadow-sm border-0">
-                    <a href="pages/relatorios.php" class="text-decoration-none text-dark d-flex flex-column h-100">
+                    <a href="<?= BASE_URL ?>/pages/relatorios.php" class="text-decoration-none text-dark d-flex flex-column h-100">
                         <div class="card-body d-flex flex-column justify-content-center text-center p-4">
                             <i class="bi bi-graph-up-arrow text-danger" style="font-size: 3rem;"></i>
                             <h5 class="card-title fw-bold mt-3 mb-2">Relatórios Rápidos</h5>
@@ -190,12 +188,12 @@ Este layout é COMPLEMENTAR à sidebar, não redundante.
         <?php endif; ?>
 
         <?php 
-        // --- CARD COMUM A TODOS (OU QUASE TODOS) ---
-        // Ex: Um card genérico de "Ajuda" ou "Meu Perfil"
+        // --- CARD COMUM A TODOS  ---
+       
         ?>
         <div class="col-md-6 col-lg-4">
             <div class="card h-100 shadow-sm border-0">
-                <a href="pages/meuPerfil.php" class="text-decoration-none text-dark d-flex flex-column h-100">
+                <a href="<?= BASE_URL ?>/pages/meuPerfil.php" class="text-decoration-none text-dark d-flex flex-column h-100">
                     <div class="card-body d-flex flex-column justify-content-center text-center p-4">
                         <i class="bi bi-person-fill-gear text-muted" style="font-size: 3rem;"></i>
                         <h5 class="card-title fw-bold mt-3 mb-2">Meu Perfil</h5>
@@ -217,6 +215,6 @@ FIM: Conteúdo do Dashboard
 
 <?php
 // Inclui o footer.php (que fecha a tag <main> e adiciona o <footer>)
-include_once('includes/footer.php');
+include_once(__DIR__ . '/includes/footer.php');
 ?>
 

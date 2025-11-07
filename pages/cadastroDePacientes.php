@@ -3,34 +3,40 @@
 $tituloDaPagina = "Cadastro de Pacientes";
 //---------------------------
 require_once __DIR__ . '/../vendor/autoload.php'; // Autoloader
-include_once(__DIR__ . '/../includes/header.php'); // Carrega o Header (Menu, CSS, custom.js)
+include_once(__DIR__ . '/../includes/header.php'); 
 
 //-----------classes que serão usadas-----
-// (A página principal precisa conhecer as classes)
 use BioUBS\UbsCrudAll;
 use BioUBS\Idade;
 //----------------------------------------
 
 
 
-/* * Lógica PHP de salvar/editar/excluir
- * Esta lógica é executada QUANDO um formulário (novo, edição ou exclusão)
- * é submetido para esta mesma página.
- */
-// A variável $nivelAcesso é definida dentro do 'authorization.php',
-// que é incluído pelo 'header.php'
-if ($nivelAcesso == 1) {
-  if (isset($_POST['salvar'])) {
-    // Script para inserir novo paciente
+/*autorização*/
+if ($nivelAcesso == 1):
+  /* verificando o nível de acesso para Cadastrar, Editar e Excluir*/
+
+  if (isset($_POST['salvar'])):
+
+    //-----------------salvando o cadastro-----
     include(__DIR__ . '/../querys/inserts/insertPaciente.php');
-  } elseif (isset($_POST['editar'])) {
-    // Script para atualizar paciente
+    //********************************************************
+
+  elseif (isset($_POST['editar'])):
+
+    //-----------------editando o cadastro-----
     include(__DIR__ . '/../querys/updates/updatePaciente.php');
-  } elseif (isset($_POST['excluir'])) {
-    // Script para deletar paciente
+    //********************************************************
+
+  elseif (isset($_POST['excluir'])):
+
+    //-----------------excluindo o cadastro-----
     include(__DIR__ . '/../querys/deletes/deletePaciente.php');
-  }
-}
+    //********************************************************
+
+  endif;
+
+endif;//---fim para controle de acesso
 
 
 //-------------------FUNCOES PHP --------------------------
@@ -51,7 +57,13 @@ if ($nivelAcesso == 1) {
 <h1 class="display-5 text-center text-muted mb-4">Cadastro de Pacientes</h1>
 <hr class="mb-4">
 
-<?php if ($nivelAcesso == 1): ?>
+<?php
+if ($nivelAcesso == 1):
+/* verificando o nível de acesso para o Botão Cadastrar*/
+?>
+
+
+<!---------------botão para acionar a modal------------------>
   <div class="d-flex justify-content-end mb-3">
     <button type="button" class="btn btn-primary"
       data-bs-toggle="modal"
@@ -59,6 +71,9 @@ if ($nivelAcesso == 1) {
       <i class="bi bi-plus-circle me-1"></i> Novo Cadastro
     </button>
   </div>
+<!------------------------------------------------------------------>
+
+
 <?php endif; ?>
 
 
@@ -66,48 +81,61 @@ if ($nivelAcesso == 1) {
 
 
 
-<div class="modal fade" id="updateBioUBS" tabindex="-1" aria-labelledby="updateModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-lg">
-    <div class="modal-content">
-      <div class="modal-body text-center">
-        <div class="spinner-border" role="status">
-          <span class="visually-hidden">Carregando...</span>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-
-<div class="modal fade" id="deleteBioUBS" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-body text-center">
-        <div class="spinner-border" role="status">
-          <span class="visually-hidden">Carregando...</span>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-
-
-
-<?php
-// Inclui a TABELA principal
-include(__DIR__ . '/../table/tableCadastroDePacientes.php');
-?>
-
-<?php
-// Inclui o CONTEÚDO do modal de "Novo Cadastro" (Estático)
-// O ID deste modal deve ser 'insertPaciente'
+<?php 
+///-----------------JANELA MODAL----------------------
+//-------------incluindo janela modal cadastro-----------------------------
 include(__DIR__ . '/../modal/cadastro/modalCadastroDePacientes.php');
 ?>
 
+<!-----------casca da modal de edicao------------->
+<div class="modal fade" id="updateBioUBS" tabindex="-1" aria-labelledby="updateModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <!-- contener da janela-->
+    <div class="modal-content">
+      <div class="modal-body text-center">
+        <div class="spinner-border" role="status">
+          <span class="visually-hidden">Carregando...</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-----------casca da modal de exclusão------------->
+<div class="modal fade" id="deleteBioUBS" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <!-- contener da janela-->
+    <div class="modal-content">
+      <div class="modal-body text-center">
+        <div class="spinner-border" role="status">
+          <span class="visually-hidden">Carregando...</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-----------------fim para modal----------------------------------->
+
+
+
 <?php
-// Inclui o FOOTER
-// Isso vai carregar o footer, o custom.js e o tableSimples.js,
-// que finalmente inicializará o seu DataTable.
+
+// Inclui a TABELA principal
+
+
+
+
+//---------------------IMPORTANTE!!!!!!!!!!!!
+//-------------tabela principal--------------
+include(__DIR__ . '/../table/tableCadastroDePacientes.php');
+//-------------------------------------------
+
+
+
+
+//-----------incluindo o rodapé 
 include_once(__DIR__ . '/../includes/footer.php');
+
 ?>
 
 

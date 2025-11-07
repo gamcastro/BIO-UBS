@@ -1,14 +1,18 @@
 <?php
-// Carrega o autoloader do Composer (para a query de UFs)
+// Carrega o autoloader do Composer 
 require_once __DIR__ . '/../../vendor/autoload.php';
 ?>
 
+<!----------------------------janela modal--------------------------------------------------------->
+
 <div id="insertProfissional" class="modal fade" tabindex="-1" aria-labelledby="cadastroModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-lg">
-    <div class="modal-content">
+    <div class="modal-dialog modal-lg"> <!------aqui consigo mudar o tamanho da modal para modal-lg modal-sm------>
+        <!-- contener da janela-->
+        <div class="modal-content">
 
- <form id="cad" name="cad" action="cadastroDeProfissionais.php" method="post">
+ <form id="cad" name="cad" action="<?= BASE_URL ?>/pages/cadastroDeProfissionais.php" method="post"><!--------------formulário------->
 
+                        <!-------------CABEÇALHO DA JANELA------------------------->
             <div class="modal-header">
                 
                 <h5 class="modal-title" id="cadastroModalLabel">Novo cadastro de Profissional</h5>
@@ -16,7 +20,17 @@ require_once __DIR__ . '/../../vendor/autoload.php';
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 
             </div>
-           <div class="modal-body">
+                        <!-------------------------------------------------------->
+
+
+
+
+
+
+
+
+                     <!----------------CORPO DA JANELA------------------------->
+                     <div class="modal-body">
             
             <table class="table table-bordered">
                 
@@ -186,13 +200,25 @@ require_once __DIR__ . '/../../vendor/autoload.php';
             </table>
 
             </div>
-            <div class="modal-footer">
+        <!--------------------------------------------------------->
+
+
+
+
+
+
+
+        <!---------------RODAPÉ DA JANELA---------------------->
+        <div class="modal-footer">
               <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
               
               <button type="submit" name="salvar" class="btn btn-success" >Cadastrar</button>
             </div>
       
-      </form></div>
+    </form><!----fim formulario--->
+        <!----------------------------------------------------->
+    </div>
 
   </div>
 </div>
+<!----------------------------fim da da janela modal----------------------------->

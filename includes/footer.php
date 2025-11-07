@@ -1,17 +1,4 @@
-        <!-- 
-          O conteúdo da página (ex: index.php) terminou.
-          Agora, DENTRO do <main>, adicionamos o rodapé.
-        -->
-
-        <!--
-        ==================================================================
-        RODAPÉ (Posicionado dentro do <main>)
-        'mt-auto' (margin-top: auto) empurra ele para o rodapé do <main>
-        ==================================================================
-        -->
-        <!-- <footer class="bg-dark text-white text-center py-3 mt-auto">
-            &copy; 2025 Copyright: <a href="<?= BASE_URL ?>/index.php" class="text-white text-decoration-none">BIO UBS</a>
-        </footer> -->
+   
 
     </main> <!-- Fecha a tag <main class="... d-flex flex-column ..."> aberta no header.php -->
     
@@ -20,7 +7,6 @@
 <!--
 ==================================================================
 SCRIPTS JAVASCRIPT GLOBAIS
-(Mantendo a estrutura de scripts que você definiu)
 ==================================================================
 -->
 
@@ -40,10 +26,10 @@ SCRIPTS JAVASCRIPT GLOBAIS
 
 <!--
 ==================================================================
-SCRIPT PARA DATA/HORA DA SIDEBAR (Agora em arquivo separado)
+SCRIPT PARA DATA/HORA DA SIDEBAR 
 ==================================================================
 -->
-<!-- O bloco <script> foi removido daqui e movido para o arquivo .js -->
+
 <script src="<?= BASE_URL ?>/js/datetime-updater.js"></script>
 
 </body>
