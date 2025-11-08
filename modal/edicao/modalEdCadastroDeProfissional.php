@@ -136,10 +136,16 @@ if (isset($_GET['id'])): //----só surgirá o conteúdo se vier um ID
                 </tr>
                 <tr>
                     <td colspan="3">
-                        <input class="form-control" type="text" id="NOME_COMPLETO" name="NOME_COMPLETO" required="required" placeholder="Nome completo do profissional" value="<?= htmlspecialchars($nomeCompleto ?? '') ?>" onkeyup="alteraNomeProfissional()">
+                        <input class="form-control" type="text" id="NOME_COMPLETO" name="NOME_COMPLETO" required="required" placeholder="Nome completo do profissional" value="<?= htmlspecialchars($nomeCompleto ?? '') ?>" onkeyup="alteraNomeProfissional()" minlength="3">
+                        <div class="invalid-feedback">
+                            Por favor, informe o nome completo (mínimo 3 caracteres).
+                        </div>
                     </td>
                     <td>
-                        <input class="form-control" type="text" id="MATRICULA" name="MATRICULA" placeholder="Matrícula" value="<?= htmlspecialchars($matricula ?? '') ?>">
+                        <input class="form-control" type="text" id="MATRICULA" name="MATRICULA" placeholder="Matrícula" value="<?= htmlspecialchars($matricula ?? '') ?>" required="required" pattern="[0-9]+" title="Apenas números são permitidos" oninput="this.value = this.value.replace(/[^0-9]/g, '')">
+                        <div class="invalid-feedback">
+                            Informe a matrícula (apenas números).
+                        </div>
                     </td>
                 </tr>
 
@@ -151,10 +157,13 @@ if (isset($_GET['id'])): //----só surgirá o conteúdo se vier um ID
                 </tr>
                 <tr>
                     <td>
-                        <input class="form-control" type="text" id="CPF" name="CPF" required="required" placeholder="000.000.000-00" onkeypress="return mascaras(event, this, '###.###.###-##');" value="<?= htmlspecialchars(function_exists('format_cpf') ? format_cpf($cpf ?? '') : $cpf) ?>">
+                        <input class="form-control" type="text" id="CPF" name="CPF" required="required" placeholder="000.000.000-00" onkeypress="return mascaras(event, this, '###.###.###-##');" value="<?= htmlspecialchars(function_exists('format_cpf') ? format_cpf($cpf ?? '') : $cpf) ?>" minlength="14" maxlength="14">
+                        <div class="invalid-feedback">
+                            Por favor, informe um CPF válido (11 dígitos).
+                        </div>
                     </td>
                     <td>
-                        <input class="form-control" type="text" id="CNS_PROFISSIONAL" name="CNS_PROFISSIONAL" placeholder="Nº CNS" value="<?= htmlspecialchars($cnsProfissional ?? '') ?>">
+                        <input class="form-control" type="text" id="CNS_PROFISSIONAL" name="CNS_PROFISSIONAL" placeholder="Nº CNS" value="<?= htmlspecialchars($cnsProfissional ?? '') ?>" oninput="this.value = this.value.replace(/[^0-9]/g, '')" maxlength="15">
                     </td>
                     <td>
                         <input class="form-control" type="date" id="DATA_NASCIMENTO" name="DATA_NASCIMENTO" value="<?= htmlspecialchars($dataNascimento ?? '') ?>">
@@ -180,10 +189,13 @@ if (isset($_GET['id'])): //----só surgirá o conteúdo se vier um ID
                 <tr>
                     <td colspan="2">
                          <input class="form-control" type="email" id="EMAIL" name="EMAIL" placeholder="email@exemplo.com" value="<?= htmlspecialchars($email ?? '') ?>">
+                         <div class="invalid-feedback">
+                             Por favor, informe um e-mail válido (ex: nome@exemplo.com).
+                         </div>
                     </td>
-                    <td colspan="2">
-                         <input class="form-control" type="tel" id="TELEFONE" name="TELEFONE" placeholder="(99) 99999-9999" value="<?= htmlspecialchars($telefone ?? '') ?>">
-                    </td>
+                <td colspan="2">
+                    <input class="form-control" type="tel" id="TELEFONE" name="TELEFONE" placeholder="(99) 99999-9999" value="<?= htmlspecialchars($telefone ?? '') ?>" onkeypress="return mascaras(event, this, '(##) #####-####');" inputmode="numeric">
+                </td>
                 </tr>
 
                 <tr class="table-info">

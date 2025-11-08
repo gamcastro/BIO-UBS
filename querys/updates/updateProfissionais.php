@@ -89,6 +89,15 @@ if (isset($_POST['editar'])) {
         $dados['NOME_COMPLETO'] = mb_convert_case(mb_strtolower($nome, 'UTF-8'), MB_CASE_TITLE, 'UTF-8');
     }
 
+    // Sanitização do TELEFONE e aplicação de DDI 55, quando aplicável
+    if (isset($dados['TELEFONE']) && $dados['TELEFONE'] !== null) {
+        $telLimpo = preg_replace('/\D+/', '', (string)$dados['TELEFONE']);
+        if (strlen($telLimpo) === 11) {
+            $telLimpo = '55' . $telLimpo; // adiciona DDI Brasil
+        }
+        $dados['TELEFONE'] = $telLimpo;
+    }
+
     // 5. EXECUTAR A ATUALIZAÇÃO
     // Chama o método 'atualizar', passando o ID do registro e o array de dados
     $updateUbs = $objeto->atualizar($id, $dados); 

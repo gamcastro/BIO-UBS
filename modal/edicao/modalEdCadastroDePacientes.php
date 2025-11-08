@@ -75,7 +75,10 @@ if(isset($_GET['id'])): //----só sugirá o conteúdo se vier um ID
 
                   <tr>
                     <td colspan="3">
-                      <input class="form-control" type="text" id="nome" name="nome" required="required" placeholder="Nome completo" onkeyup="alteraNome()" value="<?=$nomePaciente?>">
+                      <input class="form-control" type="text" id="nome" name="nome" required="required" placeholder="Nome completo" onkeyup="alteraNome()" value="<?=$nomePaciente?>" minlength="3">
+                      <div class="invalid-feedback">
+                          Por favor, informe o nome completo (mínimo 3 caracteres).
+                      </div>
                     </td>
                     <td>
                       <input class="form-control" type="date" name="data_nascimento" required="required" value="<?=$data_nascimento?>">
@@ -92,7 +95,10 @@ if(isset($_GET['id'])): //----só sugirá o conteúdo se vier um ID
                   <tr>
 
                     <td>
-                      <input class="form-control" type="" name="cpf" placeholder="ex: 000.000.000-00" onkeypress="return mascaras(event, this, '###.###.###-##');" value="<?= htmlspecialchars(function_exists('format_cpf') ? format_cpf($cpf ?? '') : $cpf) ?>">
+                      <input class="form-control" type="" name="cpf" placeholder="ex: 000.000.000-00" onkeypress="return mascaras(event, this, '###.###.###-##');" value="<?= htmlspecialchars(function_exists('format_cpf') ? format_cpf($cpf ?? '') : $cpf) ?>" required="required" minlength="14" maxlength="14">
+                      <div class="invalid-feedback">
+                          Por favor, informe um CPF válido (11 dígitos).
+                      </div>
                     </td>
 
                     <td>

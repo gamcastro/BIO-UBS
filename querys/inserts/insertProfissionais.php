@@ -84,6 +84,18 @@ if (isset($_POST['salvar'])) {
     if (!function_exists('sanitize_cpf')) { require_once __DIR__ . '/../../includes/functions.php'; }
     $cpfLimpo = sanitize_cpf($dados['CPF'] ?? '');
     $dados['CPF'] = $cpfLimpo;
+
+    // Sanitiza TELEFONE (mantém apenas dígitos) e aplica DDI 55 se vier sem
+    if (isset($dados['TELEFONE']) && $dados['TELEFONE'] !== null) {
+        $telLimpo = preg_replace('/\D+/', '', (string)$dados['TELEFONE']);
+        // Se tiver 11 dígitos (formato BR sem DDI), prefixa 55 => total 13
+        if (strlen($telLimpo) === 11) {
+            $telLimpo = '55' . $telLimpo; // adiciona DDI Brasil
+        }
+        // Se já vier com 13 dígitos (ex: 55 + 11), mantém
+        // Caso contrário, deixa como está (pode ser telefone fixo reduzido)
+        $dados['TELEFONE'] = $telLimpo;
+    }
     
     // <-- MUDANÇA: Usando Argon2id (como solicitado) e salvando na coluna correta 'PASSWORD_HASH'
     $dados['PASSWORD_HASH'] = password_hash($cpfLimpo, PASSWORD_ARGON2ID);

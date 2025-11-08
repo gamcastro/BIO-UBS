@@ -37,7 +37,10 @@
 
                   <tr>
                     <td colspan="3">
-                      <input class="form-control" type="text" id="nome" name="nome" required="required" placeholder="Nome completo" onkeyup="alteraNome()">
+                      <input class="form-control" type="text" id="nome" name="nome" required="required" placeholder="Nome completo" onkeyup="alteraNome()" minlength="3">
+                      <div class="invalid-feedback">
+                          Por favor, informe o nome completo (mínimo 3 caracteres).
+                      </div>
                     </td>
                     <td>
                       <input class="form-control" type="date" name="data_nascimento" required="required">
@@ -54,7 +57,10 @@
                   <tr>
 
                     <td>
-                      <input class="form-control" type="" name="cpf" placeholder="ex: 000.000.000-00" onkeypress="return mascaras(event, this, '###.###.###-##');">
+                      <input class="form-control" type="" name="cpf" placeholder="ex: 000.000.000-00" onkeypress="return mascaras(event, this, '###.###.###-##');" required="required" minlength="14" maxlength="14">
+                      <div class="invalid-feedback">
+                          Por favor, informe um CPF válido (11 dígitos).
+                      </div>
                     </td>
 
                     <td>

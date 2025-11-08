@@ -1,5 +1,5 @@
 	function alteraNome(){
-		var input = document.getElementById("cad").nome;
+		var input = document.getElementById("nome");
 		if(!input) return;
 
 		var texto = String(input.value || "");
@@ -52,7 +52,8 @@
 	}
 
 	function alteraSSP(){
-		var valor = document.getElementById("cad").ssp;
+		var valor = document.getElementById("ssp");
+		if(!valor) return;
 		var novoTexto = valor.value.toUpperCase();
 		valor.value = novoTexto;
 	}

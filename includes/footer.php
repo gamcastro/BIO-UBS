@@ -24,6 +24,8 @@ SCRIPTS JAVASCRIPT GLOBAIS
 <script src="<?= BASE_URL ?>/js/custom.js"></script> 
 <!-- Validação de data de nascimento (feedback Bootstrap, min/max dinâmicos) -->
 <script src="<?= BASE_URL ?>/js/validacao-data-nascimento.js"></script>
+<!-- Validação de formulários (e-mail e outros campos) -->
+<script src="<?= BASE_URL ?>/js/validacao-formularios.js"></script>
 <script src="<?= BASE_URL ?>/tableScript/tableSimples.js"></script>
 
 <!--
