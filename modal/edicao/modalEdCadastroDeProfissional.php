@@ -173,7 +173,6 @@ if (isset($_GET['id'])): //----só surgirá o conteúdo se vier um ID
                             <option value="">Selecione</option>
                             <option value="Feminino" <?= ($sexo == 'Feminino') ? 'selected' : '' ?>>Feminino</option>
                             <option value="Masculino" <?= ($sexo == 'Masculino') ? 'selected' : '' ?>>Masculino</option>
-                            <option value="Outro" <?= ($sexo == 'Outro') ? 'selected' : '' ?>>Outro</option>
                         </select>
                     </td>
                 </tr>
@@ -209,17 +208,17 @@ if (isset($_GET['id'])): //----só surgirá o conteúdo se vier um ID
                     <td colspan="4">
                         <select name="PERFIL" id="PERFIL" class="form-control" required>
                             <option value="">Selecione um perfil...</option>
-                            <option value="MÉDICO" <?= ($perfil == 'MÉDICO') ? 'selected' : '' ?>>MÉDICO</option>
-                            <option value="ENFERMEIRO" <?= ($perfil == 'ENFERMEIRO') ? 'selected' : '' ?>>ENFERMEIRO</option>
-                            <option value="AUXILIAR/TÉCNICO ENFERMAGEM" <?= ($perfil == 'AUXILIAR/TÉCNICO ENFERMAGEM') ? 'selected' : '' ?>>AUXILIAR/TÉCNICO ENFERMAGEM</option>
-                            <option value="CIRURGIÃO DENTISTA" <?= ($perfil == 'CIRURGIÃO DENTISTA') ? 'selected' : '' ?>>CIRURGIÃO DENTISTA</option>
-                            <option value="ASB - AUXILIAR SAÚDE BUCAL" <?= ($perfil == 'ASB - AUXILIAR SAÚDE BUCAL') ? 'selected' : '' ?>>ASB - AUXILIAR SAÚDE BUCAL</option>
-                            <option value="TSB - TÉCNICO SAÚDE BUCAL" <?= ($perfil == 'TSB - TÉCNICO SAÚDE BUCAL') ? 'selected' : '' ?>>TSB - TÉCNICO SAÚDE BUCAL</option>
-                            <option value="ACS - AGENTE COMUNITÁRIO SAÚDE" <?= ($perfil == 'ACS - AGENTE COMUNITÁRIO SAÚDE') ? 'selected' : '' ?>>ACS - AGENTE COMUNITÁRIO SAÚDE</option>
-                            <option value="ACE - AGENTE COMBATE ENDEMIAS" <?= ($perfil == 'ACE - AGENTE COMBATE ENDEMIAS') ? 'selected' : '' ?>>ACE - AGENTE COMBATE ENDEMIAS</option>
-                            <option value="COORDENADOR UBS" <?= ($perfil == 'COORDENADOR UBS') ? 'selected' : '' ?>>COORDENADOR UBS</option>
-                            <option value="RECEPÇÃO" <?= ($perfil == 'RECEPÇÃO') ? 'selected' : '' ?>>RECEPÇÃO</option>
-                            <option value="OUTRO PROF. NÍVEL SUPERIOR" <?= ($perfil == 'OUTRO PROF. NÍVEL SUPERIOR') ? 'selected' : '' ?>>OUTRO PROF. NÍVEL SUPERIOR</option>
+                            <option value="Médico" <?= (strcasecmp($perfil, 'Médico') === 0 || strcasecmp($perfil, 'MÉDICO') === 0) ? 'selected' : '' ?>>Médico</option>
+                            <option value="Enfermeiro" <?= (strcasecmp($perfil, 'Enfermeiro') === 0 || strcasecmp($perfil, 'ENFERMEIRO') === 0) ? 'selected' : '' ?>>Enfermeiro</option>
+                            <option value="Auxiliar/Técnico Enfermagem" <?= (strcasecmp($perfil, 'Auxiliar/Técnico Enfermagem') === 0 || strcasecmp($perfil, 'AUXILIAR/TÉCNICO ENFERMAGEM') === 0) ? 'selected' : '' ?>>Auxiliar/Técnico Enfermagem</option>
+                            <option value="Cirurgião Dentista" <?= (strcasecmp($perfil, 'Cirurgião Dentista') === 0 || strcasecmp($perfil, 'CIRURGIÃO DENTISTA') === 0) ? 'selected' : '' ?>>Cirurgião Dentista</option>
+                            <option value="ASB - Auxiliar Saúde Bucal" <?= (strcasecmp($perfil, 'ASB - Auxiliar Saúde Bucal') === 0 || strcasecmp($perfil, 'ASB - AUXILIAR SAÚDE BUCAL') === 0) ? 'selected' : '' ?>>ASB - Auxiliar Saúde Bucal</option>
+                            <option value="TSB - Técnico Saúde Bucal" <?= (strcasecmp($perfil, 'TSB - Técnico Saúde Bucal') === 0 || strcasecmp($perfil, 'TSB - TÉCNICO SAÚDE BUCAL') === 0) ? 'selected' : '' ?>>TSB - Técnico Saúde Bucal</option>
+                            <option value="ACS - Agente Comunitário Saúde" <?= (strcasecmp($perfil, 'ACS - Agente Comunitário Saúde') === 0 || strcasecmp($perfil, 'ACS - AGENTE COMUNITÁRIO SAÚDE') === 0) ? 'selected' : '' ?>>ACS - Agente Comunitário Saúde</option>
+                            <option value="ACE - Agente Combate Endemias" <?= (strcasecmp($perfil, 'ACE - Agente Combate Endemias') === 0 || strcasecmp($perfil, 'ACE - AGENTE COMBATE ENDEMIAS') === 0) ? 'selected' : '' ?>>ACE - Agente Combate Endemias</option>
+                            <option value="Coordenador UBS" <?= (strcasecmp($perfil, 'Coordenador UBS') === 0 || strcasecmp($perfil, 'COORDENADOR UBS') === 0) ? 'selected' : '' ?>>Coordenador UBS</option>
+                            <option value="Recepção" <?= (strcasecmp($perfil, 'Recepção') === 0 || strcasecmp($perfil, 'RECEPÇÃO') === 0) ? 'selected' : '' ?>>Recepção</option>
+                            <option value="Outro Prof. Nível Superior" <?= (strcasecmp($perfil, 'Outro Prof. Nível Superior') === 0 || strcasecmp($perfil, 'OUTRO PROF. NÍVEL SUPERIOR') === 0) ? 'selected' : '' ?>>Outro Prof. Nível Superior</option>
                         </select>
                     </td>
                 </tr>
@@ -234,7 +233,7 @@ if (isset($_GET['id'])): //----só surgirá o conteúdo se vier um ID
                         <input class="form-control" type="text" id="CONSELHO_CLASSE" name="CONSELHO_CLASSE" placeholder="Ex: CRM, COREN" value="<?= htmlspecialchars($conselhoClasse ?? '') ?>">
                     </td>
                     <td>
-                        <input class="form-control" type="text" id="REGISTRO_CONSELHO" name="REGISTRO_CONSELHO" placeholder="Nº 12345" value="<?= htmlspecialchars($registroConselho ?? '') ?>">
+                        <input class="form-control" type="text" id="REGISTRO_CONSELHO" name="REGISTRO_CONSELHO" placeholder="Nº 12345" value="<?= htmlspecialchars($registroConselho ?? '') ?>" inputmode="numeric" oninput="this.value = this.value.replace(/[^0-9]/g, '')">
                     </td>
                     <td colspan="2">
                         <select name="ESTADO_EMISSOR_CONSELHO" id="ESTADO_EMISSOR_CONSELHO" class="form-control">
@@ -258,7 +257,7 @@ if (isset($_GET['id'])): //----só surgirá o conteúdo se vier um ID
                 </tr>
                 <tr>
                     <td>
-                        <input class="form-control" type="text" id="CEP" name="CEP" placeholder="00000-000" value="<?= htmlspecialchars($cep ?? '') ?>">
+                        <input class="form-control" type="text" id="CEP" name="CEP" placeholder="00000-000" value="<?= htmlspecialchars($cep ?? '') ?>" onkeypress="return mascaras(event, this, '#####-###');" inputmode="numeric" maxlength="9">
                     </td>
                     <td colspan="3">
                         <input class="form-control" type="text" id="LOGRADOURO" name="LOGRADOURO" value="<?= htmlspecialchars($logradouro ?? '') ?>">
@@ -272,7 +271,7 @@ if (isset($_GET['id'])): //----só surgirá o conteúdo se vier um ID
                 </tr>
                 <tr>
                     <td>
-                        <input class="form-control" type="text" id="NUMERO" name="NUMERO" value="<?= htmlspecialchars($numero ?? '') ?>">
+                        <input class="form-control" type="text" id="NUMERO" name="NUMERO" value="<?= htmlspecialchars($numero ?? '') ?>" inputmode="numeric" oninput="this.value = this.value.replace(/[^0-9]/g, '')">
                     </td>
                     <td>
                         <input class="form-control" type="text" id="BAIRRO" name="BAIRRO" value="<?= htmlspecialchars($bairro ?? '') ?>">

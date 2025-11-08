@@ -81,7 +81,6 @@ require_once __DIR__ . '/../../vendor/autoload.php';
                             <option value="">Selecione</option>
                             <option value="Feminino">Feminino</option>
                             <option value="Masculino">Masculino</option>
-                            <option value="Outro">Outro</option>
                         </select>
                     </td>
                 </tr>
@@ -102,7 +101,7 @@ require_once __DIR__ . '/../../vendor/autoload.php';
                          </div>
                     </td>
                 <td colspan="2">
-                    <input class="form-control" type="tel" id="TELEFONE" name="TELEFONE" placeholder="(99) 99999-9999" onkeypress="return mascaras(event, this, '(##) #####-####');" inputmode="numeric">
+                    <input class="form-control" type="tel" id="TELEFONE" name="TELEFONE" placeholder="(99) 99999-9999" onkeypress="return mascaras(event, this, '(##)#####-####');" inputmode="numeric">
                 </td>
                 </tr>
 
@@ -117,17 +116,17 @@ require_once __DIR__ . '/../../vendor/autoload.php';
                     <td colspan="4">
                         <select name="PERFIL" id="PERFIL" class="form-control" required>
                             <option value="">Selecione um perfil...</option>
-                            <option value="MÉDICO">MÉDICO</option>
-                            <option value="ENFERMEIRO">ENFERMEIRO</option>
-                            <option value="AUXILIAR/TÉCNICO ENFERMAGEM">AUXILIAR/TÉCNICO ENFERMAGEM</option>
-                            <option value="CIRURGIÃO DENTISTA">CIRURGIÃO DENTISTA</option>
-                            <option value="ASB - AUXILIAR SAÚDE BUCAL">ASB - AUXILIAR SAÚDE BUCAL</option>
-                            <option value="TSB - TÉCNICO SAÚDE BUCAL">TSB - TÉCNICO SAÚDE BUCAL</option>
-                            <option value="ACS - AGENTE COMUNITÁRIO SAÚDE">ACS - AGENTE COMUNITÁRIO SAÚDE</option>
-                            <option value="ACE - AGENTE COMBATE ENDEMIAS">ACE - AGENTE COMBATE ENDEMIAS</option>
-                            <option value="COORDENADOR UBS">COORDENADOR UBS</option>
-                            <option value="RECEPÇÃO">RECEPÇÃO</option>
-                            <option value="OUTRO PROF. NÍVEL SUPERIOR">OUTRO PROF. NÍVEL SUPERIOR</option>
+                            <option value="Médico">Médico</option>
+                            <option value="Enfermeiro">Enfermeiro</option>
+                            <option value="Auxiliar/Técnico Enfermagem">Auxiliar/Técnico Enfermagem</option>
+                            <option value="Cirurgião Dentista">Cirurgião Dentista</option>
+                            <option value="ASB - Auxiliar Saúde Bucal">ASB - Auxiliar Saúde Bucal</option>
+                            <option value="TSB - Técnico Saúde Bucal">TSB - Técnico Saúde Bucal</option>
+                            <option value="ACS - Agente Comunitário Saúde">ACS - Agente Comunitário Saúde</option>
+                            <option value="ACE - Agente Combate Endemias">ACE - Agente Combate Endemias</option>
+                            <option value="Coordenador UBS">Coordenador UBS</option>
+                            <option value="Recepção">Recepção</option>
+                            <option value="Outro Prof. Nível Superior">Outro Prof. Nível Superior</option>
                         </select>
                     </td>
                 </tr>
@@ -142,7 +141,7 @@ require_once __DIR__ . '/../../vendor/autoload.php';
                         <input class="form-control" type="text" id="CONSELHO_CLASSE" name="CONSELHO_CLASSE" placeholder="Ex: CRM, COREN">
                     </td>
                     <td>
-                        <input class="form-control" type="text" id="REGISTRO_CONSELHO" name="REGISTRO_CONSELHO" placeholder="Nº 12345">
+                        <input class="form-control" type="text" id="REGISTRO_CONSELHO" name="REGISTRO_CONSELHO" placeholder="Nº 12345" inputmode="numeric" oninput="this.value = this.value.replace(/[^0-9]/g, '')">
                     </td>
                     <td colspan="2">
                         <select name="ESTADO_EMISSOR_CONSELHO" id="ESTADO_EMISSOR_CONSELHO" class="form-control">
@@ -164,7 +163,7 @@ require_once __DIR__ . '/../../vendor/autoload.php';
                 </tr>
                 <tr>
                     <td>
-                        <input class="form-control" type="text" id="CEP" name="CEP" placeholder="00000-000">
+                        <input class="form-control" type="text" id="CEP" name="CEP" placeholder="00000-000" onkeypress="return mascaras(event, this, '#####-###');" inputmode="numeric" maxlength="9">
                     </td>
                     <td colspan="3">
                         <input class="form-control" type="text" id="LOGRADOURO" name="LOGRADOURO">
@@ -178,7 +177,7 @@ require_once __DIR__ . '/../../vendor/autoload.php';
                 </tr>
                 <tr>
                     <td>
-                        <input class="form-control" type="text" id="NUMERO" name="NUMERO">
+                        <input class="form-control" type="text" id="NUMERO" name="NUMERO" inputmode="numeric" oninput="this.value = this.value.replace(/[^0-9]/g, '')">
                     </td>
                     <td>
                         <input class="form-control" type="text" id="BAIRRO" name="BAIRRO">

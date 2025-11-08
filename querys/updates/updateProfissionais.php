@@ -98,6 +98,11 @@ if (isset($_POST['editar'])) {
         $dados['TELEFONE'] = $telLimpo;
     }
 
+    // Sanitiza CEP (mantém apenas dígitos)
+    if (isset($dados['CEP']) && $dados['CEP'] !== null) {
+        $dados['CEP'] = preg_replace('/\D+/', '', (string)$dados['CEP']);
+    }
+
     // 5. EXECUTAR A ATUALIZAÇÃO
     // Chama o método 'atualizar', passando o ID do registro e o array de dados
     $updateUbs = $objeto->atualizar($id, $dados); 

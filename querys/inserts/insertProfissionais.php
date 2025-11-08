@@ -96,6 +96,11 @@ if (isset($_POST['salvar'])) {
         // Caso contrário, deixa como está (pode ser telefone fixo reduzido)
         $dados['TELEFONE'] = $telLimpo;
     }
+
+    // Sanitiza CEP (mantém apenas dígitos)
+    if (isset($dados['CEP']) && $dados['CEP'] !== null) {
+        $dados['CEP'] = preg_replace('/\D+/', '', (string)$dados['CEP']);
+    }
     
     // <-- MUDANÇA: Usando Argon2id (como solicitado) e salvando na coluna correta 'PASSWORD_HASH'
     $dados['PASSWORD_HASH'] = password_hash($cpfLimpo, PASSWORD_ARGON2ID);
