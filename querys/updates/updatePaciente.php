@@ -37,12 +37,36 @@ $colunasPermitidas = [
 
 $objeto = new UbsCrudAll($tabela, $colunasPermitidas);
 
+$erros = [];
+// Validação da UF (opcional: só valida se informado)
+$pdo = BioUBS\Conexao::getConn();
+$stmtUf = $pdo->prepare("SELECT 1 FROM ibge_ufs WHERE CD_UF = :cd LIMIT 1");
+if ($uf_rg !== '' && $uf_rg !== null) {
+  if (!preg_match('/^\d+$/', (string)$uf_rg)) {
+    $erros[] = 'Código de UF inválido.';
+  } else {
+    $stmtUf->bindValue(':cd', (int)$uf_rg, PDO::PARAM_INT);
+    $stmtUf->execute();
+    if (!$stmtUf->fetchColumn()) {
+      $erros[] = 'UF não encontrada.';
+    }
+  }
+} else {
+  // Não informado: mantém nulo para update se desejado
+  $uf_rg = null;
+}
+if ($erros) {
+  $msg = implode("\n", $erros);
+  echo "<script>window.alert('Erro de validação:\n$msg'); window.history.back();</script>";
+  die;
+}
+
 $dados = [
     'NOME' => $nome,
     'DATA_NASCIMENTO' => $data_nascimento,
     'CPF' => $cpf,
     'RG' => $rg,
-    'UF_RG' => $uf_rg,
+  'UF_RG' => $uf_rg,
     'SSP' => $ssp
 ];
 

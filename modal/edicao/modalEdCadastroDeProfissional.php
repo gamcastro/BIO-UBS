@@ -67,7 +67,8 @@ if (isset($_GET['id'])): //----só surgirá o conteúdo se vier um ID
             if (!selectUF || !ufValue) return false;
             // Garante que o valor seja numérico
             ufValue = String(ufValue).replace(/\D/g, '');
-            if (ufValue === '') ufValue = '21';
+            // não forçar valor padrão; se vazio, não seta
+            if (ufValue === '') return false;
             // Adiciona zero à esquerda se necessário
             ufValue = ufValue.padStart(2, '0');
             // Verifica se a opção existe e seta o valor
@@ -237,7 +238,7 @@ if (isset($_GET['id'])): //----só surgirá o conteúdo se vier um ID
                     </td>
                     <td colspan="2">
                         <select name="ESTADO_EMISSOR_CONSELHO" id="ESTADO_EMISSOR_CONSELHO" class="form-control">
-                            <option value="">UF</option>
+                            <option value="" disabled>UF</option>
                             <?php
                             // Define o valor selecionado antes de incluir o script
                             $selectedUf = $estadoEmissorConselho ?? '';
@@ -292,7 +293,7 @@ if (isset($_GET['id'])): //----só surgirá o conteúdo se vier um ID
                     </td>
                     <td>
                         <select name="ESTADO_ENDERECO" id="ESTADO_ENDERECO" class="form-control">
-                            <option value="">UF</option>
+                            <option value="" disabled>UF</option>
                             <?php
                             // Define o valor selecionado antes de incluir o script
                             $selectedUf = $estadoEndereco ?? '';

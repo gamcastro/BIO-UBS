@@ -76,6 +76,28 @@ $dados = [
     'ESTADO'      => $estado_endereco // Mapeia o 'estado_endereco' do form para a coluna 'ESTADO'
 ];
 
+// Validação da UF (código deve existir na tabela ibge_ufs)
+$pdo = BioUBS\Conexao::getConn();
+$erros = [];
+if ($estado_endereco === '' || $estado_endereco === null) {
+    // opcional: mantém nulo quando não escolhido
+    $estado_endereco = null;
+} elseif (!preg_match('/^\d+$/', (string)$estado_endereco)) {
+    $erros[] = 'Código de UF inválido.';
+} else {
+    $stmt = $pdo->prepare("SELECT 1 FROM ibge_ufs WHERE CD_UF = :cd LIMIT 1");
+    $stmt->bindValue(':cd', (int)$estado_endereco, PDO::PARAM_INT);
+    $stmt->execute();
+    if (!$stmt->fetchColumn()) {
+        $erros[] = 'UF não encontrada.';
+    }
+}
+if ($erros) {
+    $msg = implode("\n", $erros);
+    echo "<script>window.alert('Erro de validação:\n$msg'); window.history.back();</script>";
+    die;
+}
+
 
 $updateUbs = $objeto->atualizar($id, $dados); //---funcao atualizar com 2 parametros
 

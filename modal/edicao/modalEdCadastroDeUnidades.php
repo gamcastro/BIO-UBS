@@ -120,7 +120,7 @@ if (isset($_GET['id'])): //----só sugirá o conteúdo se vier um ID
                     </td>
                     <td>
                         <select name="estado_endereco" id="estado_endereco" class="form-control">
-                            <option value="">UF</option>
+                            <option value="" disabled>UF</option>
                             <?php
                             require(__DIR__ . '/../../querys/ConsultaUnidadeFederativaSelect.php');
                             ?>

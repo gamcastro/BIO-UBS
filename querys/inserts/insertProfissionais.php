@@ -63,6 +63,34 @@ if (isset($_POST['salvar'])) {
         }
     }
 
+    // Validação específica para códigos de UF (devem existir na tabela ibge_ufs)
+    $ufsCodigos = ['ESTADO_EMISSOR_CONSELHO','ESTADO_ENDERECO'];
+    $errosUf = [];
+    $pdo = BioUBS\Conexao::getConn();
+    $stmtUf = $pdo->prepare("SELECT 1 FROM ibge_ufs WHERE CD_UF = :cd LIMIT 1");
+    foreach ($ufsCodigos as $campoUf) {
+        if (isset($dados[$campoUf]) && $dados[$campoUf] !== null) {
+            // aceita apenas dígitos
+            if (!preg_match('/^\d+$/', (string)$dados[$campoUf])) {
+                $errosUf[] = "Código de UF inválido para $campoUf.";
+                continue;
+            }
+            $stmtUf->bindValue(':cd', (int)$dados[$campoUf], PDO::PARAM_INT);
+            $stmtUf->execute();
+            if (!$stmtUf->fetchColumn()) {
+                $errosUf[] = "UF não encontrada para $campoUf.";
+            }
+        } else {
+            // Campo é opcional; se não enviado (null), apenas ignoramos
+            // Não gera erro se usuário não selecionou UF
+        }
+    }
+    if ($errosUf) {
+        $msg = implode("\n", $errosUf);
+        echo "<script>window.alert('Erro de validação: \n$msg'); window.history.back();</script>";
+        die;
+    }
+
     // 8. GERENCIAMENTO DA SENHA PADRÃO (COM ARGON2ID)
     // O formulário não envia senha, então criamos uma senha padrão (o CPF).
     

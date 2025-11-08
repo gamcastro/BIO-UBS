@@ -107,11 +107,14 @@ if(isset($_GET['id'])): //----só sugirá o conteúdo se vier um ID
 
                     <td>
                       <select name="uf_rg" class="form-control">
-                        <option value="<?=$cd_uf_rg?>"><?=$uf_rg . " - " . $uf_nome_rg?></option>
-                          <?php
-                            require_once __DIR__ . '/../../querys/ConsultaUnidadeFederativaSelect.php';
-                          ?>
-                      </select>  
+                        <option value="" disabled>UF</option>
+                        <?php
+                          // Pré-seleciona a UF atual
+                          $selectedUf = $cd_uf_rg;
+                          require_once __DIR__ . '/../../querys/ConsultaUnidadeFederativaSelect.php';
+                        ?>
+                      </select>
+                      <div class="invalid-feedback">Selecione a UF do RG.</div>
                     </td>
 
                     <td>

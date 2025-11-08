@@ -145,11 +145,12 @@ require_once __DIR__ . '/../../vendor/autoload.php';
                     </td>
                     <td colspan="2">
                         <select name="ESTADO_EMISSOR_CONSELHO" id="ESTADO_EMISSOR_CONSELHO" class="form-control">
-                            <option value="">UF</option>
+                            <option value="" disabled selected>UF</option>
                             <?php
                             require(__DIR__ . '/../../querys/ConsultaUnidadeFederativaSelect.php');
                             ?>
                         </select>
+                        <div class="invalid-feedback">Selecione a UF emissora do conselho.</div>
                     </td>
                 </tr>
 
@@ -198,11 +199,12 @@ require_once __DIR__ . '/../../vendor/autoload.php';
                     </td>
                     <td>
                         <select name="ESTADO_ENDERECO" id="ESTADO_ENDERECO" class="form-control">
-                            <option value="">UF</option>
+                            <option value="" disabled selected>UF</option>
                             <?php
                             require(__DIR__ . '/../../querys/ConsultaUnidadeFederativaSelect.php');
                             ?>
                         </select>
+                        <div class="invalid-feedback">Selecione a UF do endereço.</div>
                     </td>
                     <td>
                          <input class="form-control" type="text" id="PONTO_REFERENCIA" name="PONTO_REFERENCIA">
