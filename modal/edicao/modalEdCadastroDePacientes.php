@@ -107,12 +107,13 @@ if(isset($_GET['id'])): //----só sugirá o conteúdo se vier um ID
 
                     <td>
                       <select name="uf_rg" class="form-control">
-                        <option value="" disabled>UF</option>
-                        <?php
-                          // Pré-seleciona a UF atual
-                          $selectedUf = $cd_uf_rg;
-                          require_once __DIR__ . '/../../querys/ConsultaUnidadeFederativaSelect.php';
-                        ?>
+                        <?php $selectedUf = ($cd_uf_rg !== null && $cd_uf_rg !== '' && is_numeric($cd_uf_rg)) ? (string)$cd_uf_rg : null; ?>
+                        <?php if ($selectedUf === null): ?>
+                          <option value="" disabled selected>UF</option>
+                        <?php else: ?>
+                          <option value="" disabled>UF</option>
+                        <?php endif; ?>
+                        <?php require_once __DIR__ . '/../../querys/ConsultaUnidadeFederativaSelect.php'; ?>
                       </select>
                       <div class="invalid-feedback">Selecione a UF do RG.</div>
                     </td>
