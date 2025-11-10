@@ -34,3 +34,22 @@ function set_secure_headers(): void {
     header("Referrer-Policy: no-referrer");
     header("Permissions-Policy: geolocation=()");
 }
+
+/**
+ * Sanitiza CPF: mantém apenas dígitos (11 números)
+ */
+function sanitize_cpf(?string $cpf): string {
+    $cpf = (string)($cpf ?? '');
+    return preg_replace('/\D+/', '', $cpf) ?? '';
+}
+
+/**
+ * Formata CPF para 000.000.000-00 se tiver 11 dígitos; caso contrário retorna o original
+ */
+function format_cpf(?string $cpf): string {
+    $digits = sanitize_cpf($cpf);
+    if (strlen($digits) !== 11) {
+        return (string)$cpf;
+    }
+    return preg_replace('/(\d{3})(\d{3})(\d{3})(\d{2})/','${1}.${2}.${3}-${4}', $digits) ?? (string)$cpf;
+}

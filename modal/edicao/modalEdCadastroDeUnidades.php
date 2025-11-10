@@ -120,20 +120,14 @@ if (isset($_GET['id'])): //----só sugirá o conteúdo se vier um ID
                     </td>
                     <td>
                         <select name="estado_endereco" id="estado_endereco" class="form-control">
-                            <option value="">UF</option>
-                            <?php
-                            require(__DIR__ . '/../../querys/ConsultaUnidadeFederativaSelect.php');
-                            ?>
+                            <?php $selectedUf = ($estado !== null && $estado !== '' && is_numeric($estado)) ? (string)$estado : null; ?>
+                            <?php if ($selectedUf === null): ?>
+                                <option value="" disabled selected>UF</option>
+                            <?php else: ?>
+                                <option value="" disabled>UF</option>
+                            <?php endif; ?>
+                            <?php require(__DIR__ . '/../../querys/ConsultaUnidadeFederativaSelect.php'); ?>
                         </select>
-
-                        <script>
-                            // Script corrigido (sem o 'DOMContentLoaded')
-                            // para executar imediatamente após a injeção do AJAX
-                            var select = document.getElementById('estado_endereco');
-                            if (select) {
-                                select.value = "<?= $estado ?>";
-                            }
-                        </script>
                     </td>
                 </tr>
             </table>

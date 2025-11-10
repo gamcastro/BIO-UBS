@@ -75,7 +75,10 @@ if(isset($_GET['id'])): //----só sugirá o conteúdo se vier um ID
 
                   <tr>
                     <td colspan="3">
-                      <input class="form-control" type="text" id="nome" name="nome" required="required" placeholder="Nome completo" onkeyup="alteraNome()" value="<?=$nomePaciente?>">
+                      <input class="form-control" type="text" id="nome" name="nome" required="required" placeholder="Nome completo" onkeyup="alteraNome()" value="<?=$nomePaciente?>" minlength="3">
+                      <div class="invalid-feedback">
+                          Por favor, informe o nome completo (mínimo 3 caracteres).
+                      </div>
                     </td>
                     <td>
                       <input class="form-control" type="date" name="data_nascimento" required="required" value="<?=$data_nascimento?>">
@@ -92,7 +95,10 @@ if(isset($_GET['id'])): //----só sugirá o conteúdo se vier um ID
                   <tr>
 
                     <td>
-                      <input class="form-control" type="" name="cpf" placeholder="ex: 000.000.000-00" onkeypress="return mascaras(event, this, '###.###.###-##');" value="<?=$cpf?>">
+                      <input class="form-control" type="" name="cpf" placeholder="ex: 000.000.000-00" onkeypress="return mascaras(event, this, '###.###.###-##');" value="<?= htmlspecialchars(function_exists('format_cpf') ? format_cpf($cpf ?? '') : $cpf) ?>" required="required" minlength="14" maxlength="14">
+                      <div class="invalid-feedback">
+                          Por favor, informe um CPF válido (11 dígitos).
+                      </div>
                     </td>
 
                     <td>
@@ -101,11 +107,15 @@ if(isset($_GET['id'])): //----só sugirá o conteúdo se vier um ID
 
                     <td>
                       <select name="uf_rg" class="form-control">
-                        <option value="<?=$cd_uf_rg?>"><?=$uf_rg . " - " . $uf_nome_rg?></option>
-                          <?php
-                            require_once __DIR__ . '/../../querys/ConsultaUnidadeFederativaSelect.php';
-                          ?>
-                      </select>  
+                        <?php $selectedUf = ($cd_uf_rg !== null && $cd_uf_rg !== '' && is_numeric($cd_uf_rg)) ? (string)$cd_uf_rg : null; ?>
+                        <?php if ($selectedUf === null): ?>
+                          <option value="" disabled selected>UF</option>
+                        <?php else: ?>
+                          <option value="" disabled>UF</option>
+                        <?php endif; ?>
+                        <?php require_once __DIR__ . '/../../querys/ConsultaUnidadeFederativaSelect.php'; ?>
+                      </select>
+                      <div class="invalid-feedback">Selecione a UF do RG.</div>
                     </td>
 
                     <td>

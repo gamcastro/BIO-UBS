@@ -77,6 +77,57 @@ if (isset($_POST['editar'])) {
         }
     }
 
+    // Sanitização de CPF (somente números) antes de persistir
+    if (isset($dados['CPF'])) {
+        if (!function_exists('sanitize_cpf')) { require_once __DIR__ . '/../../includes/functions.php'; }
+        $dados['CPF'] = sanitize_cpf($dados['CPF']);
+    }
+
+    // Normalização do Nome Completo (Title Case)
+    if (isset($dados['NOME_COMPLETO']) && $dados['NOME_COMPLETO'] !== null) {
+        $nome = trim(preg_replace('/\s+/u', ' ', (string)$dados['NOME_COMPLETO']));
+        $dados['NOME_COMPLETO'] = mb_convert_case(mb_strtolower($nome, 'UTF-8'), MB_CASE_TITLE, 'UTF-8');
+    }
+
+    // Sanitização do TELEFONE e aplicação de DDI 55, quando aplicável
+    if (isset($dados['TELEFONE']) && $dados['TELEFONE'] !== null) {
+        $telLimpo = preg_replace('/\D+/', '', (string)$dados['TELEFONE']);
+        if (strlen($telLimpo) === 11) {
+            $telLimpo = '55' . $telLimpo; // adiciona DDI Brasil
+        }
+        $dados['TELEFONE'] = $telLimpo;
+    }
+
+    // Sanitiza CEP (mantém apenas dígitos)
+    if (isset($dados['CEP']) && $dados['CEP'] !== null) {
+        $dados['CEP'] = preg_replace('/\D+/', '', (string)$dados['CEP']);
+    }
+
+    // Validação específica para códigos de UF no update
+    $ufsCodigos = ['ESTADO_EMISSOR_CONSELHO','ESTADO_ENDERECO'];
+    $errosUf = [];
+    $pdo = BioUBS\Conexao::getConn();
+    $stmtUf = $pdo->prepare("SELECT 1 FROM ibge_ufs WHERE CD_UF = :cd LIMIT 1");
+    foreach ($ufsCodigos as $campoUf) {
+        if (array_key_exists($campoUf, $dados) && $dados[$campoUf] !== null && $dados[$campoUf] !== '') {
+            if (!preg_match('/^\d+$/', (string)$dados[$campoUf])) {
+                $errosUf[] = "Código de UF inválido para $campoUf.";
+                continue;
+            }
+            $stmtUf->bindValue(':cd', (int)$dados[$campoUf], PDO::PARAM_INT);
+            $stmtUf->execute();
+            if (!$stmtUf->fetchColumn()) {
+                $errosUf[] = "UF não encontrada para $campoUf.";
+            }
+        }
+        // Campo opcional: se nulo/vazio, não valida nem gera erro
+    }
+    if ($errosUf) {
+        $msg = implode("\n", $errosUf);
+        echo "<script>window.alert('Erro de validação: \n$msg'); window.history.back();</script>";
+        die;
+    }
+
     // 5. EXECUTAR A ATUALIZAÇÃO
     // Chama o método 'atualizar', passando o ID do registro e o array de dados
     $updateUbs = $objeto->atualizar($id, $dados); 

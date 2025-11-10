@@ -62,6 +62,9 @@ $dados = ([
   'CNPJ'              => $cnpj,
   'TELEFONE'          => $telefone,
   'CEP'               => $cep,
+  // Validação da UF (código deve existir na tabela ibge_ufs)
+  // Executada antes de montar o array final
+  // (mantido aqui para mínima alteração estrutural)
   'ESTADO'            => $estado_endereco,
   'MUNICIPIO'         => $municipio,
   'BAIRRO'            => $bairro,
@@ -72,6 +75,28 @@ $dados = ([
 
 
 ]);
+
+// Validação da UF após obter conexão
+$pdo = BioUBS\Conexao::getConn();
+$erros = [];
+if ($estado_endereco === '' || $estado_endereco === null) {
+  // opcional: mantém nulo quando não escolhido
+  $estado_endereco = null;
+} elseif (!preg_match('/^\d+$/', (string)$estado_endereco)) {
+  $erros[] = 'Código de UF inválido.';
+} else {
+  $stmt = $pdo->prepare("SELECT 1 FROM ibge_ufs WHERE CD_UF = :cd LIMIT 1");
+  $stmt->bindValue(':cd', (int)$estado_endereco, PDO::PARAM_INT);
+  $stmt->execute();
+  if (!$stmt->fetchColumn()) {
+    $erros[] = 'UF não encontrada.';
+  }
+}
+if ($erros) {
+  $msg = implode("\n", $erros);
+  echo "<script>window.alert('Erro de validação:\n$msg'); window.history.back();</script>";
+  die;
+}
 
 $isertUbs = $objeto->inserir($dados);
 

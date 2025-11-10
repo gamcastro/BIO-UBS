@@ -246,7 +246,7 @@ INÍCIO: Conteúdo HTML da Página
                         <label for="uf" class="form-label">Estado (UF)</label>
                         <!-- O name é 'uf' (que envia o ID, ex: 21) -->
                         <select id="uf" name="uf" class="form-select"> 
-                            <option value="">Selecione...</option>
+                            <option value="" disabled>Selecione...</option>
                             <?php 
                             // Define o option selecionado (server-side) antes de incluir o script
                             $selectedUf = $uf ?? '';

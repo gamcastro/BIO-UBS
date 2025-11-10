@@ -100,10 +100,13 @@ if(isset($_GET['id'])): //----só sugirá o conteúdo de vier um ID
 
                     <td>
                       <select name="uf_rg" class="form-control">
-                        <option value="<?=$cd_uf_rg?>"><?=$uf_rg . " - " . $uf_nome_rg?></option>
-                          <?php
-                            require_once('../../querys/ConsultaUnidadeFederativaSelect.php');
-                          ?>
+                        <?php $selectedUf = ($cd_uf_rg !== null && $cd_uf_rg !== '' && is_numeric($cd_uf_rg)) ? (string)$cd_uf_rg : null; ?>
+                        <?php if ($selectedUf === null): ?>
+                          <option value="" disabled selected>UF</option>
+                        <?php else: ?>
+                          <option value="" disabled>UF</option>
+                        <?php endif; ?>
+                        <?php require_once('../../querys/ConsultaUnidadeFederativaSelect.php'); ?>
                       </select>  
                     </td>
 

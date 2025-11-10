@@ -63,6 +63,34 @@ if (isset($_POST['salvar'])) {
         }
     }
 
+    // Validação específica para códigos de UF (devem existir na tabela ibge_ufs)
+    $ufsCodigos = ['ESTADO_EMISSOR_CONSELHO','ESTADO_ENDERECO'];
+    $errosUf = [];
+    $pdo = BioUBS\Conexao::getConn();
+    $stmtUf = $pdo->prepare("SELECT 1 FROM ibge_ufs WHERE CD_UF = :cd LIMIT 1");
+    foreach ($ufsCodigos as $campoUf) {
+        if (isset($dados[$campoUf]) && $dados[$campoUf] !== null) {
+            // aceita apenas dígitos
+            if (!preg_match('/^\d+$/', (string)$dados[$campoUf])) {
+                $errosUf[] = "Código de UF inválido para $campoUf.";
+                continue;
+            }
+            $stmtUf->bindValue(':cd', (int)$dados[$campoUf], PDO::PARAM_INT);
+            $stmtUf->execute();
+            if (!$stmtUf->fetchColumn()) {
+                $errosUf[] = "UF não encontrada para $campoUf.";
+            }
+        } else {
+            // Campo é opcional; se não enviado (null), apenas ignoramos
+            // Não gera erro se usuário não selecionou UF
+        }
+    }
+    if ($errosUf) {
+        $msg = implode("\n", $errosUf);
+        echo "<script>window.alert('Erro de validação: \n$msg'); window.history.back();</script>";
+        die;
+    }
+
     // 8. GERENCIAMENTO DA SENHA PADRÃO (COM ARGON2ID)
     // O formulário não envia senha, então criamos uma senha padrão (o CPF).
     
@@ -74,8 +102,33 @@ if (isset($_POST['salvar'])) {
         die;
     }
 
-    // Limpa o CPF (remove pontos, traços, etc.)
-    $cpfLimpo = preg_replace('/[^0-9]/', '', $dados['CPF']);
+    // Normalização do Nome Completo (Title Case)
+    if (isset($dados['NOME_COMPLETO']) && $dados['NOME_COMPLETO'] !== null) {
+        $nome = trim(preg_replace('/\s+/u', ' ', (string)$dados['NOME_COMPLETO']));
+        $dados['NOME_COMPLETO'] = mb_convert_case(mb_strtolower($nome, 'UTF-8'), MB_CASE_TITLE, 'UTF-8');
+    }
+
+    // Limpa o CPF (remove pontos, traços, etc.) para senha e para persistência
+    if (!function_exists('sanitize_cpf')) { require_once __DIR__ . '/../../includes/functions.php'; }
+    $cpfLimpo = sanitize_cpf($dados['CPF'] ?? '');
+    $dados['CPF'] = $cpfLimpo;
+
+    // Sanitiza TELEFONE (mantém apenas dígitos) e aplica DDI 55 se vier sem
+    if (isset($dados['TELEFONE']) && $dados['TELEFONE'] !== null) {
+        $telLimpo = preg_replace('/\D+/', '', (string)$dados['TELEFONE']);
+        // Se tiver 11 dígitos (formato BR sem DDI), prefixa 55 => total 13
+        if (strlen($telLimpo) === 11) {
+            $telLimpo = '55' . $telLimpo; // adiciona DDI Brasil
+        }
+        // Se já vier com 13 dígitos (ex: 55 + 11), mantém
+        // Caso contrário, deixa como está (pode ser telefone fixo reduzido)
+        $dados['TELEFONE'] = $telLimpo;
+    }
+
+    // Sanitiza CEP (mantém apenas dígitos)
+    if (isset($dados['CEP']) && $dados['CEP'] !== null) {
+        $dados['CEP'] = preg_replace('/\D+/', '', (string)$dados['CEP']);
+    }
     
     // <-- MUDANÇA: Usando Argon2id (como solicitado) e salvando na coluna correta 'PASSWORD_HASH'
     $dados['PASSWORD_HASH'] = password_hash($cpfLimpo, PASSWORD_ARGON2ID);

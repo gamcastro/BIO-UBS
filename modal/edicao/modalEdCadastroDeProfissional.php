@@ -59,65 +59,6 @@ if (isset($_GET['id'])): //----só surgirá o conteúdo se vier um ID
     </div>
             <!-------------------------------------------------------->
 
-    <!-- Script: preenche selects de UF quando o modal for exibido (tentativas repetidas) -->
-    <script>
-    (function(){
-        function setUFValueIfPossible(selectId, ufValue) {
-            var selectUF = document.getElementById(selectId);
-            if (!selectUF || !ufValue) return false;
-            // Garante que o valor seja numérico
-            ufValue = String(ufValue).replace(/\D/g, '');
-            if (ufValue === '') ufValue = '21';
-            // Adiciona zero à esquerda se necessário
-            ufValue = ufValue.padStart(2, '0');
-            // Verifica se a opção existe e seta o valor
-            var optionExists = Array.from(selectUF.options).some(function(opt){ return opt.value === ufValue; });
-            if (optionExists) {
-                selectUF.value = ufValue;
-                selectUF.dispatchEvent(new Event('change'));
-                return true;
-            }
-            return false;
-        }
-
-        var estadoEmissorConselho = "<?= htmlspecialchars($estadoEmissorConselho) ?>";
-        var estadoEndereco = "<?= htmlspecialchars($estadoEndereco) ?>";
-
-        function trySetAll() {
-            var a = setUFValueIfPossible('ESTADO_EMISSOR_CONSELHO', estadoEmissorConselho);
-            var b = setUFValueIfPossible('ESTADO_ENDERECO', estadoEndereco);
-            return a && b;
-        }
-
-        function startAttempts(limit, interval) {
-            limit = limit || 20; // número de tentativas
-            interval = interval || 100; // ms
-            var tries = 0;
-            if (trySetAll()) return; // já setado
-            var id = setInterval(function(){
-                tries++;
-                if (trySetAll() || tries >= limit) {
-                    clearInterval(id);
-                }
-            }, interval);
-        }
-
-        // Tenta quando o modal for exibido
-        document.addEventListener('shown.bs.modal', function(ev){
-            try {
-                // se o modal contém nossos selects, começa as tentativas
-                if (ev.target && ev.target.querySelector && (ev.target.querySelector('#ESTADO_EMISSOR_CONSELHO') || ev.target.querySelector('#ESTADO_ENDERECO'))) {
-                    startAttempts(20, 100);
-                }
-            } catch (e) {
-                // silencioso
-            }
-        }, true);
-
-        // Também tenta imediatamente (caso o modal já esteja no DOM e visível)
-        startAttempts(20, 100);
-    })();
-    </script>
 
     <form id="ed" name="ed" action="" method="post"><!----formulario-------->   
         <input type="hidden" name="id" value="<?= $id ?>">
@@ -136,10 +77,16 @@ if (isset($_GET['id'])): //----só surgirá o conteúdo se vier um ID
                 </tr>
                 <tr>
                     <td colspan="3">
-                        <input class="form-control" type="text" id="NOME_COMPLETO" name="NOME_COMPLETO" required="required" placeholder="Nome completo do profissional" value="<?= htmlspecialchars($nomeCompleto ?? '') ?>">
+                        <input class="form-control" type="text" id="NOME_COMPLETO" name="NOME_COMPLETO" required="required" placeholder="Nome completo do profissional" value="<?= htmlspecialchars($nomeCompleto ?? '') ?>" onkeyup="alteraNomeProfissional()" minlength="3">
+                        <div class="invalid-feedback">
+                            Por favor, informe o nome completo (mínimo 3 caracteres).
+                        </div>
                     </td>
                     <td>
-                        <input class="form-control" type="text" id="MATRICULA" name="MATRICULA" placeholder="Matrícula" value="<?= htmlspecialchars($matricula ?? '') ?>">
+                        <input class="form-control" type="text" id="MATRICULA" name="MATRICULA" placeholder="Matrícula" value="<?= htmlspecialchars($matricula ?? '') ?>" required="required" pattern="[0-9]+" title="Apenas números são permitidos" oninput="this.value = this.value.replace(/[^0-9]/g, '')">
+                        <div class="invalid-feedback">
+                            Informe a matrícula (apenas números).
+                        </div>
                     </td>
                 </tr>
 
@@ -151,10 +98,13 @@ if (isset($_GET['id'])): //----só surgirá o conteúdo se vier um ID
                 </tr>
                 <tr>
                     <td>
-                        <input class="form-control" type="text" id="CPF" name="CPF" required="required" placeholder="Somente números" value="<?= htmlspecialchars($cpf ?? '') ?>">
+                        <input class="form-control" type="text" id="CPF" name="CPF" required="required" placeholder="000.000.000-00" onkeypress="return mascaras(event, this, '###.###.###-##');" value="<?= htmlspecialchars(function_exists('format_cpf') ? format_cpf($cpf ?? '') : $cpf) ?>" minlength="14" maxlength="14">
+                        <div class="invalid-feedback">
+                            Por favor, informe um CPF válido (11 dígitos).
+                        </div>
                     </td>
                     <td>
-                        <input class="form-control" type="text" id="CNS_PROFISSIONAL" name="CNS_PROFISSIONAL" placeholder="Nº CNS" value="<?= htmlspecialchars($cnsProfissional ?? '') ?>">
+                        <input class="form-control" type="text" id="CNS_PROFISSIONAL" name="CNS_PROFISSIONAL" placeholder="Nº CNS" value="<?= htmlspecialchars($cnsProfissional ?? '') ?>" oninput="this.value = this.value.replace(/[^0-9]/g, '')" maxlength="15">
                     </td>
                     <td>
                         <input class="form-control" type="date" id="DATA_NASCIMENTO" name="DATA_NASCIMENTO" value="<?= htmlspecialchars($dataNascimento ?? '') ?>">
@@ -164,7 +114,6 @@ if (isset($_GET['id'])): //----só surgirá o conteúdo se vier um ID
                             <option value="">Selecione</option>
                             <option value="Feminino" <?= ($sexo == 'Feminino') ? 'selected' : '' ?>>Feminino</option>
                             <option value="Masculino" <?= ($sexo == 'Masculino') ? 'selected' : '' ?>>Masculino</option>
-                            <option value="Outro" <?= ($sexo == 'Outro') ? 'selected' : '' ?>>Outro</option>
                         </select>
                     </td>
                 </tr>
@@ -180,10 +129,13 @@ if (isset($_GET['id'])): //----só surgirá o conteúdo se vier um ID
                 <tr>
                     <td colspan="2">
                          <input class="form-control" type="email" id="EMAIL" name="EMAIL" placeholder="email@exemplo.com" value="<?= htmlspecialchars($email ?? '') ?>">
+                         <div class="invalid-feedback">
+                             Por favor, informe um e-mail válido (ex: nome@exemplo.com).
+                         </div>
                     </td>
-                    <td colspan="2">
-                         <input class="form-control" type="tel" id="TELEFONE" name="TELEFONE" placeholder="(99) 99999-9999" value="<?= htmlspecialchars($telefone ?? '') ?>">
-                    </td>
+                <td colspan="2">
+                    <input class="form-control" type="tel" id="TELEFONE" name="TELEFONE" placeholder="(99) 99999-9999" value="<?= htmlspecialchars($telefone ?? '') ?>" onkeypress="return mascaras(event, this, '(##) #####-####');" inputmode="numeric">
+                </td>
                 </tr>
 
                 <tr class="table-info">
@@ -197,17 +149,17 @@ if (isset($_GET['id'])): //----só surgirá o conteúdo se vier um ID
                     <td colspan="4">
                         <select name="PERFIL" id="PERFIL" class="form-control" required>
                             <option value="">Selecione um perfil...</option>
-                            <option value="MÉDICO" <?= ($perfil == 'MÉDICO') ? 'selected' : '' ?>>MÉDICO</option>
-                            <option value="ENFERMEIRO" <?= ($perfil == 'ENFERMEIRO') ? 'selected' : '' ?>>ENFERMEIRO</option>
-                            <option value="AUXILIAR/TÉCNICO ENFERMAGEM" <?= ($perfil == 'AUXILIAR/TÉCNICO ENFERMAGEM') ? 'selected' : '' ?>>AUXILIAR/TÉCNICO ENFERMAGEM</option>
-                            <option value="CIRURGIÃO DENTISTA" <?= ($perfil == 'CIRURGIÃO DENTISTA') ? 'selected' : '' ?>>CIRURGIÃO DENTISTA</option>
-                            <option value="ASB - AUXILIAR SAÚDE BUCAL" <?= ($perfil == 'ASB - AUXILIAR SAÚDE BUCAL') ? 'selected' : '' ?>>ASB - AUXILIAR SAÚDE BUCAL</option>
-                            <option value="TSB - TÉCNICO SAÚDE BUCAL" <?= ($perfil == 'TSB - TÉCNICO SAÚDE BUCAL') ? 'selected' : '' ?>>TSB - TÉCNICO SAÚDE BUCAL</option>
-                            <option value="ACS - AGENTE COMUNITÁRIO SAÚDE" <?= ($perfil == 'ACS - AGENTE COMUNITÁRIO SAÚDE') ? 'selected' : '' ?>>ACS - AGENTE COMUNITÁRIO SAÚDE</option>
-                            <option value="ACE - AGENTE COMBATE ENDEMIAS" <?= ($perfil == 'ACE - AGENTE COMBATE ENDEMIAS') ? 'selected' : '' ?>>ACE - AGENTE COMBATE ENDEMIAS</option>
-                            <option value="COORDENADOR UBS" <?= ($perfil == 'COORDENADOR UBS') ? 'selected' : '' ?>>COORDENADOR UBS</option>
-                            <option value="RECEPÇÃO" <?= ($perfil == 'RECEPÇÃO') ? 'selected' : '' ?>>RECEPÇÃO</option>
-                            <option value="OUTRO PROF. NÍVEL SUPERIOR" <?= ($perfil == 'OUTRO PROF. NÍVEL SUPERIOR') ? 'selected' : '' ?>>OUTRO PROF. NÍVEL SUPERIOR</option>
+                            <option value="Médico" <?= (strcasecmp($perfil, 'Médico') === 0 || strcasecmp($perfil, 'MÉDICO') === 0) ? 'selected' : '' ?>>Médico</option>
+                            <option value="Enfermeiro" <?= (strcasecmp($perfil, 'Enfermeiro') === 0 || strcasecmp($perfil, 'ENFERMEIRO') === 0) ? 'selected' : '' ?>>Enfermeiro</option>
+                            <option value="Auxiliar/Técnico Enfermagem" <?= (strcasecmp($perfil, 'Auxiliar/Técnico Enfermagem') === 0 || strcasecmp($perfil, 'AUXILIAR/TÉCNICO ENFERMAGEM') === 0) ? 'selected' : '' ?>>Auxiliar/Técnico Enfermagem</option>
+                            <option value="Cirurgião Dentista" <?= (strcasecmp($perfil, 'Cirurgião Dentista') === 0 || strcasecmp($perfil, 'CIRURGIÃO DENTISTA') === 0) ? 'selected' : '' ?>>Cirurgião Dentista</option>
+                            <option value="ASB - Auxiliar Saúde Bucal" <?= (strcasecmp($perfil, 'ASB - Auxiliar Saúde Bucal') === 0 || strcasecmp($perfil, 'ASB - AUXILIAR SAÚDE BUCAL') === 0) ? 'selected' : '' ?>>ASB - Auxiliar Saúde Bucal</option>
+                            <option value="TSB - Técnico Saúde Bucal" <?= (strcasecmp($perfil, 'TSB - Técnico Saúde Bucal') === 0 || strcasecmp($perfil, 'TSB - TÉCNICO SAÚDE BUCAL') === 0) ? 'selected' : '' ?>>TSB - Técnico Saúde Bucal</option>
+                            <option value="ACS - Agente Comunitário Saúde" <?= (strcasecmp($perfil, 'ACS - Agente Comunitário Saúde') === 0 || strcasecmp($perfil, 'ACS - AGENTE COMUNITÁRIO SAÚDE') === 0) ? 'selected' : '' ?>>ACS - Agente Comunitário Saúde</option>
+                            <option value="ACE - Agente Combate Endemias" <?= (strcasecmp($perfil, 'ACE - Agente Combate Endemias') === 0 || strcasecmp($perfil, 'ACE - AGENTE COMBATE ENDEMIAS') === 0) ? 'selected' : '' ?>>ACE - Agente Combate Endemias</option>
+                            <option value="Coordenador UBS" <?= (strcasecmp($perfil, 'Coordenador UBS') === 0 || strcasecmp($perfil, 'COORDENADOR UBS') === 0) ? 'selected' : '' ?>>Coordenador UBS</option>
+                            <option value="Recepção" <?= (strcasecmp($perfil, 'Recepção') === 0 || strcasecmp($perfil, 'RECEPÇÃO') === 0) ? 'selected' : '' ?>>Recepção</option>
+                            <option value="Outro Prof. Nível Superior" <?= (strcasecmp($perfil, 'Outro Prof. Nível Superior') === 0 || strcasecmp($perfil, 'OUTRO PROF. NÍVEL SUPERIOR') === 0) ? 'selected' : '' ?>>Outro Prof. Nível Superior</option>
                         </select>
                     </td>
                 </tr>
@@ -222,16 +174,17 @@ if (isset($_GET['id'])): //----só surgirá o conteúdo se vier um ID
                         <input class="form-control" type="text" id="CONSELHO_CLASSE" name="CONSELHO_CLASSE" placeholder="Ex: CRM, COREN" value="<?= htmlspecialchars($conselhoClasse ?? '') ?>">
                     </td>
                     <td>
-                        <input class="form-control" type="text" id="REGISTRO_CONSELHO" name="REGISTRO_CONSELHO" placeholder="Nº 12345" value="<?= htmlspecialchars($registroConselho ?? '') ?>">
+                        <input class="form-control" type="text" id="REGISTRO_CONSELHO" name="REGISTRO_CONSELHO" placeholder="Nº 12345" value="<?= htmlspecialchars($registroConselho ?? '') ?>" inputmode="numeric" oninput="this.value = this.value.replace(/[^0-9]/g, '')">
                     </td>
                     <td colspan="2">
                         <select name="ESTADO_EMISSOR_CONSELHO" id="ESTADO_EMISSOR_CONSELHO" class="form-control">
-                            <option value="">UF</option>
-                            <?php
-                            // Define o valor selecionado antes de incluir o script
-                            $selectedUf = $estadoEmissorConselho ?? '';
-                            require(__DIR__ . '/../../querys/ConsultaUnidadeFederativaSelect.php');
-                            ?>
+                            <?php $selectedUf = ($estadoEmissorConselho !== null && $estadoEmissorConselho !== '' && is_numeric($estadoEmissorConselho)) ? (string)$estadoEmissorConselho : null; ?>
+                            <?php if ($selectedUf === null): ?>
+                                <option value="" disabled selected>UF</option>
+                            <?php else: ?>
+                                <option value="" disabled>UF</option>
+                            <?php endif; ?>
+                            <?php require(__DIR__ . '/../../querys/ConsultaUnidadeFederativaSelect.php'); ?>
                         </select>
                     </td>
                 </tr>
@@ -246,7 +199,7 @@ if (isset($_GET['id'])): //----só surgirá o conteúdo se vier um ID
                 </tr>
                 <tr>
                     <td>
-                        <input class="form-control" type="text" id="CEP" name="CEP" placeholder="00000-000" value="<?= htmlspecialchars($cep ?? '') ?>">
+                        <input class="form-control" type="text" id="CEP" name="CEP" placeholder="00000-000" value="<?= htmlspecialchars($cep ?? '') ?>" onkeypress="return mascaras(event, this, '#####-###');" inputmode="numeric" maxlength="9">
                     </td>
                     <td colspan="3">
                         <input class="form-control" type="text" id="LOGRADOURO" name="LOGRADOURO" value="<?= htmlspecialchars($logradouro ?? '') ?>">
@@ -260,7 +213,7 @@ if (isset($_GET['id'])): //----só surgirá o conteúdo se vier um ID
                 </tr>
                 <tr>
                     <td>
-                        <input class="form-control" type="text" id="NUMERO" name="NUMERO" value="<?= htmlspecialchars($numero ?? '') ?>">
+                        <input class="form-control" type="text" id="NUMERO" name="NUMERO" value="<?= htmlspecialchars($numero ?? '') ?>" inputmode="numeric" oninput="this.value = this.value.replace(/[^0-9]/g, '')">
                     </td>
                     <td>
                         <input class="form-control" type="text" id="BAIRRO" name="BAIRRO" value="<?= htmlspecialchars($bairro ?? '') ?>">
@@ -281,12 +234,13 @@ if (isset($_GET['id'])): //----só surgirá o conteúdo se vier um ID
                     </td>
                     <td>
                         <select name="ESTADO_ENDERECO" id="ESTADO_ENDERECO" class="form-control">
-                            <option value="">UF</option>
-                            <?php
-                            // Define o valor selecionado antes de incluir o script
-                            $selectedUf = $estadoEndereco ?? '';
-                            require(__DIR__ . '/../../querys/ConsultaUnidadeFederativaSelect.php');
-                            ?>
+                            <?php $selectedUf = ($estadoEndereco !== null && $estadoEndereco !== '' && is_numeric($estadoEndereco)) ? (string)$estadoEndereco : null; ?>
+                            <?php if ($selectedUf === null): ?>
+                                <option value="" disabled selected>UF</option>
+                            <?php else: ?>
+                                <option value="" disabled>UF</option>
+                            <?php endif; ?>
+                            <?php require(__DIR__ . '/../../querys/ConsultaUnidadeFederativaSelect.php'); ?>
                         </select>
                     </td>
                     <td>

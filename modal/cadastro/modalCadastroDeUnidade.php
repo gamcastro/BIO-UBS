@@ -95,7 +95,7 @@ require_once __DIR__ . '/../../vendor/autoload.php';
                             </td>
                             <td colspan="2">
                                 <select id="cad-uf" name="uf" class="form-control">
-                                    <option value="">Selecione...</option>
+                                    <option value="" disabled selected>Selecione...</option>
                                     <?php
                                     try {
                                         require(__DIR__ . '/../../querys/ConsultaUnidadeFederativaSelect.php');
@@ -104,6 +104,7 @@ require_once __DIR__ . '/../../vendor/autoload.php';
                                     }
                                     ?>
                                 </select>
+                                <div class="invalid-feedback">Selecione a UF da unidade.</div>
                             </td>
                         </tr>
                     </table>

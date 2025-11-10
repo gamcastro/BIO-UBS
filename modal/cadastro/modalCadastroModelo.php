@@ -65,12 +65,13 @@
                     </td>
 
                     <td>
-                      <select name="uf_rg" class="form-control">
-                        <option value="">UF</option>
+                      <select name="uf_rg" class="form-control" required>
+                        <option value="" disabled selected>UF</option>
                         <?php
                           require_once('querys/ConsultaUnidadeFederativaSelect.php');
                         ?>
-                      </select>  
+                      </select>
+                      <div class="invalid-feedback">Selecione a UF do RG.</div>
                     </td>
 
                     <td>
