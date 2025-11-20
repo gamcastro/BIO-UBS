@@ -68,7 +68,7 @@ if (isset($_GET['id'])): //----só surgirá o conteúdo se vier um ID
             <table class="table table-bordered">
                 
                 <tr class="table-info">
-                    <td colspan="4"><strong>DADOS PESSOAIS</strong></td>
+                    <td colspan="4"><strong>Dados pessoais</strong></td>
                 </tr>
 
                 <tr>
@@ -110,16 +110,26 @@ if (isset($_GET['id'])): //----só surgirá o conteúdo se vier um ID
                         <input class="form-control" type="date" id="DATA_NASCIMENTO" name="DATA_NASCIMENTO" value="<?= htmlspecialchars($dataNascimento ?? '') ?>">
                     </td>
                     <td>
-                        <select name="SEXO" id="SEXO" class="form-control">
-                            <option value="">Selecione</option>
-                            <option value="Feminino" <?= ($sexo == 'Feminino') ? 'selected' : '' ?>>Feminino</option>
-                            <option value="Masculino" <?= ($sexo == 'Masculino') ? 'selected' : '' ?>>Masculino</option>
+                        <?php
+                        // Normaliza para os rótulos usados no banco: 'Feminino' / 'Masculino'
+                        $sexoLabel = '';
+                        if (isset($sexo)) {
+                            $sLower = mb_strtolower(trim((string)$sexo), 'UTF-8');
+                            if ($sLower === 'm' || mb_stripos($sLower, 'mascul') !== false) { $sexoLabel = 'Masculino'; }
+                            elseif ($sLower === 'f' || mb_stripos($sLower, 'femin') !== false) { $sexoLabel = 'Feminino'; }
+                        }
+                        ?>
+                        <select name="SEXO" id="SEXO" class="form-control" onchange="if(document.getElementsByName('sexo')[0]){document.getElementsByName('sexo')[0].value=this.value}">
+                            <option value="" <?= $sexoLabel === '' ? 'selected' : '' ?>>Selecione</option>
+                            <option value="Feminino" <?= $sexoLabel === 'Feminino' ? 'selected' : '' ?>>Feminino</option>
+                            <option value="Masculino" <?= $sexoLabel === 'Masculino' ? 'selected' : '' ?>>Masculino</option>
                         </select>
+                        <input type="hidden" name="sexo" value="<?= htmlspecialchars($sexoLabel) ?>">
                     </td>
                 </tr>
 
                 <tr class="table-info">
-                    <td colspan="4"><strong>DADOS DE CONTATO</strong></td>
+                    <td colspan="4"><strong>Contatos</strong></td>
                 </tr>
 
                 <tr>
@@ -133,13 +143,45 @@ if (isset($_GET['id'])): //----só surgirá o conteúdo se vier um ID
                              Por favor, informe um e-mail válido (ex: nome@exemplo.com).
                          </div>
                     </td>
-                <td colspan="2">
-                    <input class="form-control" type="tel" id="TELEFONE" name="TELEFONE" placeholder="(99) 99999-9999" value="<?= htmlspecialchars($telefone ?? '') ?>" onkeypress="return mascaras(event, this, '(##) #####-####');" inputmode="numeric">
+                    <td colspan="2">
+                    <?php
+                    // Prepara telefone para exibição: remove DDI '55' quando presente (armazenado no BD como '55' + 11 dígitos)
+                    $telefone_display = $telefone ?? '';
+                    $digits = preg_replace('/\D+/', '', (string)$telefone_display);
+                    // usa format_telefone se disponível
+                    if (function_exists('format_telefone')) {
+                        $telefone_display = format_telefone($digits);
+                    } else {
+                        // fallback formatting: 10 -> (XX) XXXX-XXXX, 11 -> (XX) XXXXX-XXXX
+                        if (strlen($digits) === 10) {
+                            $telefone_display = preg_replace('/(\d{2})(\d{4})(\d{4})/', '($1)$2-$3', $digits);
+                        } elseif (strlen($digits) === 11) {
+                            $telefone_display = preg_replace('/(\d{2})(\d{5})(\d{4})/', '($1)$2-$3', $digits);
+                        } else {
+                            $telefone_display = $digits;
+                        }
+                    }
+                        // Prepara telefone para exibição: formata os dígitos salvos no banco
+                        // usa format_telefone se disponível
+                        if (function_exists('format_telefone')) {
+                            $telefone_display = format_telefone($digits);
+                        } else {
+                            // fallback formatting: 10 -> (XX) XXXX-XXXX, 11 -> (XX) XXXXX-XXXX
+                            if (strlen($digits) === 10) {
+                                $telefone_display = preg_replace('/(\d{2})(\d{4})(\d{4})/', '($1)$2-$3', $digits);
+                            } elseif (strlen($digits) === 11) {
+                                $telefone_display = preg_replace('/(\d{2})(\d{5})(\d{4})/', '($1)$2-$3', $digits);
+                            } else {
+                                $telefone_display = $digits;
+                            }
+                        }
+                    ?>
+                    <input class="form-control" type="tel" id="TELEFONE" name="TELEFONE" placeholder="(99) 99999-9999" value="<?= htmlspecialchars($telefone_display ?? '') ?>" onkeypress="return mascaras(event, this, '(##)#####-####');" inputmode="numeric">
                 </td>
                 </tr>
 
                 <tr class="table-info">
-                    <td colspan="4"><strong>DADOS PROFISSIONAIS E ACESSO</strong></td>
+                    <td colspan="4"><strong>Dados profissionais e acesso</strong></td>
                 </tr>
                 
                 <tr>
@@ -190,7 +232,7 @@ if (isset($_GET['id'])): //----só surgirá o conteúdo se vier um ID
                 </tr>
 
                 <tr class="table-info">
-                    <td colspan="4"><strong>ENDEREÇO</strong></td>
+                    <td colspan="4"><strong>Endereço</strong></td>
                 </tr>
 
                 <tr>
@@ -202,7 +244,7 @@ if (isset($_GET['id'])): //----só surgirá o conteúdo se vier um ID
                         <input class="form-control" type="text" id="CEP" name="CEP" placeholder="00000-000" value="<?= htmlspecialchars($cep ?? '') ?>" onkeypress="return mascaras(event, this, '#####-###');" inputmode="numeric" maxlength="9">
                     </td>
                     <td colspan="3">
-                        <input class="form-control" type="text" id="LOGRADOURO" name="LOGRADOURO" value="<?= htmlspecialchars($logradouro ?? '') ?>">
+                        <input class="form-control" type="text" id="LOGRADOURO" name="LOGRADOURO" value="<?= htmlspecialchars($logradouro ?? '') ?>" oninput="this.value = capitalizeNameWithPrepositions(this.value)">
                     </td>
                 </tr>
                 <tr>
@@ -216,7 +258,7 @@ if (isset($_GET['id'])): //----só surgirá o conteúdo se vier um ID
                         <input class="form-control" type="text" id="NUMERO" name="NUMERO" value="<?= htmlspecialchars($numero ?? '') ?>" inputmode="numeric" oninput="this.value = this.value.replace(/[^0-9]/g, '')">
                     </td>
                     <td>
-                        <input class="form-control" type="text" id="BAIRRO" name="BAIRRO" value="<?= htmlspecialchars($bairro ?? '') ?>">
+                        <input class="form-control" type="text" id="BAIRRO" name="BAIRRO" value="<?= htmlspecialchars($bairro ?? '') ?>" oninput="this.value = capitalizeNameWithPrepositions(this.value)">
                     </td>
                     <td colspan="2">
                         <input class="form-control" type="text" id="COMPLEMENTO" name="COMPLEMENTO" placeholder="Apto, Bloco, Casa, etc." value="<?= htmlspecialchars($complemento ?? '') ?>">
@@ -230,7 +272,7 @@ if (isset($_GET['id'])): //----só surgirá o conteúdo se vier um ID
                 </tr>
                 <tr>
                     <td colspan="2">
-                        <input class="form-control" type="text" id="MUNICIPIO" name="MUNICIPIO" value="<?= htmlspecialchars($municipio ?? '') ?>">
+                        <input class="form-control" type="text" id="MUNICIPIO" name="MUNICIPIO" value="<?= htmlspecialchars($municipio ?? '') ?>" oninput="this.value = capitalizeNameWithPrepositions(this.value)">
                     </td>
                     <td>
                         <select name="ESTADO_ENDERECO" id="ESTADO_ENDERECO" class="form-control">

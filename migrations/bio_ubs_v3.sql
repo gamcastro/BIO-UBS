@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Tempo de geração: 10/11/2025 às 01:26
+-- Tempo de geração: 20/11/2025 às 23:58
 -- Versão do servidor: 10.4.32-MariaDB
 -- Versão do PHP: 8.2.12
 
@@ -31,11 +31,26 @@ CREATE TABLE `cadastro_paciente` (
   `ID` int(11) NOT NULL,
   `NOME` varchar(100) NOT NULL,
   `DATA_NASCIMENTO` date NOT NULL,
+  `NOME_MAE` varchar(100) DEFAULT NULL,
+  `SEXO` varchar(10) DEFAULT NULL,
+  `RACA_COR` varchar(20) DEFAULT NULL,
   `CPF` char(11) NOT NULL,
+  `CNS` varchar(15) DEFAULT NULL,
   `RG` varchar(20) NOT NULL,
   `UF_RG` int(11) DEFAULT NULL,
   `SSP` varchar(20) NOT NULL,
   `TELEFONE_CELULAR` varchar(15) NOT NULL,
+  `TELEFONE_RESIDENCIAL` varchar(15) DEFAULT NULL,
+  `TELEFONE_CONTATO` varchar(15) DEFAULT NULL,
+  `EMAIL` varchar(100) DEFAULT NULL,
+  `CEP` varchar(8) DEFAULT NULL,
+  `ENDERECO` varchar(255) DEFAULT NULL,
+  `NUMERO` varchar(10) DEFAULT NULL,
+  `COMPLEMENTO` varchar(100) DEFAULT NULL,
+  `BAIRRO` varchar(100) DEFAULT NULL,
+  `MUNICIPIO` varchar(100) DEFAULT NULL,
+  `ESTADO` char(2) DEFAULT NULL,
+  `LGPD_CONSENT` tinyint(1) NOT NULL DEFAULT 0,
   `CRIADO_EM` timestamp NOT NULL DEFAULT current_timestamp(),
   `ATUALIZADO_EM` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -44,11 +59,10 @@ CREATE TABLE `cadastro_paciente` (
 -- Despejando dados para a tabela `cadastro_paciente`
 --
 
-INSERT INTO `cadastro_paciente` (`ID`, `NOME`, `DATA_NASCIMENTO`, `CPF`, `RG`, `UF_RG`, `SSP`, `TELEFONE_CELULAR`, `CRIADO_EM`, `ATUALIZADO_EM`) VALUES
-(34, 'Markleny Martins Pinheiro Melo Castro', '1981-02-28', '65501438372', '8766555545', 21, 'SSP/MA', '', '2025-09-23 02:20:02', '2025-11-07 03:02:05'),
-(36, 'Maria Aparecida Ferreira Melo Teste', '1942-10-01', '05461545300', '', 21, 'SSP/MA', '', '2025-11-01 21:03:19', '2025-11-06 13:56:44'),
-(39, 'Aarom Carmon Das Neves', '1987-03-15', '44544556789', '', 21, 'SSP/MA', '', '2025-11-07 03:15:07', '2025-11-07 03:15:07'),
-(44, 'Maria Da Conceição Da Silva Da Silva', '1987-10-01', '45454545452', '56767676767', 21, 'SSP/MA', '', '2025-11-09 01:45:40', '2025-11-09 01:45:54');
+INSERT INTO `cadastro_paciente` (`ID`, `NOME`, `DATA_NASCIMENTO`, `NOME_MAE`, `SEXO`, `RACA_COR`, `CPF`, `CNS`, `RG`, `UF_RG`, `SSP`, `TELEFONE_CELULAR`, `TELEFONE_RESIDENCIAL`, `TELEFONE_CONTATO`, `EMAIL`, `CEP`, `ENDERECO`, `NUMERO`, `COMPLEMENTO`, `BAIRRO`, `MUNICIPIO`, `ESTADO`, `LGPD_CONSENT`, `CRIADO_EM`, `ATUALIZADO_EM`) VALUES
+(34, 'Markleny Martins Pinheiro Melo Castro', '1981-02-28', NULL, NULL, NULL, '65501438372', NULL, '8766555545', 21, 'SSP/MA', '', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, '2025-09-23 02:20:02', '2025-11-07 03:02:05'),
+(39, 'Aaron Carmona Da Silva Dos Anjos', '1987-03-15', 'Maria De Padua Angelita', 'M', 'BRANCA', '44544556789', '898989898989898', '989898932', 21, 'SSP/MA', '98992332673', '9832443155', NULL, 'gamcastro@bol.com.br', '93434343', 'Rua Vinte e Cinco de Dezembro', '220', '', 'Anil de Baixo', 'São Luís de Piratini', '21', 1, '2025-11-07 03:15:07', '2025-11-20 03:45:59'),
+(59, 'Maria das Graças da Silva do Espirito Santo', '1983-01-01', 'Maria do Espirito Santos da Silva', 'F', 'PARDA', '87838873223', '883483438438438', '983948934893', 21, 'SSP/MA', '98992345678', '9832451234', '98992334567', 'maria@gmail.com', '93483943', 'Rua Vinte e Cinco de Dezembro', '221', '', 'Anil de Baixo', 'São Luís de Pira', '21', 1, '2025-11-20 21:25:26', '2025-11-20 21:28:56');
 
 -- --------------------------------------------------------
 
@@ -91,12 +105,8 @@ CREATE TABLE `cadastro_profissional` (
 
 INSERT INTO `cadastro_profissional` (`ID`, `MATRICULA`, `NOME_COMPLETO`, `CPF`, `CNS_PROFISSIONAL`, `DATA_NASCIMENTO`, `SEXO`, `PERFIL`, `EMAIL`, `TELEFONE`, `CONSELHO_CLASSE`, `REGISTRO_CONSELHO`, `ESTADO_EMISSOR_CONSELHO`, `CEP`, `ESTADO_ENDERECO`, `MUNICIPIO`, `BAIRRO`, `LOGRADOURO`, `NUMERO`, `COMPLEMENTO`, `PONTO_REFERENCIA`, `PASSWORD_HASH`, `IS_ACTIVE`, `LAST_LOGIN`, `CRIADO_EM`, `ATUALIZADO_EM`) VALUES
 (17, '3099618', 'George André Melo Castro', '71050035372', '12345', '1976-04-17', 'Masculino', 'COORDENADOR UBS', 'gamcastro14@gmail.com', '98992332673', 'CRM', '345678', 21, '65047-240', 15, 'São Luís', 'Anil', 'rua 10 casa 20', '220', NULL, NULL, '$argon2id$v=19$m=65536,t=4,p=1$TjJsalhaTURZR3NEOFZ0ZA$JbkYpcroYZtdG3yStG8XjPERyc24qXIeWlDdVEtSeOE', 1, NULL, '2025-10-30 16:59:49', '2025-11-07 03:19:23'),
-(20, '3099876', 'Markleny Martins Pinheiro', '65501438372', '12345678', '2025-11-04', 'Feminino', 'RECEPÇÃO', 'marklenypinheiro@gmail.com', '98987401266', NULL, NULL, 21, '65047-240', 21, 'São Luís', 'Anil', 'rua 10 casa 23', '220', NULL, NULL, '$argon2id$v=19$m=65536,t=4,p=1$cnhsRmZHZTJmTW8yd3AyVQ$uAJLoXfe1QeOKvYd47K0xgX7qYKhEWdXjfkWw/QMZFE', 1, NULL, '2025-11-04 13:52:45', '2025-11-07 03:19:42'),
 (21, '102089', 'Aaron Carmona', '99934590045', '88877733', '1943-12-01', 'Masculino', 'MÉDICO', 'gamcastro@gmail.com', '999999999', 'CRM', '2323232', 21, '65047270', 21, 'SÃO LUÍS', 'ANIL', 'RUA 10 CASA', '20', NULL, NULL, '$argon2id$v=19$m=65536,t=4,p=1$dGlxTlJUU2xyS3YwNlZsWA$OchKtLvlK2XeZZZddKXlI2ANsra2HWSasbkUZVY/DD8', 1, NULL, '2025-11-07 03:25:07', '2025-11-07 03:25:07'),
-(23, '23232', 'Sidarta Gautama', '34343434343', '121212121', '1982-10-01', 'Feminino', 'CIRURGIÃO DENTISTA', 'teste@teste.com', '99999999999', 'CRM', '323232', 52, '656565656', 21, 'SÃO LUÍS', 'ASDFASD', 'FASDFASDF', '343', NULL, NULL, '$argon2id$v=19$m=65536,t=4,p=1$blBzOEl6cWJ3ekJ5VW1RNw$vBQQysq1aLmJSp+1W92FXev6hpecunf6sxvgSta3Epk', 1, NULL, '2025-11-07 03:40:41', '2025-11-07 21:18:07'),
-(25, '343434', 'Raimundo Nonato Ferreira', '34343434345', '343434343', '1983-10-01', 'Masculino', 'ACE - Agente Combate Endemias', 'teste@mondo.com', '5593434343434', 'CRM', '543432323', 52, '65047240', 21, 'São Luís', 'Anil', 'RUa 10 casa 20', '343', NULL, NULL, '$argon2id$v=19$m=65536,t=4,p=1$NjhIYmlhdnlJeTAwTG5oaA$wCppvK0y7wOdSJvsyltZPZjaKQmYRaSRHexOorNw354', 1, NULL, '2025-11-08 13:18:21', '2025-11-08 13:18:21'),
-(26, '3434343', 'Raimundo Feques Das Dores', '34834834834', '343434', '1976-10-01', 'Masculino', 'ACE - Agente Combate Endemias', 'teste@example.com', '5538434343434', NULL, NULL, NULL, '65047240', 21, 'São Luís', 'Anil', 'rua 10 casa 20', '220', NULL, NULL, '$argon2id$v=19$m=65536,t=4,p=1$L2RiLk1WWmc2UEVNeTFlQw$35JDXD+yX1XhZjH95TiN1VO1KBGEPeKihO9jaBJo6WY', 1, NULL, '2025-11-08 13:27:48', '2025-11-08 13:27:48'),
-(32, '34789444', 'Maria Da Conceição Sousa', '34561239066', '2345678955', '1987-10-01', 'Feminino', 'Recepção', 'teste@mokay.com', '5599939393933', NULL, NULL, NULL, '65047240', 21, 'São Luís', 'Anil', 'rua 10 casa 20', '220', NULL, NULL, '$argon2id$v=19$m=65536,t=4,p=1$OGpHTkRudnlmS3BXM2ZZMw$Gak1sDCc5ByRgiJLgTLix/FimxXpklS2b/xZStEigkM', 1, NULL, '2025-11-09 01:41:24', '2025-11-09 01:41:24');
+(37, '93434343434', 'Raimundo da Silva dos Remédios', '98344556787', '354 5453 3232 2', '1976-12-09', 'Masculino', 'Recepção', 'raimundo@gmail.com', '98987401266', NULL, NULL, NULL, '56455656', 21, 'São Luís de Pirati', 'Anil de Cima', 'Rua Vinte e Quatro dos Arpões', '220', NULL, NULL, '$argon2id$v=19$m=65536,t=4,p=1$LnFuUGJCMzFWRktjamdLeQ$9akhnq0ihsbyxW6obn0S9a/opiLue7CIBAw6blIOLxE', 1, NULL, '2025-11-20 22:23:11', '2025-11-20 22:36:35');
 
 -- --------------------------------------------------------
 
@@ -126,7 +136,7 @@ CREATE TABLE `cadastro_unidade` (
 --
 
 INSERT INTO `cadastro_unidade` (`ID`, `NOME`, `CNES`, `CNPJ`, `TELEFONE`, `CEP`, `ESTADO`, `MUNICIPIO`, `BAIRRO`, `LOGRADOURO`, `NUMERO`, `COMPLEMENTO`, `CRIADO_EM`, `ATUALIZADO_EM`) VALUES
-(1, 'UNIDADE BÁSICA DE SAÚDE AMAPÁ DO MARANHÃO', '1224243', '66.777.888.99-000', '9998765432', '65047240', 21, 'AMAPÁ DO MARANHÃO', 'CENTRO', 'RUA 10 ', '10', 'DFAFD CLOC', '2025-09-29 13:57:49', '2025-11-06 13:56:15');
+(1, 'Unidade ´Básica de Saúde Amapá do Maranhão', '1224243', '66.777.888.99-000', '9892334567', '65023646', 21, 'Amapá do Maranhão', 'Centro', 'Rua Vinte e Quator de Abril', '10', 'Proximo do Supermercado Aragão', '2025-09-29 13:57:49', '2025-11-20 22:49:24');
 
 -- --------------------------------------------------------
 
@@ -5937,13 +5947,13 @@ ALTER TABLE `remember_tokens`
 -- AUTO_INCREMENT de tabela `cadastro_paciente`
 --
 ALTER TABLE `cadastro_paciente`
-  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=45;
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=60;
 
 --
 -- AUTO_INCREMENT de tabela `cadastro_profissional`
 --
 ALTER TABLE `cadastro_profissional`
-  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=33;
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=38;
 
 --
 -- AUTO_INCREMENT de tabela `cadastro_unidade`
@@ -5961,7 +5971,7 @@ ALTER TABLE `fila_atendimento`
 -- AUTO_INCREMENT de tabela `login_attempts`
 --
 ALTER TABLE `login_attempts`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=42;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=51;
 
 --
 -- AUTO_INCREMENT de tabela `password_resets`

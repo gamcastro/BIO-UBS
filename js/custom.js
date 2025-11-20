@@ -36,6 +36,40 @@ document.addEventListener('DOMContentLoaded', function () {
                             // Se a busca for bem-sucedida, injeta o HTML no modal
                             modalContent.innerHTML = response.data;
 
+                            // Normaliza nomes pré-preenchidos (capitaliza respeitando preposições)
+                            try {
+                                function applyNameNormalization(container) {
+                                    if (typeof capitalizeNameWithPrepositions !== 'function') return;
+                                    var nameInputs = container.querySelectorAll('input[name="nome"], input[name="nome_mae"], input[name="nome_pai"]');
+                                    nameInputs.forEach(function (inp) {
+                                        try {
+                                            if (inp && inp.value && inp.value.trim().length > 0) {
+                                                inp.value = capitalizeNameWithPrepositions(inp.value);
+                                            }
+                                            if (!inp.dataset.normalizeBound) {
+                                                inp.addEventListener('blur', function () {
+                                                    if (inp.value) inp.value = capitalizeNameWithPrepositions(inp.value);
+                                                });
+                                                inp.addEventListener('paste', function () {
+                                                    setTimeout(function () {
+                                                        if (inp.value) inp.value = capitalizeNameWithPrepositions(inp.value);
+                                                    }, 10);
+                                                });
+                                                inp.dataset.normalizeBound = '1';
+                                            }
+                                        } catch (e) {
+                                            console.error('Erro ao normalizar input:', e);
+                                        }
+                                    });
+                                }
+
+                                // Aplicação imediata e reforçada após um pequeno delay
+                                applyNameNormalization(modalContent);
+                                setTimeout(function () { applyNameNormalization(modalContent); }, 80);
+                            } catch (err) {
+                                console.error('Erro ao normalizar nomes no modal:', err);
+                            }
+
                             // =========================================================
                             // 4. CHAMADA CONDICIONAL:
                             // Só execute a função de "buscar paciente" se este for
@@ -172,3 +206,24 @@ function setupModalEventListeners(modalElement) {
         });
     }
 } // Fim da função setupModalEventListeners
+
+// =========================================================================
+// FUNÇÃO DE CAPITALIZAÇÃO DE NOMES COM PREPOSIÇÕES
+// =========================================================================
+/**
+ * Capitaliza nomes próprios respeitando preposições e conectivos.
+ * Exemplo: "maria da silva" -> "Maria da Silva"
+ * @param {string} value - O texto a ser capitalizado
+ * @returns {string} - O texto capitalizado
+ */
+function capitalizeNameWithPrepositions(value) {
+    var prepositions = ['das', 'dos', 'da', 'do', 'de', 'di', 'du', 'del', 'della', 'von', 'van', 'el', 'la', 'e', 'y'];
+    return value.replace(/\w\S*/g, function(txt, index, fullText) {
+        var word = txt.toLowerCase();
+        // Se for primeira palavra ou não for preposição, capitaliza
+        var wordPosition = fullText.substring(0, index).trim().length === 0 ? 0 : 1;
+        return (wordPosition > 0 && prepositions.indexOf(word) !== -1) 
+            ? word 
+            : txt.charAt(0).toUpperCase() + txt.substring(1).toLowerCase();
+    });
+}

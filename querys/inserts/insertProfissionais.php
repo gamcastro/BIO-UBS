@@ -102,10 +102,10 @@ if (isset($_POST['salvar'])) {
         die;
     }
 
-    // Normalização do Nome Completo (Title Case)
+    // Normalização do Nome Completo mantendo preposições em minúsculo
     if (isset($dados['NOME_COMPLETO']) && $dados['NOME_COMPLETO'] !== null) {
-        $nome = trim(preg_replace('/\s+/u', ' ', (string)$dados['NOME_COMPLETO']));
-        $dados['NOME_COMPLETO'] = mb_convert_case(mb_strtolower($nome, 'UTF-8'), MB_CASE_TITLE, 'UTF-8');
+        if (!function_exists('normalize_nome')) { require_once __DIR__ . '/../../includes/functions.php'; }
+        $dados['NOME_COMPLETO'] = normalize_nome((string)$dados['NOME_COMPLETO']);
     }
 
     // Limpa o CPF (remove pontos, traços, etc.) para senha e para persistência
@@ -115,19 +115,33 @@ if (isset($_POST['salvar'])) {
 
     // Sanitiza TELEFONE (mantém apenas dígitos) e aplica DDI 55 se vier sem
     if (isset($dados['TELEFONE']) && $dados['TELEFONE'] !== null) {
+        // Armazenar apenas dígitos (não prefixar DDI '55').
         $telLimpo = preg_replace('/\D+/', '', (string)$dados['TELEFONE']);
-        // Se tiver 11 dígitos (formato BR sem DDI), prefixa 55 => total 13
-        if (strlen($telLimpo) === 11) {
-            $telLimpo = '55' . $telLimpo; // adiciona DDI Brasil
-        }
-        // Se já vier com 13 dígitos (ex: 55 + 11), mantém
-        // Caso contrário, deixa como está (pode ser telefone fixo reduzido)
         $dados['TELEFONE'] = $telLimpo;
     }
 
     // Sanitiza CEP (mantém apenas dígitos)
     if (isset($dados['CEP']) && $dados['CEP'] !== null) {
         $dados['CEP'] = preg_replace('/\D+/', '', (string)$dados['CEP']);
+    }
+
+    // Normaliza o campo SEXO para os valores do ENUM do banco: 'Masculino' / 'Feminino'
+    $sexoValor = null;
+    if (isset($dados['SEXO'])) {
+        $sexoValor = $dados['SEXO'];
+    } elseif (isset($_POST['sexo'])) {
+        $sexoValor = $_POST['sexo'];
+    }
+    if ($sexoValor !== null) {
+        $s = mb_strtolower(trim((string)$sexoValor), 'UTF-8');
+        if ($s === 'm' || mb_stripos($s, 'mascul') !== false) {
+            $dados['SEXO'] = 'Masculino';
+        } elseif ($s === 'f' || mb_stripos($s, 'femin') !== false) {
+            $dados['SEXO'] = 'Feminino';
+        } else {
+            // valor inesperado -> grava NULL para evitar erro de enum
+            $dados['SEXO'] = null;
+        }
     }
     
     // <-- MUDANÇA: Usando Argon2id (como solicitado) e salvando na coluna correta 'PASSWORD_HASH'

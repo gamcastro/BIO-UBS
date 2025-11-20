@@ -48,7 +48,7 @@ if (isset($_GET['id'])): //----só sugirá o conteúdo se vier um ID
         <div class="modal-body">
             <table class="table table-bordered">
                 <tr class="table-info">
-                    <td colspan="4"><strong>DADOS DA UNIDADE</strong></td>
+                    <td colspan="4"><strong>Dados da unidade</strong></td>
                 </tr>
 
                 <tr>
@@ -77,7 +77,7 @@ if (isset($_GET['id'])): //----só sugirá o conteúdo se vier um ID
                 </tr>
 
                 <tr class="table-info">
-                    <td colspan="4"><strong>ENDEREÇO</strong></td>
+                    <td colspan="4"><strong>Endereço</strong></td>
                 </tr>
 
                 <tr>

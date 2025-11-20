@@ -35,7 +35,7 @@ require_once __DIR__ . '/../../vendor/autoload.php';
             <table class="table table-bordered">
                 
                 <tr class="table-info">
-                    <td colspan="4"><strong>DADOS PESSOAIS</strong></td>
+                    <td colspan="4"><strong>Dados pessoais</strong></td>
                 </tr>
 
                 <tr>
@@ -71,22 +71,26 @@ require_once __DIR__ . '/../../vendor/autoload.php';
                         </div>
                     </td>
                     <td>
-                        <input class="form-control" type="text" id="CNS_PROFISSIONAL" name="CNS_PROFISSIONAL" placeholder="Nº CNS" oninput="this.value = this.value.replace(/[^0-9]/g, '')" maxlength="15">
+                        <input class="form-control" type="text" id="CNS_PROFISSIONAL" name="CNS_PROFISSIONAL" placeholder="000 0000 0000 0000" minlength="15" maxlength="18"
+                               onkeypress="return mascaras(event, this, '### #### #### ####');"
+                               onkeydown="return event.key === 'Backspace' || event.key === 'Delete' || event.key === 'Tab' || /[0-9]/.test(event.key)">
                     </td>
                     <td>
                         <input class="form-control" type="date" id="DATA_NASCIMENTO" name="DATA_NASCIMENTO">
                     </td>
                     <td>
-                        <select name="SEXO" id="SEXO" class="form-control">
-                            <option value="">Selecione</option>
+                        <select name="SEXO" id="SEXO" class="form-select" required onchange="if(document.getElementsByName('sexo')[0]){document.getElementsByName('sexo')[0].value=this.value}">
+                            <option value="" disabled selected>Selecione</option>
                             <option value="Feminino">Feminino</option>
                             <option value="Masculino">Masculino</option>
                         </select>
+                        <input type="hidden" name="sexo" value="">
+                        <div class="invalid-feedback">Por favor, selecione o sexo.</div>
                     </td>
                 </tr>
 
                 <tr class="table-info">
-                    <td colspan="4"><strong>DADOS DE CONTATO</strong></td>
+                    <td colspan="4"><strong>Contatos</strong></td>
                 </tr>
 
                 <tr>
@@ -106,7 +110,7 @@ require_once __DIR__ . '/../../vendor/autoload.php';
                 </tr>
 
                 <tr class="table-info">
-                    <td colspan="4"><strong>DADOS PROFISSIONAIS E ACESSO</strong></td>
+                    <td colspan="4"><strong>Dados profissionais e acesso</strong></td>
                 </tr>
                 
                 <tr>
@@ -155,7 +159,7 @@ require_once __DIR__ . '/../../vendor/autoload.php';
                 </tr>
 
                 <tr class="table-info">
-                    <td colspan="4"><strong>ENDEREÇO</strong></td>
+                    <td colspan="4"><strong>Endereço</strong></td>
                 </tr>
 
                 <tr>
@@ -167,7 +171,7 @@ require_once __DIR__ . '/../../vendor/autoload.php';
                         <input class="form-control" type="text" id="CEP" name="CEP" placeholder="00000-000" onkeypress="return mascaras(event, this, '#####-###');" inputmode="numeric" maxlength="9">
                     </td>
                     <td colspan="3">
-                        <input class="form-control" type="text" id="LOGRADOURO" name="LOGRADOURO">
+                        <input class="form-control" type="text" id="LOGRADOURO" name="LOGRADOURO" placeholder="Logradouro (Rua, Av, etc.)" oninput="this.value = capitalizeNameWithPrepositions(this.value)">
                     </td>
                 </tr>
                 <tr>
@@ -181,7 +185,7 @@ require_once __DIR__ . '/../../vendor/autoload.php';
                         <input class="form-control" type="text" id="NUMERO" name="NUMERO" inputmode="numeric" oninput="this.value = this.value.replace(/[^0-9]/g, '')">
                     </td>
                     <td>
-                        <input class="form-control" type="text" id="BAIRRO" name="BAIRRO">
+                        <input class="form-control" type="text" id="BAIRRO" name="BAIRRO" oninput="this.value = capitalizeNameWithPrepositions(this.value)">
                     </td>
                     <td colspan="2">
                         <input class="form-control" type="text" id="COMPLEMENTO" name="COMPLEMENTO" placeholder="Apto, Bloco, Casa, etc.">
@@ -195,7 +199,7 @@ require_once __DIR__ . '/../../vendor/autoload.php';
                 </tr>
                 <tr>
                     <td colspan="2">
-                        <input class="form-control" type="text" id="MUNICIPIO" name="MUNICIPIO">
+                        <input class="form-control" type="text" id="MUNICIPIO" name="MUNICIPIO" oninput="this.value = capitalizeNameWithPrepositions(this.value)">
                     </td>
                     <td>
                         <select name="ESTADO_ENDERECO" id="ESTADO_ENDERECO" class="form-control">
