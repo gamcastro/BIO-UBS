@@ -140,16 +140,16 @@
                 <!-- Telefones -->
                 <div class="row mb-3">
                     <div class="col-md-4">
-                        <label for="telefone_residencial" class="form-label">Telefone residencial</label>
-                        <input class="form-control" type="text" name="telefone_residencial" 
-                               placeholder="(00) 0000-0000"
-                               onkeypress="return mascaras(event, this, '(##) ####-####');">
-                    </div>
-                    <div class="col-md-4">
                         <label for="telefone_celular" class="form-label">Telefone celular</label>
                         <input class="form-control" type="text" name="telefone_celular" 
                                placeholder="(00)90000-0000"
                                onkeypress="return mascaras(event, this, '(##)#####-####');">
+                    </div>
+                    <div class="col-md-4">
+                        <label for="telefone_residencial" class="form-label">Telefone residencial</label>
+                        <input class="form-control" type="text" name="telefone_residencial" 
+                               placeholder="(00) 0000-0000"
+                               onkeypress="return mascaras(event, this, '(##) ####-####');">
                     </div>
                     <div class="col-md-4">
                         <label for="telefone_contato" class="form-label">Telefone de contato</label>
@@ -209,21 +209,9 @@
                     </div>
                 </div>
 
-                <!-- Tipo de logradouro e Logradouro -->
+                <!-- Logradouro -->
                 <div class="row mb-3">
-                    <div class="col-md-3">
-                        <label for="tipo_logradouro" class="form-label">Tipo de logradouro</label>
-                        <select name="tipo_logradouro" class="form-select">
-                            <option value="" disabled selected>Selecione</option>
-                            <option value="RUA">Rua</option>
-                            <option value="AVENIDA">Avenida</option>
-                            <option value="TRAVESSA">Travessa</option>
-                            <option value="ALAMEDA">Alameda</option>
-                            <option value="ESTRADA">Estrada</option>
-                            <option value="RODOVIA">Rodovia</option>
-                        </select>
-                    </div>
-                    <div class="col-md-9">
+                    <div class="col-md-12">
                         <label for="endereco" class="form-label">Logradouro</label>
                         <input class="form-control" type="text" name="endereco" 
                                placeholder="Nome do logradouro"

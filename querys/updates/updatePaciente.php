@@ -13,6 +13,7 @@ $cpf = $_POST['cpf'];
 $cns = $_POST['cns'];
 $nome_mae = $_POST['nome_mae'];
 $telefone_celular = $_POST['telefone_celular'];
+$telefone_contato = isset($_POST['telefone_contato']) ? $_POST['telefone_contato'] : null;
 $cep = $_POST['cep'];
 $municipio = $_POST['municipio'];
 $estado = $_POST['estado'];
@@ -34,10 +35,10 @@ $lgpd_consent = isset($_POST['lgpd_consent']) ? 1 : 0;
 // - Nome e Nome da Mãe em Title Case
 // - Espaços duplicados colapsados
 // - SSP em MAIÚSCULAS
-$nome = trim(preg_replace('/\s+/u', ' ', (string)$nome));
-$nome = mb_convert_case(mb_strtolower($nome, 'UTF-8'), MB_CASE_TITLE, 'UTF-8');
-$nome_mae = trim(preg_replace('/\s+/u', ' ', (string)$nome_mae));
-$nome_mae = mb_convert_case(mb_strtolower($nome_mae, 'UTF-8'), MB_CASE_TITLE, 'UTF-8');
+// Normalização avançada mantendo preposições em minúsculo
+if (!function_exists('normalize_nome')) { require_once __DIR__ . '/../../includes/functions.php'; }
+$nome = normalize_nome($nome);
+$nome_mae = normalize_nome($nome_mae);
 $ssp  = mb_strtoupper((string)$ssp, 'UTF-8');
 // CPF e CNS apenas dígitos
 if (!function_exists('sanitize_cpf')) { require_once __DIR__ . '/../../includes/functions.php'; }
@@ -47,6 +48,7 @@ $rg = preg_replace('/[^0-9]/', '', (string)$rg);
 // Telefones apenas dígitos
 $telefone_celular = preg_replace('/[^0-9]/', '', (string)$telefone_celular);
 $telefone_residencial = preg_replace('/[^0-9]/', '', (string)$telefone_residencial);
+$telefone_contato = preg_replace('/[^0-9]/', '', (string)$telefone_contato);
 // CEP apenas dígitos
 $cep = preg_replace('/[^0-9]/', '', (string)$cep);
 
@@ -70,6 +72,7 @@ $colunasPermitidas = [
   'SEXO',
   'RACA_COR',
   'TELEFONE_RESIDENCIAL',
+  'TELEFONE_CONTATO',
   'EMAIL',
   'RG',
   'UF_RG',
@@ -134,6 +137,7 @@ $dados = [
     'SEXO' => $sexo,
     'RACA_COR' => $raca_cor,
     'TELEFONE_RESIDENCIAL' => $telefone_residencial,
+    'TELEFONE_CONTATO' => $telefone_contato,
     'EMAIL' => $email,
     'RG' => $rg,
     'UF_RG' => $uf_rg,

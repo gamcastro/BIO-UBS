@@ -26,10 +26,14 @@ function aplicarMascaraValor(elemento, padrao) {
             }
         } else {
             // Só adiciona caractere fixo se já houver ao menos um dígito capturado
+            // Porém preserva o parêntese de abertura "(" mesmo antes do primeiro dígito
             if (idx > 0) {
                 resultado += ch;
             } else {
-                // Ignora prefixos antes do primeiro dígito (ex: '(' )
+                if (ch === '(') {
+                    resultado += ch;
+                }
+                // Caso não seja um parêntese de abertura, ignora o prefixo
                 continue;
             }
         }
@@ -46,6 +50,17 @@ function aplicarMascaraNosCampos(container) {
         var m = attr.match(/mascaras\s*\(\s*event\s*,\s*this\s*,\s*'([^']+)'\s*\)/);
         if (m && m[1]) {
             aplicarMascaraValor(el, m[1]);
+            // Anexa listener de input para reformatar quando usuário substituir todo o conteúdo
+            try {
+                if (!el.dataset.maskAttached) {
+                    el.addEventListener('input', function() {
+                        aplicarMascaraValor(el, m[1]);
+                    });
+                    el.dataset.maskAttached = '1';
+                }
+            } catch (e) {
+                // falha silenciosa
+            }
         }
     });
 }

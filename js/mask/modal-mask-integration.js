@@ -70,6 +70,10 @@
                 // Aguarda um pouco para garantir que o conteúdo foi carregado
                 setTimeout(function() {
                     window.reaplicarMascaras(modal);
+                    // Aplica máscaras de telefone em campos já preenchidos
+                    if (window.applyPhoneMasks) {
+                        window.applyPhoneMasks();
+                    }
                 }, 150);
             }
         });

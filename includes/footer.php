@@ -45,4 +45,5 @@ SCRIPT PARA DATA/HORA DA SIDEBAR
 <script src="<?= BASE_URL ?>/js/mask/funcaoMascaraGeralNumeros.js"></script>
 <script src="<?= BASE_URL ?>/js/mask/aplicador-mascaras.js"></script>
 <script src="<?= BASE_URL ?>/js/mask/modal-mask-integration.js"></script>
+<script src="<?= BASE_URL ?>/js/mask/apply-mask-on-load.js"></script>
 

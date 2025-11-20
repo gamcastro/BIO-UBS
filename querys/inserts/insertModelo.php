@@ -9,6 +9,7 @@ use BioUBS\UbsCrudAll;
         $rg = $_POST['rg'];
         $uf_rg = $_POST['uf_rg'];
         $ssp = $_POST['ssp'];
+        $telefone_contato = isset($_POST['telefone_contato']) ? preg_replace('/[^0-9]/', '', (string)$_POST['telefone_contato']) : null;
       //----------------------
 
 //------------------inserindo na tabela pacientes---------
@@ -22,7 +23,8 @@ use BioUBS\UbsCrudAll;
       'CPF', 
       'RG', 
       'UF_RG', 
-      'SSP'
+      'SSP',
+      'TELEFONE_CONTATO'
     ]; //--nao informar ID chave primaria
 
   $objeto = new UbsCrudAll($tabela, $colunasPermitidas); //---receberá a tabela e as colunas
@@ -31,9 +33,10 @@ use BioUBS\UbsCrudAll;
         'NOME'              => $nome,
         'DATA_NASCIMENTO'   => $data_nascimento,
         'CPF'               => $cpf,
-        'RG'                => $rg,
-        'UF_RG'             => $uf_rg,
-        'SSP'               => $ssp
+      'RG'                => $rg,
+      'UF_RG'             => $uf_rg,
+      'SSP'               => $ssp,
+      'TELEFONE_CONTATO'  => $telefone_contato
     ]);
 
     $isertUbs = $objeto->inserir($dados);
