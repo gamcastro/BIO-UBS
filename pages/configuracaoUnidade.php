@@ -60,13 +60,20 @@ if (isset($_POST['salvar'])) {
     ];
     
     // Prepara o array de dados para o update/insert
+    // Sanitiza CNES, TELEFONE e CEP para armazenar apenas dígitos
+    $telefone_raw = $_POST['telefone'] ?? null;
+    $cnes_raw = $_POST['cnes'] ?? null;
+    $cep_raw = $_POST['cep'] ?? null;
+    $telefone_digits = $telefone_raw !== null ? preg_replace('/\D+/', '', (string)$telefone_raw) : null;
+    $cnes_digits = $cnes_raw !== null ? preg_replace('/\D+/', '', (string)$cnes_raw) : null;
+    $cep_digits = $cep_raw !== null ? preg_replace('/\D+/', '', (string)$cep_raw) : null;
+
     $dados = [
         'NOME' => $_POST['nome'] ?? null,
-        'CNES' => $_POST['cnes'] ?? null,
+        'CNES' => $cnes_digits !== '' ? $cnes_digits : null,
         'CNPJ' => $_POST['cnpj'] ?? null,
-        'TELEFONE' => $_POST['telefone'] ?? null,
-        'CEP' => $_POST['cep'] ?? null,
-        // O formulário (name="uf") envia o ID (ex: 21)
+        'TELEFONE' => $telefone_digits !== '' ? $telefone_digits : null,
+        'CEP' => $cep_digits !== '' ? $cep_digits : null,        
         'ESTADO' => $_POST['uf'] ?? null, 
         'MUNICIPIO' => $_POST['municipio'] ?? null,
         'BAIRRO' => $_POST['bairro'] ?? null,
@@ -138,6 +145,31 @@ $logradouro = $dadosUnidade['LOGRADOURO'] ?? '';
 $numero = $dadosUnidade['NUMERO'] ?? '';
 $complemento = $dadosUnidade['COMPLEMENTO'] ?? '';
 
+// Preparar exibição do telefone: formata apenas para visualização
+$telefone_digits_for_display = preg_replace('/\D+/', '', (string)$telefone);
+if (function_exists('format_telefone')) {
+    $telefone_display = $telefone_digits_for_display ? format_telefone($telefone_digits_for_display) : '';
+} else {
+    if (strlen($telefone_digits_for_display) === 10) {
+        $telefone_display = preg_replace('/(\d{2})(\d{4})(\d{4})/', '($1)$2-$3', $telefone_digits_for_display);
+    } elseif (strlen($telefone_digits_for_display) === 11) {
+        $telefone_display = preg_replace('/(\d{2})(\d{5})(\d{4})/', '($1)$2-$3', $telefone_digits_for_display);
+    } else {
+        $telefone_display = $telefone_digits_for_display;
+    }
+}
+
+// Preparar exibição do CNES (apenas dígitos)
+$cnes_display = preg_replace('/\D+/', '', (string)$cnes);
+
+// Preparar exibição do CEP no formato ##.###-### (ex: 65.047-240)
+$cep_digits_for_display = preg_replace('/\D+/', '', (string)$cep);
+if ($cep_digits_for_display && strlen($cep_digits_for_display) === 8) {
+    $cep_display = preg_replace('/(\d{2})(\d{3})(\d{3})/', '$1.$2-$3', $cep_digits_for_display);
+} else {
+    $cep_display = $cep_digits_for_display;
+}
+
 ?>
 
 <!-- 
@@ -189,8 +221,8 @@ INÍCIO: Conteúdo HTML da Página
                 <div class="row g-3 mb-3"> 
                     <div class="col-md-6">
                         <label for="nome" class="form-label">Nome <span class="text-danger">*</span></label>
-                        <input type="text" class="form-control" id="nome" name="nome" required 
-                               value="<?= htmlspecialchars($nome); ?>">
+                           <input type="text" class="form-control" id="nome" name="nome" required 
+                               value="<?= htmlspecialchars($nome); ?>" oninput="if(typeof capitalizeNameWithPrepositions === 'function'){ this.value = capitalizeNameWithPrepositions(this.value); }">
                     </div>
                     <div class="col-md-6">
                         <label for="cnpj" class="form-label">CNPJ</label>
@@ -199,28 +231,28 @@ INÍCIO: Conteúdo HTML da Página
                     </div>
                     <div class="col-md-6">
                         <label for="cnes" class="form-label">CNES <span class="text-danger">*</span></label>
-                        <input type="text" class="form-control" id="cnes" name="cnes" required placeholder="Apenas números"
-                               value="<?= htmlspecialchars($cnes); ?>">
+                        <input type="text" class="form-control" id="cnes" name="cnes" required placeholder="Apenas números" inputmode="numeric" maxlength="7"
+                               onkeypress="return mascaras(event, this, '#######');" value="<?= htmlspecialchars($cnes_display); ?>">
                     </div>
                     <div class="col-md-6">
                         <label for="telefone" class="form-label">Telefone</label>
                         <input type="tel" class="form-control" id="telefone" name="telefone" placeholder="(99) 99999-9999"
-                               value="<?= htmlspecialchars($telefone); ?>">
+                               value="<?= htmlspecialchars($telefone_display); ?>" onkeypress="return mascaras(event, this, '(##)#####-####');" inputmode="numeric" maxlength="15">
                     </div>
                 </div>
 
-                <h6 class="text-primary mb-3 border-bottom pb-2 pt-3">ENDEREÇO</h6>
+                <h6 class="text-primary mb-3 border-bottom pb-2 pt-3">Endereço</h6>
 
                 <div class="row g-3">
                     <div class="col-md-4">
                         <label for="cep" class="form-label">CEP</label>
-                        <input type="text" class="form-control" id="cep" name="cep" placeholder="00000-000"
-                               value="<?= htmlspecialchars($cep); ?>">
+                           <input type="text" class="form-control" id="cep" name="cep" placeholder="00.000-000" inputmode="numeric" maxlength="10"
+                               onkeypress="return mascaras(event, this, '##.###-###');" value="<?= htmlspecialchars($cep_display); ?>">
                     </div>
                     <div class="col-md-8">
                         <label for="logradouro" class="form-label">Logradouro</label>
-                        <input type="text" class="form-control" id="logradouro" name="logradouro"
-                               value="<?= htmlspecialchars($logradouro); ?>">
+                           <input type="text" class="form-control" id="logradouro" name="logradouro"
+                               value="<?= htmlspecialchars($logradouro); ?>" oninput="if(typeof capitalizeNameWithPrepositions === 'function'){ this.value = capitalizeNameWithPrepositions(this.value); }">
                     </div>
                     <div class="col-md-3">
                         <label for="numero" class="form-label">Número</label>
@@ -229,18 +261,18 @@ INÍCIO: Conteúdo HTML da Página
                     </div>
                     <div class="col-md-5">
                         <label for="bairro" class="form-label">Bairro</label>
-                        <input type="text" class="form-control" id="bairro" name="bairro"
-                               value="<?= htmlspecialchars($bairro); ?>">
+                           <input type="text" class="form-control" id="bairro" name="bairro"
+                               value="<?= htmlspecialchars($bairro); ?>" oninput="if(typeof capitalizeNameWithPrepositions === 'function'){ this.value = capitalizeNameWithPrepositions(this.value); }">
                     </div>
                     <div class="col-md-4">
                         <label for="complemento" class="form-label">Complemento</label>
-                        <input type="text" class="form-control" id="complemento" name="complemento"
-                               value="<?= htmlspecialchars($complemento); ?>">
+                           <input type="text" class="form-control" id="complemento" name="complemento"
+                               value="<?= htmlspecialchars($complemento); ?>" oninput="if(typeof capitalizeNameWithPrepositions === 'function'){ this.value = capitalizeNameWithPrepositions(this.value); }">
                     </div>
                     <div class="col-md-8">
                         <label for="municipio" class="form-label">Município</label>
-                        <input type="text" class="form-control" id="municipio" name="municipio"
-                               value="<?= htmlspecialchars($municipio); ?>">
+                           <input type="text" class="form-control" id="municipio" name="municipio"
+                               value="<?= htmlspecialchars($municipio); ?>" oninput="if(typeof capitalizeNameWithPrepositions === 'function'){ this.value = capitalizeNameWithPrepositions(this.value); }">
                     </div>
                     <div class="col-md-4">
                         <label for="uf" class="form-label">Estado (UF)</label>

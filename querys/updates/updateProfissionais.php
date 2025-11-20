@@ -83,24 +83,40 @@ if (isset($_POST['editar'])) {
         $dados['CPF'] = sanitize_cpf($dados['CPF']);
     }
 
-    // Normalização do Nome Completo (Title Case)
+    // Normalização do Nome Completo mantendo preposições em minúsculo
     if (isset($dados['NOME_COMPLETO']) && $dados['NOME_COMPLETO'] !== null) {
-        $nome = trim(preg_replace('/\s+/u', ' ', (string)$dados['NOME_COMPLETO']));
-        $dados['NOME_COMPLETO'] = mb_convert_case(mb_strtolower($nome, 'UTF-8'), MB_CASE_TITLE, 'UTF-8');
+        if (!function_exists('normalize_nome')) { require_once __DIR__ . '/../../includes/functions.php'; }
+        $dados['NOME_COMPLETO'] = normalize_nome((string)$dados['NOME_COMPLETO']);
     }
 
     // Sanitização do TELEFONE e aplicação de DDI 55, quando aplicável
     if (isset($dados['TELEFONE']) && $dados['TELEFONE'] !== null) {
+        // Armazenar apenas dígitos (não prefixar DDI '55').
         $telLimpo = preg_replace('/\D+/', '', (string)$dados['TELEFONE']);
-        if (strlen($telLimpo) === 11) {
-            $telLimpo = '55' . $telLimpo; // adiciona DDI Brasil
-        }
         $dados['TELEFONE'] = $telLimpo;
     }
 
     // Sanitiza CEP (mantém apenas dígitos)
     if (isset($dados['CEP']) && $dados['CEP'] !== null) {
         $dados['CEP'] = preg_replace('/\D+/', '', (string)$dados['CEP']);
+    }
+
+    // Normaliza o campo SEXO para os valores do ENUM do banco: 'Masculino' / 'Feminino'
+    $sexoValor = null;
+    if (array_key_exists('SEXO', $dados)) {
+        $sexoValor = $dados['SEXO'];
+    } elseif (isset($_POST['sexo'])) {
+        $sexoValor = $_POST['sexo'];
+    }
+    if ($sexoValor !== null) {
+        $s = mb_strtolower(trim((string)$sexoValor), 'UTF-8');
+        if ($s === 'm' || mb_stripos($s, 'mascul') !== false) {
+            $dados['SEXO'] = 'Masculino';
+        } elseif ($s === 'f' || mb_stripos($s, 'femin') !== false) {
+            $dados['SEXO'] = 'Feminino';
+        } else {
+            $dados['SEXO'] = null;
+        }
     }
 
     // Validação específica para códigos de UF no update
