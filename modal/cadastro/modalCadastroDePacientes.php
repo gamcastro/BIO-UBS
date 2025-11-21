@@ -36,17 +36,14 @@
                 <!-- CPF e CNS -->
                 <div class="row mb-3">
                     <div class="col-md-6">
-                        <label for="cpf" class="form-label">CPF</label>
-                        <input class="form-control" type="text" name="cpf" placeholder="000.000.000-00" 
-                               onkeypress="return mascaras(event, this, '###.###.###-##');" 
-                               minlength="14" maxlength="14">
+                           <label for="cpf" class="form-label">CPF</label>
+                           <input class="form-control" type="text" name="cpf" id="CPF" placeholder="000.000.000-00" 
+                               data-mask="###.###.###-##" minlength="14" maxlength="14">
                     </div>
                     <div class="col-md-6">
-                        <label for="cns" class="form-label">CNS</label>
-                        <input class="form-control" type="text" name="cns" placeholder="000 0000 0000 0000" 
-                               minlength="15" maxlength="18"
-                               onkeypress="return mascaras(event, this, '### #### #### ####');"
-                               onkeydown="return event.key === 'Backspace' || event.key === 'Delete' || event.key === 'Tab' || /[0-9]/.test(event.key)">
+                           <label for="cns" class="form-label">CNS</label>
+                           <input class="form-control" type="text" name="cns" id="CNS" placeholder="000 0000 0000 0000" 
+                               minlength="15" maxlength="18" data-mask="### #### #### ####" inputmode="numeric" data-numeric="true">
                     </div>
                 </div>
 
@@ -54,9 +51,8 @@
                 <div class="row mb-3">
                     <div class="col-md-12">
                         <label for="nome" class="form-label">Nome completo *</label>
-                        <input class="form-control" type="text" id="nome" name="nome" required="required" 
-                               placeholder="Nome completo" 
-                               oninput="this.value = capitalizeNameWithPrepositions(this.value)" minlength="3">
+                           <input class="form-control" type="text" id="nome" name="nome" required="required" 
+                               placeholder="Nome completo" data-titlecase="true" minlength="3">
                         <div class="invalid-feedback">
                             Por favor, informe o nome completo (mínimo 3 caracteres).
                         </div>
@@ -96,9 +92,8 @@
                 <div class="row mb-3">
                     <div class="col-md-12">
                         <label for="nome_mae" class="form-label">Nome da mãe *</label>
-                        <input class="form-control" type="text" name="nome_mae" required="required" 
-                               placeholder="Nome completo da mãe" minlength="3"
-                               oninput="this.value = capitalizeNameWithPrepositions(this.value)">
+                           <input class="form-control" type="text" name="nome_mae" required="required" 
+                               placeholder="Nome completo da mãe" minlength="3" data-titlecase="true">
                         <div class="invalid-feedback">
                             Por favor, informe o nome completo da mãe.
                         </div>
@@ -109,8 +104,7 @@
                 <div class="row mb-3">
                     <div class="col-md-6">
                         <label for="rg" class="form-label">RG</label>
-                        <input class="form-control" type="text" name="rg" placeholder="0000000000-0"
-                               onkeypress="return event.charCode >= 48 && event.charCode <= 57">
+                           <input class="form-control" type="text" name="rg" id="RG" placeholder="0000000000-0" inputmode="numeric" data-numeric="true">
                     </div>
                     <div class="col-md-6">
                         <label for="uf_rg" class="form-label">UF do RG</label>
@@ -127,8 +121,8 @@
                 <div class="row mb-3">
                     <div class="col-md-12">
                         <label for="ssp" class="form-label">Órgão Expedidor</label>
-                        <input class="form-control" type="text" id="ssp" name="ssp" 
-                               placeholder="ex: SSP/MA" onkeyup="alteraSSP()">
+                           <input class="form-control" type="text" id="ssp" name="ssp" 
+                               placeholder="ex: SSP/MA" data-callback="alteraSSP">
                     </div>
                 </div>
 
@@ -141,21 +135,18 @@
                 <div class="row mb-3">
                     <div class="col-md-4">
                         <label for="telefone_celular" class="form-label">Telefone celular</label>
-                        <input class="form-control" type="text" name="telefone_celular" 
-                               placeholder="(00)90000-0000"
-                               onkeypress="return mascaras(event, this, '(##)#####-####');">
+                           <input class="form-control" type="text" name="telefone_celular" id="TELEFONE_CEL" 
+                               placeholder="(00)90000-0000" data-mask="(##)#####-####">
                     </div>
                     <div class="col-md-4">
                         <label for="telefone_residencial" class="form-label">Telefone residencial</label>
-                        <input class="form-control" type="text" name="telefone_residencial" 
-                               placeholder="(00) 0000-0000"
-                               onkeypress="return mascaras(event, this, '(##) ####-####');">
+                           <input class="form-control" type="text" name="telefone_residencial" id="TELEFONE_RES" 
+                               placeholder="(00) 0000-0000" data-mask="(##) ####-####">
                     </div>
                     <div class="col-md-4">
                         <label for="telefone_contato" class="form-label">Telefone de contato</label>
-                        <input class="form-control" type="text" name="telefone_contato" 
-                               placeholder="(00)90000-0000"
-                               onkeypress="return mascaras(event, this, '(##)#####-####');">
+                           <input class="form-control" type="text" name="telefone_contato" id="TELEFONE_CONT" 
+                               placeholder="(00)90000-0000" data-mask="(##)#####-####">
                     </div>
                 </div>
 
@@ -189,9 +180,8 @@
                     </div>
                     <div class="col-md-8">
                         <label for="municipio" class="form-label">Município</label>
-                        <input class="form-control" type="text" name="municipio" 
-                               placeholder="Nome do município"
-                               oninput="this.value = capitalizeNameWithPrepositions(this.value)">
+                           <input class="form-control" type="text" name="municipio" id="MUNICIPIO" 
+                               placeholder="Nome do município" data-titlecase="true">
                     </div>
                 </div>
 
@@ -199,13 +189,11 @@
                 <div class="row mb-3">
                     <div class="col-md-3">
                         <label for="cep" class="form-label">CEP</label>
-                        <input class="form-control" type="text" name="cep" placeholder="00000-000" 
-                               onkeypress="return mascaras(event, this, '#####-###');">
+                           <input class="form-control" type="text" name="cep" id="CEP" placeholder="00000-000" data-mask="#####-###" inputmode="numeric">
                     </div>
                     <div class="col-md-9">
                         <label for="bairro" class="form-label">Bairro</label>
-                        <input class="form-control" type="text" name="bairro" placeholder="Nome do bairro"
-                               oninput="this.value = capitalizeNameWithPrepositions(this.value)">
+                           <input class="form-control" type="text" name="bairro" id="BAIRRO" placeholder="Nome do bairro" data-titlecase="true">
                     </div>
                 </div>
 
@@ -213,9 +201,8 @@
                 <div class="row mb-3">
                     <div class="col-md-12">
                         <label for="endereco" class="form-label">Logradouro</label>
-                        <input class="form-control" type="text" name="endereco" 
-                               placeholder="Nome do logradouro"
-                               oninput="this.value = capitalizeNameWithPrepositions(this.value)">
+                           <input class="form-control" type="text" name="endereco" id="LOGRADOURO" 
+                               placeholder="Nome do logradouro" data-titlecase="true">
                     </div>
                 </div>
 
@@ -223,8 +210,7 @@
                 <div class="row mb-3">
                     <div class="col-md-4">
                         <label for="numero" class="form-label">Número</label>
-                        <input class="form-control" type="text" name="numero" placeholder="Número"
-                               onkeypress="return event.charCode >= 48 && event.charCode <= 57">
+                           <input class="form-control" type="text" name="numero" id="NUMERO" placeholder="Número" inputmode="numeric" data-numeric="true">
                     </div>
                     <div class="col-md-8">
                         <label for="complemento" class="form-label">Complemento</label>

@@ -74,7 +74,7 @@ if(isset($_GET['id'])): //----só sugirá o conteúdo de vier um ID
 
                   <tr>
                     <td colspan="3">
-                      <input class="form-control" type="text" id="nome" name="nome" required="required" placeholder="Nome completo" onkeyup="alteraNome()" value="<?=$nomePaciente?>">
+                      <input class="form-control" type="text" id="nome" name="nome" required="required" placeholder="Nome completo" data-callback="alteraNome" data-titlecase="true" value="<?=$nomePaciente?>">
                     </td>
                     <td>
                       <input class="form-control" type="date" name="data_nascimento" required="required" value="<?=$data_nascimento?>">
@@ -91,11 +91,11 @@ if(isset($_GET['id'])): //----só sugirá o conteúdo de vier um ID
                   <tr>
 
                     <td>
-                      <input class="form-control" type="" name="cpf" placeholder="ex: 000.000.000-00" onkeypress="return mascaras(event, this, '###.###.###-##');" value="<?=$cpf?>">
+                      <input class="form-control" type="text" name="cpf" placeholder="ex: 000.000.000-00" data-mask="###.###.###-##" value="<?=$cpf?>">
                     </td>
 
                     <td>
-                      <input class="form-control" type="" name="rg" placeholder="ex: 0000000000-0" value="<?=$rg?>">
+                      <input class="form-control" type="text" name="rg" placeholder="ex: 0000000000-0" inputmode="numeric" data-numeric="true" value="<?=$rg?>">
                     </td>
 
                     <td>
@@ -111,7 +111,7 @@ if(isset($_GET['id'])): //----só sugirá o conteúdo de vier um ID
                     </td>
 
                     <td>
-                      <input class="form-control" type="" id="ssp" name="ssp" placeholder="ex: SSP/MA" onkeyup="alteraSSP()" value="<?=$ssp?>">
+                      <input class="form-control" type="text" id="ssp" name="ssp" placeholder="ex: SSP/MA" data-callback="alteraSSP" value="<?=$ssp?>">
                     </td>
                   </tr>
 

@@ -44,7 +44,7 @@ require_once __DIR__ . '/../../vendor/autoload.php';
                 </tr>
                 <tr>
                     <td colspan="3">
-                        <input class="form-control" type="text" id="NOME_COMPLETO" name="NOME_COMPLETO" required="required" placeholder="Nome completo do profissional" onkeyup="alteraNomeProfissional()" minlength="3">
+                        <input class="form-control" type="text" id="NOME_COMPLETO" name="NOME_COMPLETO" required="required" placeholder="Nome completo do profissional" data-altera-nome-profissional="true" minlength="3">
                         <div class="invalid-feedback">
                             Por favor, informe o nome completo (mínimo 3 caracteres).
                         </div>
@@ -65,21 +65,21 @@ require_once __DIR__ . '/../../vendor/autoload.php';
                 </tr>
                 <tr>
                     <td>
-                        <input class="form-control" type="text" id="CPF" name="CPF" required="required" placeholder="000.000.000-00" onkeypress="return mascaras(event, this, '###.###.###-##');" minlength="14" maxlength="14">
+                        <input class="form-control" type="text" id="CPF" name="CPF" required="required" placeholder="000.000.000-00" data-mask="###.###.###-##" minlength="14" maxlength="14">
                         <div class="invalid-feedback">
                             Por favor, informe um CPF válido (11 dígitos).
                         </div>
                     </td>
                     <td>
-                        <input class="form-control" type="text" id="CNS_PROFISSIONAL" name="CNS_PROFISSIONAL" placeholder="000 0000 0000 0000" minlength="15" maxlength="18"
-                               onkeypress="return mascaras(event, this, '### #### #### ####');"
+                           <input class="form-control" type="text" id="CNS_PROFISSIONAL" name="CNS_PROFISSIONAL" placeholder="000 0000 0000 0000" minlength="15" maxlength="18"
+                               data-mask="### #### #### ####"
                                onkeydown="return event.key === 'Backspace' || event.key === 'Delete' || event.key === 'Tab' || /[0-9]/.test(event.key)">
                     </td>
                     <td>
-                        <input class="form-control" type="date" id="DATA_NASCIMENTO" name="DATA_NASCIMENTO">
+                        <input class="form-control" type="date" id="DATA_NASCIMENTO" name="DATA_NASCIMENTO" required="required">
                     </td>
                     <td>
-                        <select name="SEXO" id="SEXO" class="form-select" required onchange="if(document.getElementsByName('sexo')[0]){document.getElementsByName('sexo')[0].value=this.value}">
+                        <select name="SEXO" id="SEXO" class="form-select" required data-sync="sexo">
                             <option value="" disabled selected>Selecione</option>
                             <option value="Feminino">Feminino</option>
                             <option value="Masculino">Masculino</option>
@@ -105,7 +105,7 @@ require_once __DIR__ . '/../../vendor/autoload.php';
                          </div>
                     </td>
                 <td colspan="2">
-                    <input class="form-control" type="tel" id="TELEFONE" name="TELEFONE" placeholder="(99) 99999-9999" onkeypress="return mascaras(event, this, '(##)#####-####');" inputmode="numeric">
+                        <input class="form-control" type="tel" id="TELEFONE" name="TELEFONE" placeholder="(99) 99999-9999" data-mask="(##)#####-####" inputmode="numeric">
                 </td>
                 </tr>
 
@@ -168,10 +168,10 @@ require_once __DIR__ . '/../../vendor/autoload.php';
                 </tr>
                 <tr>
                     <td>
-                        <input class="form-control" type="text" id="CEP" name="CEP" placeholder="00000-000" onkeypress="return mascaras(event, this, '#####-###');" inputmode="numeric" maxlength="9">
+                        <input class="form-control" type="text" id="CEP" name="CEP" placeholder="00000-000" data-mask="#####-###" inputmode="numeric" maxlength="9">
                     </td>
                     <td colspan="3">
-                        <input class="form-control" type="text" id="LOGRADOURO" name="LOGRADOURO" placeholder="Logradouro (Rua, Av, etc.)" oninput="this.value = capitalizeNameWithPrepositions(this.value)">
+                        <input class="form-control" type="text" id="LOGRADOURO" name="LOGRADOURO" placeholder="Logradouro (Rua, Av, etc.)" data-titlecase="true">
                     </td>
                 </tr>
                 <tr>
@@ -185,7 +185,7 @@ require_once __DIR__ . '/../../vendor/autoload.php';
                         <input class="form-control" type="text" id="NUMERO" name="NUMERO" inputmode="numeric" oninput="this.value = this.value.replace(/[^0-9]/g, '')">
                     </td>
                     <td>
-                        <input class="form-control" type="text" id="BAIRRO" name="BAIRRO" oninput="this.value = capitalizeNameWithPrepositions(this.value)">
+                        <input class="form-control" type="text" id="BAIRRO" name="BAIRRO" data-titlecase="true">
                     </td>
                     <td colspan="2">
                         <input class="form-control" type="text" id="COMPLEMENTO" name="COMPLEMENTO" placeholder="Apto, Bloco, Casa, etc.">
@@ -199,7 +199,7 @@ require_once __DIR__ . '/../../vendor/autoload.php';
                 </tr>
                 <tr>
                     <td colspan="2">
-                        <input class="form-control" type="text" id="MUNICIPIO" name="MUNICIPIO" oninput="this.value = capitalizeNameWithPrepositions(this.value)">
+                        <input class="form-control" type="text" id="MUNICIPIO" name="MUNICIPIO" data-titlecase="true">
                     </td>
                     <td>
                         <select name="ESTADO_ENDERECO" id="ESTADO_ENDERECO" class="form-control">

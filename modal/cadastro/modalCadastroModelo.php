@@ -40,7 +40,7 @@
 
                   <tr>
                     <td colspan="3">
-                      <input class="form-control" type="text" id="nome" name="nome" required="required" placeholder="Nome completo" onkeyup="alteraNome()">
+                      <input class="form-control" type="text" id="nome" name="nome" required="required" placeholder="Nome completo" data-callback="alteraNome" data-titlecase="true">
                     </td>
                     <td>
                       <input class="form-control" type="date" name="data_nascimento" required="required">
@@ -57,11 +57,11 @@
                   <tr>
 
                     <td>
-                      <input class="form-control" type="" name="cpf" placeholder="ex: 000.000.000-00" onkeypress="return mascaras(event, this, '###.###.###-##');">
+                      <input class="form-control" type="text" name="cpf" placeholder="ex: 000.000.000-00" data-mask="###.###.###-##">
                     </td>
 
                     <td>
-                      <input class="form-control" type="" name="rg" placeholder="ex: 0000000000-0">
+                      <input class="form-control" type="text" name="rg" placeholder="ex: 0000000000-0" inputmode="numeric" data-numeric="true">
                     </td>
 
                     <td>
@@ -75,7 +75,7 @@
                     </td>
 
                     <td>
-                      <input class="form-control" type="" id="ssp" name="ssp" placeholder="ex: SSP/MA" onkeyup="alteraSSP()">
+                      <input class="form-control" type="text" id="ssp" name="ssp" placeholder="ex: SSP/MA" data-callback="alteraSSP">
                     </td>
                   </tr>
 
