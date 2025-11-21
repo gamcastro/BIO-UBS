@@ -44,23 +44,41 @@ function aplicarMascaraValor(elemento, padrao) {
 // Procura elementos que usam a função 'mascaras' no atributo onkeypress e aplica a formatação
 function aplicarMascaraNosCampos(container) {
     container = container || document;
-    var nodes = container.querySelectorAll('[onkeypress*="mascaras("]');
-    nodes.forEach(function(el) {
+    // Suporta atributos inline antigos (onkeypress contendo mascaras(...))
+    var nodesInline = container.querySelectorAll('[onkeypress*="mascaras("]');
+    nodesInline.forEach(function(el) {
         var attr = el.getAttribute('onkeypress') || '';
         var m = attr.match(/mascaras\s*\(\s*event\s*,\s*this\s*,\s*'([^']+)'\s*\)/);
         if (m && m[1]) {
             aplicarMascaraValor(el, m[1]);
-            // Anexa listener de input para reformatar quando usuário substituir todo o conteúdo
             try {
                 if (!el.dataset.maskAttached) {
-                    el.addEventListener('input', function() {
-                        aplicarMascaraValor(el, m[1]);
-                    });
+                    el.addEventListener('input', function() { aplicarMascaraValor(el, m[1]); });
+                    // adiciona listener keypress que replica comportamento da função mascaras
+                    if (typeof window.mascaras === 'function') {
+                        el.addEventListener('keypress', function(evt) { return window.mascaras(evt, el, m[1]); });
+                    }
                     el.dataset.maskAttached = '1';
                 }
-            } catch (e) {
-                // falha silenciosa
-            }
+            } catch (e) { /* silent */ }
+        }
+    });
+
+    // Suporta novo atributo data-mask (recomendado)
+    var nodesData = container.querySelectorAll('[data-mask]');
+    nodesData.forEach(function(el) {
+        var padrao = el.getAttribute('data-mask');
+        if (padrao) {
+            aplicarMascaraValor(el, padrao);
+            try {
+                if (!el.dataset.maskAttached) {
+                    el.addEventListener('input', function() { aplicarMascaraValor(el, padrao); });
+                    if (typeof window.mascaras === 'function') {
+                        el.addEventListener('keypress', function(evt) { return window.mascaras(evt, el, padrao); });
+                    }
+                    el.dataset.maskAttached = '1';
+                }
+            } catch (e) { /* silent */ }
         }
     });
 }

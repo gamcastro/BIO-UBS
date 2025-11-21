@@ -34,10 +34,10 @@ require_once __DIR__ . '/../../vendor/autoload.php';
                                 <input type="text" class="form-control" id="cad-nome" name="nome" required>
                             </td>
                             <td>
-                                <input type="text" class="form-control" id="cad-cnpj" name="cnpj" placeholder="00.000.000/0000-00">
+                                <input type="text" class="form-control" id="cad-cnpj" name="cnpj" placeholder="00.000.000/0000-00" data-mask="##.###.###/####-##">
                             </td>
                             <td>
-                                <input type="text" class="form-control" id="cad-cnes" name="cnes" required placeholder="Apenas números">
+                                <input type="text" class="form-control" id="cad-cnes" name="cnes" required placeholder="Apenas números" inputmode="numeric" data-numeric="true">
                             </td>
                         </tr>
 
@@ -47,7 +47,7 @@ require_once __DIR__ . '/../../vendor/autoload.php';
                         </tr>
                         <tr>
                             <td colspan="2">
-                                <input type="tel" class="form-control" id="cad-telefone" name="telefone" placeholder="(99) 99999-9999">
+                                <input type="tel" class="form-control" id="cad-telefone" name="telefone" placeholder="(99) 99999-9999" data-mask="(##)#####-####">
                             </td>
                             <td colspan="2"></td>
                         </tr>
@@ -61,10 +61,10 @@ require_once __DIR__ . '/../../vendor/autoload.php';
                         </tr>
                         <tr>
                             <td>
-                                <input type="text" class="form-control" id="cad-cep" name="cep" placeholder="00000-000">
+                                <input type="text" class="form-control" id="cad-cep" name="cep" placeholder="00000-000" data-mask="#####-###" inputmode="numeric">
                             </td>
                             <td colspan="3">
-                                <input type="text" class="form-control" id="cad-logradouro" name="logradouro">
+                                <input type="text" class="form-control" id="cad-logradouro" name="logradouro" data-titlecase="true">
                             </td>
                         </tr>
 
@@ -75,10 +75,10 @@ require_once __DIR__ . '/../../vendor/autoload.php';
                         </tr>
                         <tr>
                             <td>
-                                <input type="text" class="form-control" id="cad-numero" name="numero">
+                                <input type="text" class="form-control" id="cad-numero" name="numero" inputmode="numeric" data-numeric="true">
                             </td>
                             <td>
-                                <input type="text" class="form-control" id="cad-bairro" name="bairro">
+                                <input type="text" class="form-control" id="cad-bairro" name="bairro" data-titlecase="true">
                             </td>
                             <td colspan="2">
                                 <input type="text" class="form-control" id="cad-complemento" name="complemento" placeholder="Apto, Bloco, Casa, etc.">
@@ -91,7 +91,7 @@ require_once __DIR__ . '/../../vendor/autoload.php';
                         </tr>
                         <tr>
                             <td colspan="2">
-                                <input type="text" class="form-control" id="cad-municipio" name="municipio">
+                                <input type="text" class="form-control" id="cad-municipio" name="municipio" data-titlecase="true">
                             </td>
                             <td colspan="2">
                                 <select id="cad-uf" name="uf" class="form-control">

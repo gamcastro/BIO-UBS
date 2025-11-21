@@ -60,7 +60,7 @@ if (isset($_GET['id'])): //----só sugirá o conteúdo se vier um ID
                         <input class="form-control" type="text" id="nome" name="nome" required="required" placeholder="Nome da unidade" value="<?= htmlspecialchars($nomeUnidade ?? '') ?>">
                     </td>
                     <td colspan="2">
-                        <input class="form-control" type="text" id="cnpj" name="cnpj" required="required" value="<?= htmlspecialchars($cnpj ?? '') ?>">
+                        <input class="form-control" type="text" id="cnpj" name="cnpj" required="required" data-mask="##.###.###/####-##" value="<?= htmlspecialchars($cnpj ?? '') ?>">
                     </td>
                 </tr>
                 <tr>
@@ -72,7 +72,7 @@ if (isset($_GET['id'])): //----só sugirá o conteúdo se vier um ID
                         <input class="form-control" type="text" id="cnes" name="cnes" placeholder="Cadastro Nacional de Estabelecimentos de Saúde" value="<?= htmlspecialchars($cnes ?? '') ?>">
                     </td>
                     <td colspan="2">
-                        <input class="form-control" type="tel" id="telefone" name="telefone" placeholder="(99) 99999-9999" value="<?= htmlspecialchars($telefone ?? '') ?>">
+                        <input class="form-control" type="tel" id="telefone" name="telefone" placeholder="(99) 99999-9999" data-mask="(##)#####-####" value="<?= htmlspecialchars($telefone ?? '') ?>">
                     </td>
                 </tr>
 
@@ -86,10 +86,10 @@ if (isset($_GET['id'])): //----só sugirá o conteúdo se vier um ID
                 </tr>
                 <tr>
                     <td>
-                        <input class="form-control" type="text" id="cep" name="cep" placeholder="00000-000" value="<?= htmlspecialchars($cep ?? '') ?>">
+                        <input class="form-control" type="text" id="cep" name="cep" placeholder="00000-000" data-mask="#####-###" inputmode="numeric" value="<?= htmlspecialchars($cep ?? '') ?>">
                     </td>
                     <td colspan="3">
-                        <input class="form-control" type="text" id="logradouro" name="logradouro" value="<?= htmlspecialchars($logradouro ?? '') ?>">
+                        <input class="form-control" type="text" id="logradouro" name="logradouro" data-titlecase="true" value="<?= htmlspecialchars($logradouro ?? '') ?>">
                     </td>
                 </tr>
                 <tr>
@@ -100,10 +100,10 @@ if (isset($_GET['id'])): //----só sugirá o conteúdo se vier um ID
                 </tr>
                 <tr>
                     <td>
-                        <input class="form-control" type="text" id="numero" name="numero" value="<?= htmlspecialchars($numero ?? '') ?>">
+                        <input class="form-control" type="text" id="numero" name="numero" inputmode="numeric" data-numeric="true" value="<?= htmlspecialchars($numero ?? '') ?>">
                     </td>
                     <td>
-                        <input class="form-control" type="text" id="bairro" name="bairro" value="<?= htmlspecialchars($bairro ?? '') ?>">
+                        <input class="form-control" type="text" id="bairro" name="bairro" data-titlecase="true" value="<?= htmlspecialchars($bairro ?? '') ?>">
                     </td>
                     <td colspan="2">
                         <input class="form-control" type="text" id="complemento" name="complemento" placeholder="Apto, Bloco, Casa, etc." value="<?= htmlspecialchars($complemento ?? '') ?>">
@@ -116,7 +116,7 @@ if (isset($_GET['id'])): //----só sugirá o conteúdo se vier um ID
                 </tr>
                 <tr>
                     <td colspan="2">
-                        <input class="form-control" type="text" id="municipio" name="municipio" value="<?= htmlspecialchars($municipio ?? '') ?>">
+                        <input class="form-control" type="text" id="municipio" name="municipio" data-titlecase="true" value="<?= htmlspecialchars($municipio ?? '') ?>">
                     </td>
                     <td>
                         <select name="estado_endereco" id="estado_endereco" class="form-control">

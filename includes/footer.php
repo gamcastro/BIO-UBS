@@ -36,14 +36,12 @@ SCRIPT PARA DATA/HORA DA SIDEBAR
 
 <script src="<?= BASE_URL ?>/js/datetime-updater.js"></script>
 
-</body>
-</html>
-
-<script src="<?= BASE_URL ?>/js/validacao-modal-data-nascimento.js"></script>
-
 <!-- Mascara geral (aplicada globalmente para modais e campos já preenchidos) -->
 <script src="<?= BASE_URL ?>/js/mask/funcaoMascaraGeralNumeros.js"></script>
 <script src="<?= BASE_URL ?>/js/mask/aplicador-mascaras.js"></script>
 <script src="<?= BASE_URL ?>/js/mask/modal-mask-integration.js"></script>
 <script src="<?= BASE_URL ?>/js/mask/apply-mask-on-load.js"></script>
+
+</body>
+</html>
 

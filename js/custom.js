@@ -78,6 +78,17 @@ document.addEventListener('DOMContentLoaded', function () {
                             if (currentModal.id === 'acolhimentoBioUBS') {
                                 setupModalEventListeners(currentModal);
                             }
+
+                            // Reaplica máscaras e validação para o conteúdo injetado (fallback explícito)
+                            try {
+                                if (window.reaplicarMascaras) window.reaplicarMascaras(modalContent);
+                            } catch (e) { console && console.debug && console.debug('custom: reaplicarMascaras failed', e); }
+                            try {
+                                if (window.initCustomBindings) window.initCustomBindings(modalContent);
+                            } catch (e) { console && console.debug && console.debug('custom: initCustomBindings failed', e); }
+                            try {
+                                if (window.initValidacaoDataNascimento) window.initValidacaoDataNascimento(modalContent);
+                            } catch (e) { console && console.debug && console.debug('custom: initValidacaoDataNascimento failed', e); }
                         })
                         .catch(function (error) {
                             // Se der erro ao carregar o conteúdo
@@ -129,6 +140,72 @@ document.addEventListener('DOMContentLoaded', function () {
     }); // Fim do loop forEach
 
 }); // Fim do listener 'DOMContentLoaded'
+
+// -------------------------------------------------------------------------
+// Comportamentos genéricos para reduzir JS inline
+// - data-sync="fieldName"  : ao alterar (change) seta o input[name=fieldName] com o valor
+// - data-titlecase="true"  : aplica capitalizeNameWithPrepositions no evento blur/input
+// - data-altera-nome-profissional="true": chama alteraNomeProfissional() no keyup
+// -------------------------------------------------------------------------
+// Exponha uma função para inicializar bindings genéricos em um root (document ou conteúdo injetado)
+function initCustomBindings(root) {
+    root = root || document;
+    try {
+        // data-sync
+        root.querySelectorAll('[data-sync]').forEach(function(el){
+            if (el.__ds_bound) return; el.__ds_bound = true;
+            el.addEventListener('change', function(){
+                var targetName = el.getAttribute('data-sync');
+                if (!targetName) return;
+                var target = document.getElementsByName(targetName)[0];
+                if (target) target.value = el.value;
+            });
+        });
+
+        // data-titlecase: capitaliza no blur/paste e também em tempo real (input) com debounce
+        root.querySelectorAll('[data-titlecase]').forEach(function(inp){
+            if (inp.__title_bound) return; inp.__title_bound = true;
+            var fn = window.capitalizeNameWithPrepositions || function(v){return v;};
+            inp.addEventListener('blur', function(){ if (this.value) this.value = fn(this.value); });
+            inp.addEventListener('paste', function(){ var self=this; setTimeout(function(){ if(self.value) self.value = fn(self.value); }, 10); });
+            // Debounce helper
+            var timer = null;
+            inp.addEventListener('input', function(){
+                var self = this;
+                if (timer) clearTimeout(timer);
+                timer = setTimeout(function(){ if(self.value) self.value = fn(self.value); }, 250);
+            });
+        });
+
+        // data-altera-nome-profissional
+        root.querySelectorAll('[data-altera-nome-profissional]').forEach(function(inp){
+            if (inp.__anp_bound) return; inp.__anp_bound = true;
+            if (typeof window.alteraNomeProfissional === 'function') {
+                inp.addEventListener('keyup', function(){ try{ window.alteraNomeProfissional(); }catch(e){} });
+            }
+        });
+
+        // data-numeric: remove qualquer caractere não númerico em tempo real
+        root.querySelectorAll('[data-numeric]').forEach(function(inp){
+            if (inp.__numeric_bound) return; inp.__numeric_bound = true;
+            inp.addEventListener('input', function(){ this.value = this.value.replace(/\D+/g, ''); });
+        });
+
+        // data-callback="fnName": chama window[fnName] no evento keyup (se existir)
+        root.querySelectorAll('[data-callback]').forEach(function(inp){
+            if (inp.__callback_bound) return; inp.__callback_bound = true;
+            var fnName = inp.getAttribute('data-callback');
+            if (!fnName) return;
+            var fn = window[fnName];
+            if (typeof fn === 'function') {
+                inp.addEventListener('keyup', function(){ try{ fn.call(this); }catch(e){} });
+            }
+        });
+    } catch (err) { console && console.debug && console.debug('custom:bind generic data attrs', err); }
+}
+
+// Inicializa no carregamento da página
+document.addEventListener('DOMContentLoaded', function(){ initCustomBindings(document); });
 
 
 // =========================================================================
