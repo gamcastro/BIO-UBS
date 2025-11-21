@@ -45,92 +45,70 @@ if(isset($_GET['id'])): //----só sugirá o conteúdo de vier um ID
 <!------------------janela modal-------------------------------------------->
 
             <!-------------CABEÇALHO DA JANELA------------------------->
-            <div class="modal-header">
-
-              <a href="" class="close" data-dismissB="modal">&times;</a><!------botao fechar------>
-              
-              <h4 class="modal-title">Editando cadastro de Paciente</h4>
-
+            <div class="modal-header bg-primary text-white border-0">
+              <h5 class="modal-title mb-0">Editar registro</h5>
+              <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Fechar"></button>
             </div>
             <!-------------------------------------------------------->
 
-            
-            <form id="ed" name="ed" action="" method="post"><!----formulario-------->   
-                  
-                  <!----------IMPORTANTE!!!!!!!!!!--------> 
-                  <!-----------------IMPUT COM ID DO REGISTRO A SER ALTERADO----------> 
-                      <input type="hidden" name="id" value="<?=$id?>">
-                  <!------------------------------------------------------------------>
-                  
+            <form id="ed" name="ed" action="" method="post">
+                  <input type="hidden" name="id" value="<?=$id?>">
+
             <!----------------CORPO DA JANELA------------------------->
-            <div class="modal-body">
+            <div class="modal-body p-3">
 
+              <div class="p-3 mb-3 rounded bg-light">
+                <strong class="d-block mb-2 text-primary">Dados</strong>
 
-                <table class="table table-bordered">
-                  <tr>
-                    <td colspan="3" style="width: 500px">Nome:</td>
-                    <td>Data_nascimento:</td>
-                  </tr>
+                <div class="row g-3">
+                  <div class="col-md-9">
+                    <label for="nome" class="form-label small">Nome</label>
+                    <input class="form-control" type="text" id="nome" name="nome" required placeholder="Nome completo" data-callback="alteraNome" data-titlecase="true" value="<?=$nomePaciente?>">
+                  </div>
+                  <div class="col-md-3">
+                    <label for="data_nascimento" class="form-label small">Data de Nascimento</label>
+                    <input class="form-control" type="date" name="data_nascimento" required value="<?=$data_nascimento?>">
+                  </div>
 
-                  <tr>
-                    <td colspan="3">
-                      <input class="form-control" type="text" id="nome" name="nome" required="required" placeholder="Nome completo" data-callback="alteraNome" data-titlecase="true" value="<?=$nomePaciente?>">
-                    </td>
-                    <td>
-                      <input class="form-control" type="date" name="data_nascimento" required="required" value="<?=$data_nascimento?>">
-                    </td>
-                  </tr>
+                  <div class="col-md-3">
+                    <label for="cpf" class="form-label small">CPF</label>
+                    <input class="form-control" type="text" name="cpf" placeholder="ex: 000.000.000-00" data-mask="###.###.###-##" value="<?=$cpf?>">
+                  </div>
 
-                  <tr>
-                    <td>CPF:</td>
-                    <td>Reg:</td>
-                    <td>UF:</td>
-                    <td>Orgão:</td>
-                  </tr>
+                  <div class="col-md-3">
+                    <label for="rg" class="form-label small">Reg</label>
+                    <input class="form-control" type="text" name="rg" placeholder="ex: 0000000000-0" inputmode="numeric" data-numeric="true" value="<?=$rg?>">
+                  </div>
 
-                  <tr>
+                  <div class="col-md-3">
+                    <label for="uf_rg" class="form-label small">UF</label>
+                    <select name="uf_rg" class="form-select">
+                      <?php $selectedUf = ($cd_uf_rg !== null && $cd_uf_rg !== '' && is_numeric($cd_uf_rg)) ? (string)$cd_uf_rg : null; ?>
+                      <?php if ($selectedUf === null): ?>
+                        <option value="" disabled selected>UF</option>
+                      <?php else: ?>
+                        <option value="" disabled>UF</option>
+                      <?php endif; ?>
+                      <?php include(__DIR__ . '/../../querys/ConsultaUnidadeFederativaSelect.php'); ?>
+                    </select>
+                  </div>
 
-                    <td>
-                      <input class="form-control" type="text" name="cpf" placeholder="ex: 000.000.000-00" data-mask="###.###.###-##" value="<?=$cpf?>">
-                    </td>
+                  <div class="col-md-3">
+                    <label for="ssp" class="form-label small">Orgão</label>
+                    <input class="form-control" type="text" id="ssp" name="ssp" placeholder="ex: SSP/MA" data-callback="alteraSSP" value="<?=$ssp?>">
+                  </div>
+                </div>
+              </div>
 
-                    <td>
-                      <input class="form-control" type="text" name="rg" placeholder="ex: 0000000000-0" inputmode="numeric" data-numeric="true" value="<?=$rg?>">
-                    </td>
-
-                    <td>
-                      <select name="uf_rg" class="form-control">
-                        <?php $selectedUf = ($cd_uf_rg !== null && $cd_uf_rg !== '' && is_numeric($cd_uf_rg)) ? (string)$cd_uf_rg : null; ?>
-                        <?php if ($selectedUf === null): ?>
-                          <option value="" disabled selected>UF</option>
-                        <?php else: ?>
-                          <option value="" disabled>UF</option>
-                        <?php endif; ?>
-                        <?php require_once('../../querys/ConsultaUnidadeFederativaSelect.php'); ?>
-                      </select>  
-                    </td>
-
-                    <td>
-                      <input class="form-control" type="text" id="ssp" name="ssp" placeholder="ex: SSP/MA" data-callback="alteraSSP" value="<?=$ssp?>">
-                    </td>
-                  </tr>
-
-                </table>
-                
-  
             </div>
             <!--------------------------------------------------------->
 
-
-      
-
-            
             <!---------------RODAPÉ DA JANELA---------------------->
-            <div class="modal-footer">
-              <a href="" class="btn btn-default" data-dismissB="modal">Cancelar</a>
-              <button type="submit" name="editar" class="btn btn-success" >Salvar</button>
+            <div class="modal-footer border-0">
+              <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancelar</button>
+              <button type="submit" name="editar" class="btn btn-success">Salvar</button>
             </div>
-      
+
       </form>
             <!----------------------------------------------------->
 

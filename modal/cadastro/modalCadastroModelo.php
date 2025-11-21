@@ -2,88 +2,71 @@
 <!----------------------------janela modal--------------------------------------------------------->
 
 <div id="insertPaciente" class="modal fade" role="dialog">
-  <div class="modal-dialog modal-lg"> <!------aqui consigo mudar o tamanho da modal para modal-lg modal-sm------>
-    <!-- contener da janela-->
-    <div class="modal-content">
+  <div class="modal-dialog modal-lg modal-dialog-centered">
+    <div class="modal-content rounded-4 border-0 shadow-sm">
 
-            <!-------------CABEÇALHO DA JANELA------------------------->
-            <div class="modal-header">
+      <!-------------CABEÇALHO DA JANELA------------------------->
+      <div class="modal-header bg-primary text-white border-0">
+        <h5 class="modal-title mb-0">Novo registro</h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Fechar"></button>
+      </div>
+      <!-------------------------------------------------------->
 
-              <button type="button" class="close" data-dismiss="modal">&times;</button><!------botao fechar------>
-              
-              <h4 class="modal-title">Cadastrando novo Paciente</h4>
 
+
+
+
+
+
+
+
+
+      <form id="cad" name="cad" action="" method="post">
+
+        <!----------------CORPO DA JANELA------------------------->
+        <div class="modal-body p-3">
+
+          <div class="p-3 mb-3 rounded bg-light">
+            <strong class="d-block mb-2 text-primary">Dados</strong>
+
+            <div class="row g-3">
+              <div class="col-md-9">
+                <label for="nome" class="form-label small">Nome</label>
+                <input class="form-control" type="text" id="nome" name="nome" required placeholder="Nome completo" data-callback="alteraNome" data-titlecase="true">
+              </div>
+              <div class="col-md-3">
+                <label for="data_nascimento" class="form-label small">Dt. Nasc.</label>
+                <input class="form-control" type="date" name="data_nascimento" required>
+              </div>
+
+              <div class="col-md-3">
+                <label for="cpf" class="form-label small">CPF</label>
+                <input class="form-control" type="text" name="cpf" placeholder="ex: 000.000.000-00" data-mask="###.###.###-##">
+              </div>
+
+              <div class="col-md-3">
+                <label for="rg" class="form-label small">Reg</label>
+                <input class="form-control" type="text" name="rg" placeholder="ex: 0000000000-0" inputmode="numeric" data-numeric="true">
+              </div>
+
+              <div class="col-md-3">
+                <label for="uf_rg" class="form-label small">UF</label>
+                <select name="uf_rg" class="form-select" required>
+                  <option value="" disabled selected>UF</option>
+                  <?php include(__DIR__ . '/../../querys/ConsultaUnidadeFederativaSelect.php'); ?>
+                </select>
+                <div class="invalid-feedback">Selecione a UF do RG.</div>
+              </div>
+
+              <div class="col-md-3">
+                <label for="ssp" class="form-label small">Orgão</label>
+                <input class="form-control" type="text" id="ssp" name="ssp" placeholder="ex: SSP/MA" data-callback="alteraSSP">
+              </div>
             </div>
-            <!-------------------------------------------------------->
+          </div>
 
-
-
-
-
-
-
-
-
-
-     <form id="cad" name="cad" action="" method="post"><!--------------formulário------->
-
-
-            <!----------------CORPO DA JANELA------------------------->
-            <div class="modal-body">
-
-        
-                <table class="table table-bordered">
-                  <tr>
-                    <td colspan="3" style="width: 500px">Nome:</td>
-                    <td>Dt_nasc:</td>
-                  </tr>
-
-                  <tr>
-                    <td colspan="3">
-                      <input class="form-control" type="text" id="nome" name="nome" required="required" placeholder="Nome completo" data-callback="alteraNome" data-titlecase="true">
-                    </td>
-                    <td>
-                      <input class="form-control" type="date" name="data_nascimento" required="required">
-                    </td>
-                  </tr>
-
-                  <tr>
-                    <td>CPF:</td>
-                    <td>Reg:</td>
-                    <td>UF:</td>
-                    <td>Orgão:</td>
-                  </tr>
-
-                  <tr>
-
-                    <td>
-                      <input class="form-control" type="text" name="cpf" placeholder="ex: 000.000.000-00" data-mask="###.###.###-##">
-                    </td>
-
-                    <td>
-                      <input class="form-control" type="text" name="rg" placeholder="ex: 0000000000-0" inputmode="numeric" data-numeric="true">
-                    </td>
-
-                    <td>
-                      <select name="uf_rg" class="form-control" required>
-                        <option value="" disabled selected>UF</option>
-                        <?php
-                          require_once('querys/ConsultaUnidadeFederativaSelect.php');
-                        ?>
-                      </select>
-                      <div class="invalid-feedback">Selecione a UF do RG.</div>
-                    </td>
-
-                    <td>
-                      <input class="form-control" type="text" id="ssp" name="ssp" placeholder="ex: SSP/MA" data-callback="alteraSSP">
-                    </td>
-                  </tr>
-
-                </table>
-                
-  
-            </div>
-            <!--------------------------------------------------------->
+        </div>
+        <!--------------------------------------------------------->
 
 
       
@@ -100,14 +83,14 @@
 
 
             
-            <!---------------RODAPÉ DA JANELA---------------------->
-            <div class="modal-footer">
-              <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
-              <button type="submit" name="salvar" class="btn btn-success" >Salvar</button>
-            </div>
-      
-      </form><!----fim formulario--->
-            <!----------------------------------------------------->
+        <!---------------RODAPÉ DA JANELA---------------------->
+        <div class="modal-footer border-0">
+          <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancelar</button>
+          <button type="submit" name="salvar" class="btn btn-success">Salvar</button>
+        </div>
+
+      </form>
+      <!----------------------------------------------------->
 
     </div>
 

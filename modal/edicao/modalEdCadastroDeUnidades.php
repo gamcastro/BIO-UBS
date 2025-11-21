@@ -35,91 +35,75 @@ if (isset($_GET['id'])): //----só sugirá o conteúdo se vier um ID
     <!------------------janela modal-------------------------------------------->
 
             <!-------------CABEÇALHO DA JANELA------------------------->
-    <div class="modal-header">
-        <h5 class="modal-title" id="updateModalLabel">Editando cadastro de Unidade</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+    <div class="modal-header bg-primary text-white border-0">
+        <h5 class="modal-title mb-0" id="updateModalLabel">Editar unidade</h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Fechar"></button>
     </div>
             <!-------------------------------------------------------->
 
-    <form id="ed" name="ed" action="" method="post"><!----formulario-------->   
+    <form id="ed" name="ed" action="" method="post">
         <input type="hidden" name="id" value="<?= $id ?>">
 
         <!----------------CORPO DA JANELA------------------------->
-        <div class="modal-body">
-            <table class="table table-bordered">
-                <tr class="table-info">
-                    <td colspan="4"><strong>Dados da unidade</strong></td>
-                </tr>
+        <div class="modal-body p-3">
 
-                <tr>
-                    <td colspan="2">Nome :</td>
-                    <td>CNPJ :</td>
-                </tr>
-                <tr>
-                    <td colspan="2">
-                        <input class="form-control" type="text" id="nome" name="nome" required="required" placeholder="Nome da unidade" value="<?= htmlspecialchars($nomeUnidade ?? '') ?>">
-                    </td>
-                    <td colspan="2">
-                        <input class="form-control" type="text" id="cnpj" name="cnpj" required="required" data-mask="##.###.###/####-##" value="<?= htmlspecialchars($cnpj ?? '') ?>">
-                    </td>
-                </tr>
-                <tr>
-                    <td>CNES :</td>
-                    <td colspan="2">Telefone:</td>
-                </tr>
-                <tr>
-                    <td>
+            <div class="p-3 mb-3 rounded bg-light">
+                <strong class="d-block mb-2 text-primary">Dados da unidade</strong>
+
+                <div class="row g-3">
+                    <div class="col-md-8">
+                        <label for="nome" class="form-label small">Nome</label>
+                        <input class="form-control" type="text" id="nome" name="nome" required placeholder="Nome da unidade" value="<?= htmlspecialchars($nomeUnidade ?? '') ?>">
+                    </div>
+                    <div class="col-md-4">
+                        <label for="cnpj" class="form-label small">CNPJ</label>
+                        <input class="form-control" type="text" id="cnpj" name="cnpj" required data-mask="##.###.###/####-##" value="<?= htmlspecialchars($cnpj ?? '') ?>">
+                    </div>
+
+                    <div class="col-md-4">
+                        <label for="cnes" class="form-label small">CNES</label>
                         <input class="form-control" type="text" id="cnes" name="cnes" placeholder="Cadastro Nacional de Estabelecimentos de Saúde" value="<?= htmlspecialchars($cnes ?? '') ?>">
-                    </td>
-                    <td colspan="2">
+                    </div>
+                    <div class="col-md-8">
+                        <label for="telefone" class="form-label small">Telefone</label>
                         <input class="form-control" type="tel" id="telefone" name="telefone" placeholder="(99) 99999-9999" data-mask="(##)#####-####" value="<?= htmlspecialchars($telefone ?? '') ?>">
-                    </td>
-                </tr>
+                    </div>
+                </div>
+            </div>
 
-                <tr class="table-info">
-                    <td colspan="4"><strong>Endereço</strong></td>
-                </tr>
+            <div class="p-3 mb-3 rounded bg-light">
+                <strong class="d-block mb-2 text-primary">Endereço</strong>
 
-                <tr>
-                    <td>CEP:</td>
-                    <td colspan="3">Logradouro (Rua, Av, etc.):</td>
-                </tr>
-                <tr>
-                    <td>
+                <div class="row g-3">
+                    <div class="col-md-3">
+                        <label for="cep" class="form-label small">CEP</label>
                         <input class="form-control" type="text" id="cep" name="cep" placeholder="00000-000" data-mask="#####-###" inputmode="numeric" value="<?= htmlspecialchars($cep ?? '') ?>">
-                    </td>
-                    <td colspan="3">
+                    </div>
+                    <div class="col-md-9">
+                        <label for="logradouro" class="form-label small">Logradouro</label>
                         <input class="form-control" type="text" id="logradouro" name="logradouro" data-titlecase="true" value="<?= htmlspecialchars($logradouro ?? '') ?>">
-                    </td>
-                </tr>
-                <tr>
-                    <td>Número:</td>
-                    <td>Bairro:</td>
-                    <td colspan="2">Complemento:</td>
+                    </div>
 
-                </tr>
-                <tr>
-                    <td>
+                    <div class="col-md-2">
+                        <label for="numero" class="form-label small">Número</label>
                         <input class="form-control" type="text" id="numero" name="numero" inputmode="numeric" data-numeric="true" value="<?= htmlspecialchars($numero ?? '') ?>">
-                    </td>
-                    <td>
+                    </div>
+                    <div class="col-md-4">
+                        <label for="bairro" class="form-label small">Bairro</label>
                         <input class="form-control" type="text" id="bairro" name="bairro" data-titlecase="true" value="<?= htmlspecialchars($bairro ?? '') ?>">
-                    </td>
-                    <td colspan="2">
+                    </div>
+                    <div class="col-md-6">
+                        <label for="complemento" class="form-label small">Complemento</label>
                         <input class="form-control" type="text" id="complemento" name="complemento" placeholder="Apto, Bloco, Casa, etc." value="<?= htmlspecialchars($complemento ?? '') ?>">
-                    </td>
-                </tr>
+                    </div>
 
-                <tr>
-                    <td colspan="2">Município:</td>
-                    <td>Estado (UF):</td>
-                </tr>
-                <tr>
-                    <td colspan="2">
+                    <div class="col-md-6">
+                        <label for="municipio" class="form-label small">Município</label>
                         <input class="form-control" type="text" id="municipio" name="municipio" data-titlecase="true" value="<?= htmlspecialchars($municipio ?? '') ?>">
-                    </td>
-                    <td>
-                        <select name="estado_endereco" id="estado_endereco" class="form-control">
+                    </div>
+                    <div class="col-md-6">
+                        <label for="estado_endereco" class="form-label small">Estado (UF)</label>
+                        <select name="estado_endereco" id="estado_endereco" class="form-select">
                             <?php $selectedUf = ($estado !== null && $estado !== '' && is_numeric($estado)) ? (string)$estado : null; ?>
                             <?php if ($selectedUf === null): ?>
                                 <option value="" disabled selected>UF</option>
@@ -128,15 +112,15 @@ if (isset($_GET['id'])): //----só sugirá o conteúdo se vier um ID
                             <?php endif; ?>
                             <?php require(__DIR__ . '/../../querys/ConsultaUnidadeFederativaSelect.php'); ?>
                         </select>
-                    </td>
-                </tr>
-            </table>
+                    </div>
+                </div>
+            </div>
         </div>
         <!--------------------------------------------------------->
 
         <!---------------RODAPÉ DA JANELA---------------------->
-        <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+        <div class="modal-footer border-0">
+            <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancelar</button>
             <button type="submit" name="editar" class="btn btn-success">Salvar</button>
         </div>
     </form>
