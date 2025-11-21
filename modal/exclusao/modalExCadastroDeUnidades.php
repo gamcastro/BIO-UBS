@@ -56,9 +56,8 @@ if (isset($_GET['id'])): //----só sugirá o conteúdo se vier um ID
       <!--------------------------------------------------------->
 
       <!---------------RODAPÉ DA JANELA---------------------->
-      <div class="modal-footer">
-                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-            
+      <div class="modal-footer border-0">
+                  <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancelar</button>
                   <button type="submit" name="excluir" class="btn btn-danger">Confirmar Exclusão</button>
     </div>
     </form>

@@ -4,9 +4,9 @@
 <!------------------janela modal-------------------------------------------->
 
             <!-------------CABEÇALHO DA JANELA------------------------->
-<div class="modal-header">
-  <h5 class="modal-title" id="acolhimentoModalLabel">Acolhimento à Demanda Espontânea</h5>
-  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+<div class="modal-header bg-primary text-white border-0">
+  <h5 class="modal-title mb-0" id="acolhimentoModalLabel">Acolhimento à Demanda Espontânea</h5>
+  <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Fechar"></button>
 </div>
 
             <!-------------------------------------------------------->
@@ -38,7 +38,7 @@
     </div>
     </form><!----fim formulario---> </div> 
     <!--------------------------------------------------------->
-<div class="modal-footer">
-  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+<div class="modal-footer border-0">
+  <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Fechar</button>
 </div>
 <!----------------------------fim da da janela modal----------------------------->

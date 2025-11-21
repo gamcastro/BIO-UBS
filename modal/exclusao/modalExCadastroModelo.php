@@ -29,44 +29,37 @@ if(isset($_GET['id'])): //----só sugirá o conteúdo de vier um ID
 
 
             <!-------------CABEÇALHO DA JANELA------------------------->
-            <div class="modal-header">
-
-              <a href="" type="button" class="close" data-dismissB="modal">&times;</a><!------botao fechar------>
-              
-              <h4 class="modal-title">Excluir cadastro de Paciente</h4>
-
+            <div class="modal-header bg-danger text-white">
+              <h5 class="modal-title mb-0">Excluir cadastro</h5>
+              <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Fechar"></button>
             </div>
             <!-------------------------------------------------------->
 
-        <form id="ed" name="ed" action="" method="post"><!----formulario-------->   
-                  
-                  <!----------IMPORTANTE!!!!!!!!!!--------> 
-                  <!-----------------IMPUT COM ID DO REGISTRO A SER ALTERADO----------> 
-                      <input type="hidden" name="id" value="<?=$id?>">
-                  <!------------------------------------------------------------------>
-            
+          <form id="ed" name="ed" action="" method="post">
+                <input type="hidden" name="id" value="<?=$id?>">
+
             <!----------------CORPO DA JANELA------------------------->
             <div class="modal-body">
-
-                <p style="text-align: justify; color: #FF0000">Atenção! Você está prestes a EXCLUIR um registro do Banco de Dados. Esta operação não poderá ser desfeita.</p>
-                <hr>
-                Registro a ser excluído:<br>
-                <b>
-                    <?=$nomePaciente?><br>
-                    CPF: <?=$cpf?>
-                </b>
+              <div class="alert alert-danger" role="alert">
+                <h4 class="alert-heading"><i class="bi bi-exclamation-triangle-fill"></i> Atenção!</h4>
+                <p>Você está prestes a <strong>EXCLUIR</strong> um registro do Banco de Dados. Esta operação não poderá ser desfeita.</p>
+              </div>
+              <hr>
+              <p>Registro a ser excluído:</p>
+              <h5>
+                <i class="bi bi-person-fill"></i> <?= htmlspecialchars($nomePaciente) ?><br>
+                <small class="text-muted"><strong>CPF:</strong> <?= htmlspecialchars($cpf) ?></small>
+              </h5>
             </div>
             <!--------------------------------------------------------->
 
-
             <!---------------RODAPÉ DA JANELA---------------------->
-            <div class="modal-footer">
-              <a href="" type="button" class="btn btn-primary" data-dismiss="modalB">Cancelar</a>
-              <button type="submit" name="excluir" class="btn btn-danger" >Excluir</button>
+            <div class="modal-footer border-0">
+              <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancelar</button>
+              <button type="submit" name="excluir" class="btn btn-danger">Excluir</button>
             </div>
-            <!----------------------------------------------------->
 
-        </form>
+          </form>
 <!----------------------------fim da da janela modal----------------------------->
 
 

@@ -53,65 +53,50 @@ if (isset($_GET['id'])): //----só surgirá o conteúdo se vier um ID
     <!------------------janela modal-------------------------------------------->
 
             <!-------------CABEÇALHO DA JANELA------------------------->
-    <div class="modal-header">
-        <h5 class="modal-title" id="updateModalLabel">Editando cadastro de Profissional</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+    <div class="modal-header bg-primary text-white border-0">
+        <h5 class="modal-title mb-0" id="updateModalLabel">Editar profissional</h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Fechar"></button>
     </div>
             <!-------------------------------------------------------->
 
 
-    <form id="ed" name="ed" action="" method="post"><!----formulario-------->   
+    <form id="ed" name="ed" action="" method="post">
         <input type="hidden" name="id" value="<?= $id ?>">
 
         <!----------------CORPO DA JANELA------------------------->
-        <div class="modal-body">
-            <table class="table table-bordered">
-                
-                <tr class="table-info">
-                    <td colspan="4"><strong>Dados pessoais</strong></td>
-                </tr>
+        <div class="modal-body p-3">
 
-                <tr>
-                    <td colspan="3">Nome Completo:</td>
-                    <td>Matrícula:</td>
-                </tr>
-                <tr>
-                    <td colspan="3">
-                        <input class="form-control" type="text" id="NOME_COMPLETO" name="NOME_COMPLETO" required="required" placeholder="Nome completo do profissional" value="<?= htmlspecialchars($nomeCompleto ?? '') ?>" data-altera-nome-profissional="true" minlength="3">
-                        <div class="invalid-feedback">
-                            Por favor, informe o nome completo (mínimo 3 caracteres).
-                        </div>
-                    </td>
-                    <td>
-                        <input class="form-control" type="text" id="MATRICULA" name="MATRICULA" placeholder="Matrícula" value="<?= htmlspecialchars($matricula ?? '') ?>" required="required" pattern="[0-9]+" title="Apenas números são permitidos" oninput="this.value = this.value.replace(/[^0-9]/g, '')">
-                        <div class="invalid-feedback">
-                            Informe a matrícula (apenas números).
-                        </div>
-                    </td>
-                </tr>
+            <div class="p-3 mb-3 rounded bg-light">
+                <strong class="d-block mb-2 text-primary">Dados pessoais</strong>
 
-                <tr>
-                    <td>CPF:</td>
-                    <td>CNS:</td>
-                    <td>Data de Nascimento:</td>
-                    <td>Sexo:</td>
-                </tr>
-                <tr>
-                    <td>
-                        <input class="form-control" type="text" id="CPF" name="CPF" required="required" placeholder="000.000.000-00" data-mask="###.###.###-##" value="<?= htmlspecialchars(function_exists('format_cpf') ? format_cpf($cpf ?? '') : $cpf) ?>" minlength="14" maxlength="14">
-                        <div class="invalid-feedback">
-                            Por favor, informe um CPF válido (11 dígitos).
-                        </div>
-                    </td>
-                    <td>
+                <div class="row g-3">
+                    <div class="col-md-9">
+                        <label for="NOME_COMPLETO" class="form-label small">Nome completo</label>
+                        <input class="form-control" type="text" id="NOME_COMPLETO" name="NOME_COMPLETO" required placeholder="Nome completo do profissional" value="<?= htmlspecialchars($nomeCompleto ?? '') ?>" data-altera-nome-profissional="true" minlength="3">
+                        <div class="invalid-feedback">Por favor, informe o nome completo (mínimo 3 caracteres).</div>
+                    </div>
+                    <div class="col-md-3">
+                        <label for="MATRICULA" class="form-label small">Matrícula</label>
+                        <input class="form-control" type="text" id="MATRICULA" name="MATRICULA" placeholder="Matrícula" value="<?= htmlspecialchars($matricula ?? '') ?>" required pattern="[0-9]+" title="Apenas números são permitidos" oninput="this.value = this.value.replace(/[^0-9]/g, '')">
+                        <div class="invalid-feedback">Informe a matrícula (apenas números).</div>
+                    </div>
+
+                    <div class="col-md-3">
+                        <label for="CPF" class="form-label small">CPF</label>
+                        <input class="form-control" type="text" id="CPF" name="CPF" required placeholder="000.000.000-00" data-mask="###.###.###-##" value="<?= htmlspecialchars(function_exists('format_cpf') ? format_cpf($cpf ?? '') : $cpf) ?>" minlength="14" maxlength="14">
+                        <div class="invalid-feedback">Por favor, informe um CPF válido (11 dígitos).</div>
+                    </div>
+                    <div class="col-md-3">
+                        <label for="CNS_PROFISSIONAL" class="form-label small">CNS</label>
                         <input class="form-control" type="text" id="CNS_PROFISSIONAL" name="CNS_PROFISSIONAL" placeholder="Nº CNS" value="<?= htmlspecialchars($cnsProfissional ?? '') ?>" oninput="this.value = this.value.replace(/[^0-9]/g, '')" maxlength="15">
-                    </td>
-                    <td>
-                        <input class="form-control" type="date" id="DATA_NASCIMENTO" name="DATA_NASCIMENTO" value="<?= htmlspecialchars($dataNascimento ?? '') ?>" required="required">
-                    </td>
-                    <td>
+                    </div>
+                    <div class="col-md-3">
+                        <label for="DATA_NASCIMENTO" class="form-label small">Data de nascimento</label>
+                        <input class="form-control" type="date" id="DATA_NASCIMENTO" name="DATA_NASCIMENTO" value="<?= htmlspecialchars($dataNascimento ?? '') ?>" required>
+                    </div>
+                    <div class="col-md-3">
+                        <label for="SEXO" class="form-label small">Sexo</label>
                         <?php
-                        // Normaliza para os rótulos usados no banco: 'Feminino' / 'Masculino'
                         $sexoLabel = '';
                         if (isset($sexo)) {
                             $sLower = mb_strtolower(trim((string)$sexo), 'UTF-8');
@@ -119,54 +104,32 @@ if (isset($_GET['id'])): //----só surgirá o conteúdo se vier um ID
                             elseif ($sLower === 'f' || mb_stripos($sLower, 'femin') !== false) { $sexoLabel = 'Feminino'; }
                         }
                         ?>
-                        <select name="SEXO" id="SEXO" class="form-control" data-sync="sexo">
+                        <select name="SEXO" id="SEXO" class="form-select" data-sync="sexo">
                             <option value="" <?= $sexoLabel === '' ? 'selected' : '' ?>>Selecione</option>
                             <option value="Feminino" <?= $sexoLabel === 'Feminino' ? 'selected' : '' ?>>Feminino</option>
                             <option value="Masculino" <?= $sexoLabel === 'Masculino' ? 'selected' : '' ?>>Masculino</option>
                         </select>
                         <input type="hidden" name="sexo" value="<?= htmlspecialchars($sexoLabel) ?>">
-                    </td>
-                </tr>
+                    </div>
+                </div>
+            </div>
 
-                <tr class="table-info">
-                    <td colspan="4"><strong>Contatos</strong></td>
-                </tr>
-
-                <tr>
-                    <td colspan="2">Email:</td>
-                    <td colspan="2">Telefone / Celular:</td>
-                </tr>
-                <tr>
-                    <td colspan="2">
-                         <input class="form-control" type="email" id="EMAIL" name="EMAIL" placeholder="email@exemplo.com" value="<?= htmlspecialchars($email ?? '') ?>">
-                         <div class="invalid-feedback">
-                             Por favor, informe um e-mail válido (ex: nome@exemplo.com).
-                         </div>
-                    </td>
-                    <td colspan="2">
-                    <?php
-                    // Prepara telefone para exibição: remove DDI '55' quando presente (armazenado no BD como '55' + 11 dígitos)
-                    $telefone_display = $telefone ?? '';
-                    $digits = preg_replace('/\D+/', '', (string)$telefone_display);
-                    // usa format_telefone se disponível
-                    if (function_exists('format_telefone')) {
-                        $telefone_display = format_telefone($digits);
-                    } else {
-                        // fallback formatting: 10 -> (XX) XXXX-XXXX, 11 -> (XX) XXXXX-XXXX
-                        if (strlen($digits) === 10) {
-                            $telefone_display = preg_replace('/(\d{2})(\d{4})(\d{4})/', '($1)$2-$3', $digits);
-                        } elseif (strlen($digits) === 11) {
-                            $telefone_display = preg_replace('/(\d{2})(\d{5})(\d{4})/', '($1)$2-$3', $digits);
-                        } else {
-                            $telefone_display = $digits;
-                        }
-                    }
-                        // Prepara telefone para exibição: formata os dígitos salvos no banco
-                        // usa format_telefone se disponível
+            <div class="p-3 mb-3 rounded bg-light">
+                <strong class="d-block mb-2 text-primary">Contatos</strong>
+                <div class="row g-3">
+                    <div class="col-md-6">
+                        <label for="EMAIL" class="form-label small">Email</label>
+                        <input class="form-control" type="email" id="EMAIL" name="EMAIL" placeholder="email@exemplo.com" value="<?= htmlspecialchars($email ?? '') ?>">
+                        <div class="invalid-feedback">Por favor, informe um e-mail válido (ex: nome@exemplo.com).</div>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="TELEFONE" class="form-label small">Telefone / Celular</label>
+                        <?php
+                        $telefone_display = $telefone ?? '';
+                        $digits = preg_replace('/\D+/', '', (string)$telefone_display);
                         if (function_exists('format_telefone')) {
                             $telefone_display = format_telefone($digits);
                         } else {
-                            // fallback formatting: 10 -> (XX) XXXX-XXXX, 11 -> (XX) XXXXX-XXXX
                             if (strlen($digits) === 10) {
                                 $telefone_display = preg_replace('/(\d{2})(\d{4})(\d{4})/', '($1)$2-$3', $digits);
                             } elseif (strlen($digits) === 11) {
@@ -175,21 +138,18 @@ if (isset($_GET['id'])): //----só surgirá o conteúdo se vier um ID
                                 $telefone_display = $digits;
                             }
                         }
-                    ?>
+                        ?>
                         <input class="form-control" type="tel" id="TELEFONE" name="TELEFONE" placeholder="(99) 99999-9999" value="<?= htmlspecialchars($telefone_display ?? '') ?>" data-mask="(##)#####-####" inputmode="numeric">
-                </td>
-                </tr>
+                    </div>
+                </div>
+            </div>
 
-                <tr class="table-info">
-                    <td colspan="4"><strong>Dados profissionais e acesso</strong></td>
-                </tr>
-                
-                <tr>
-                    <td colspan="4">Perfil de Acesso:</td>
-                </tr>
-                <tr>
-                    <td colspan="4">
-                        <select name="PERFIL" id="PERFIL" class="form-control" required>
+            <div class="p-3 mb-3 rounded bg-light">
+                <strong class="d-block mb-2 text-primary">Dados profissionais e acesso</strong>
+                <div class="row g-3">
+                    <div class="col-12">
+                        <label for="PERFIL" class="form-label small">Perfil de Acesso</label>
+                        <select name="PERFIL" id="PERFIL" class="form-select" required>
                             <option value="">Selecione um perfil...</option>
                             <option value="Médico" <?= (strcasecmp($perfil, 'Médico') === 0 || strcasecmp($perfil, 'MÉDICO') === 0) ? 'selected' : '' ?>>Médico</option>
                             <option value="Enfermeiro" <?= (strcasecmp($perfil, 'Enfermeiro') === 0 || strcasecmp($perfil, 'ENFERMEIRO') === 0) ? 'selected' : '' ?>>Enfermeiro</option>
@@ -203,23 +163,19 @@ if (isset($_GET['id'])): //----só surgirá o conteúdo se vier um ID
                             <option value="Recepção" <?= (strcasecmp($perfil, 'Recepção') === 0 || strcasecmp($perfil, 'RECEPÇÃO') === 0) ? 'selected' : '' ?>>Recepção</option>
                             <option value="Outro Prof. Nível Superior" <?= (strcasecmp($perfil, 'Outro Prof. Nível Superior') === 0 || strcasecmp($perfil, 'OUTRO PROF. NÍVEL SUPERIOR') === 0) ? 'selected' : '' ?>>Outro Prof. Nível Superior</option>
                         </select>
-                    </td>
-                </tr>
+                    </div>
 
-                 <tr>
-                    <td>Conselho (CRM, COREN, etc.):</td>
-                    <td>Nº do Registro:</td>
-                    <td colspan="2">UF do Conselho:</td>
-                </tr>
-                <tr>
-                    <td>
+                    <div class="col-md-4">
+                        <label for="CONSELHO_CLASSE" class="form-label small">Conselho</label>
                         <input class="form-control" type="text" id="CONSELHO_CLASSE" name="CONSELHO_CLASSE" placeholder="Ex: CRM, COREN" value="<?= htmlspecialchars($conselhoClasse ?? '') ?>">
-                    </td>
-                    <td>
+                    </div>
+                    <div class="col-md-4">
+                        <label for="REGISTRO_CONSELHO" class="form-label small">Nº do Registro</label>
                         <input class="form-control" type="text" id="REGISTRO_CONSELHO" name="REGISTRO_CONSELHO" placeholder="Nº 12345" value="<?= htmlspecialchars($registroConselho ?? '') ?>" inputmode="numeric" oninput="this.value = this.value.replace(/[^0-9]/g, '')">
-                    </td>
-                    <td colspan="2">
-                        <select name="ESTADO_EMISSOR_CONSELHO" id="ESTADO_EMISSOR_CONSELHO" class="form-control">
+                    </div>
+                    <div class="col-md-4">
+                        <label for="ESTADO_EMISSOR_CONSELHO" class="form-label small">UF do Conselho</label>
+                        <select name="ESTADO_EMISSOR_CONSELHO" id="ESTADO_EMISSOR_CONSELHO" class="form-select">
                             <?php $selectedUf = ($estadoEmissorConselho !== null && $estadoEmissorConselho !== '' && is_numeric($estadoEmissorConselho)) ? (string)$estadoEmissorConselho : null; ?>
                             <?php if ($selectedUf === null): ?>
                                 <option value="" disabled selected>UF</option>
@@ -228,54 +184,42 @@ if (isset($_GET['id'])): //----só surgirá o conteúdo se vier um ID
                             <?php endif; ?>
                             <?php require(__DIR__ . '/../../querys/ConsultaUnidadeFederativaSelect.php'); ?>
                         </select>
-                    </td>
-                </tr>
+                    </div>
+                </div>
+            </div>
 
-                <tr class="table-info">
-                    <td colspan="4"><strong>Endereço</strong></td>
-                </tr>
-
-                <tr>
-                    <td>CEP:</td>
-                    <td colspan="3">Logradouro (Rua, Av, etc.):</td>
-                </tr>
-                <tr>
-                    <td>
+            <div class="p-3 mb-3 rounded bg-light">
+                <strong class="d-block mb-2 text-primary">Endereço</strong>
+                <div class="row g-3">
+                    <div class="col-md-3">
+                        <label for="CEP" class="form-label small">CEP</label>
                         <input class="form-control" type="text" id="CEP" name="CEP" placeholder="00000-000" value="<?= htmlspecialchars($cep ?? '') ?>" data-mask="#####-###" inputmode="numeric" maxlength="9">
-                    </td>
-                    <td colspan="3">
+                    </div>
+                    <div class="col-md-9">
+                        <label for="LOGRADOURO" class="form-label small">Logradouro</label>
                         <input class="form-control" type="text" id="LOGRADOURO" name="LOGRADOURO" value="<?= htmlspecialchars($logradouro ?? '') ?>" data-titlecase="true">
-                    </td>
-                </tr>
-                <tr>
-                    <td>Número:</td>
-                    <td>Bairro:</td>
-                    <td colspan="2">Complemento:</td>
+                    </div>
 
-                </tr>
-                <tr>
-                    <td>
+                    <div class="col-md-2">
+                        <label for="NUMERO" class="form-label small">Número</label>
                         <input class="form-control" type="text" id="NUMERO" name="NUMERO" value="<?= htmlspecialchars($numero ?? '') ?>" inputmode="numeric" oninput="this.value = this.value.replace(/[^0-9]/g, '')">
-                    </td>
-                    <td>
+                    </div>
+                    <div class="col-md-4">
+                        <label for="BAIRRO" class="form-label small">Bairro</label>
                         <input class="form-control" type="text" id="BAIRRO" name="BAIRRO" value="<?= htmlspecialchars($bairro ?? '') ?>" data-titlecase="true">
-                    </td>
-                    <td colspan="2">
+                    </div>
+                    <div class="col-md-6">
+                        <label for="COMPLEMENTO" class="form-label small">Complemento</label>
                         <input class="form-control" type="text" id="COMPLEMENTO" name="COMPLEMENTO" placeholder="Apto, Bloco, Casa, etc." value="<?= htmlspecialchars($complemento ?? '') ?>">
-                    </td>
-                </tr>
+                    </div>
 
-                <tr>
-                    <td colspan="2">Município:</td>
-                    <td>Estado (UF):</td>
-                    <td>Ponto de Referência:</td>
-                </tr>
-                <tr>
-                    <td colspan="2">
+                    <div class="col-md-6">
+                        <label for="MUNICIPIO" class="form-label small">Município</label>
                         <input class="form-control" type="text" id="MUNICIPIO" name="MUNICIPIO" value="<?= htmlspecialchars($municipio ?? '') ?>" data-titlecase="true">
-                    </td>
-                    <td>
-                        <select name="ESTADO_ENDERECO" id="ESTADO_ENDERECO" class="form-control">
+                    </div>
+                    <div class="col-md-6">
+                        <label for="ESTADO_ENDERECO" class="form-label small">Estado (UF)</label>
+                        <select name="ESTADO_ENDERECO" id="ESTADO_ENDERECO" class="form-select">
                             <?php $selectedUf = ($estadoEndereco !== null && $estadoEndereco !== '' && is_numeric($estadoEndereco)) ? (string)$estadoEndereco : null; ?>
                             <?php if ($selectedUf === null): ?>
                                 <option value="" disabled selected>UF</option>
@@ -284,17 +228,20 @@ if (isset($_GET['id'])): //----só surgirá o conteúdo se vier um ID
                             <?php endif; ?>
                             <?php require(__DIR__ . '/../../querys/ConsultaUnidadeFederativaSelect.php'); ?>
                         </select>
-                    </td>
-                    <td>
-                         <input class="form-control" type="text" id="PONTO_REFERENCIA" name="PONTO_REFERENCIA" value="<?= htmlspecialchars($pontoReferencia ?? '') ?>">
-                </tr>
-            </table>
+                    </div>
+
+                    <div class="col-12">
+                        <label for="PONTO_REFERENCIA" class="form-label small">Ponto de referência</label>
+                        <input class="form-control" type="text" id="PONTO_REFERENCIA" name="PONTO_REFERENCIA" value="<?= htmlspecialchars($pontoReferencia ?? '') ?>">
+                    </div>
+                </div>
+            </div>
         </div>
         <!--------------------------------------------------------->
 
         <!---------------RODAPÉ DA JANELA---------------------->
-        <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+        <div class="modal-footer border-0">
+            <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancelar</button>
             <button type="submit" name="editar" class="btn btn-success">Salvar</button>
         </div>
     </form>
