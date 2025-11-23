@@ -5,9 +5,15 @@
  */
 
 // Aplica máscara a um valor existente de acordo com o padrão (ex: '#####-###')
-function aplicarMascaraValor(elemento, padrao) {
+function aplicarMascaraValor(elemento, padrao, preservarCursor) {
     if (!elemento || !padrao) return;
-    var digitos = (elemento.value || '').toString().replace(/\D/g, '');
+
+    // Salva a posição do cursor antes de aplicar a máscara (apenas se preservarCursor = true)
+    var cursorPos = preservarCursor ? (elemento.selectionStart || 0) : 0;
+    var valorAnterior = elemento.value || '';
+    var ehCarregamentoInicial = !preservarCursor;
+    
+    var digitos = valorAnterior.toString().replace(/\D/g, '');
     // Se nenhum dígito foi informado, não pré-preenche com os caracteres da máscara
     if (digitos.length === 0) {
         elemento.value = '';
@@ -38,7 +44,47 @@ function aplicarMascaraValor(elemento, padrao) {
             }
         }
     }
+    
     elemento.value = resultado;
+
+    // Só restaura cursor se estiver editando (não no carregamento inicial)
+    if (!ehCarregamentoInicial && preservarCursor) {
+        // Calcula a nova posição do cursor
+        // Conta quantos dígitos existem antes da posição do cursor original
+        var digitosAntesDoCursor = valorAnterior.substring(0, cursorPos).replace(/\D/g, '').length;
+        
+        // Encontra a posição correspondente no novo valor formatado
+        var novaPosicao = 0;
+        var digitosContados = 0;
+        for (var i = 0; i < resultado.length; i++) {
+            if (/\d/.test(resultado.charAt(i))) {
+                digitosContados++;
+                // Caso especial: se não há dígitos antes do cursor (posição 0), mantém em 0
+                if (digitosAntesDoCursor === 0) {
+                    novaPosicao = 0;
+                    break;
+                }
+                if (digitosContados >= digitosAntesDoCursor) {
+                    novaPosicao = i + 1;
+                    break;
+                }
+            }
+        }
+        
+        // Se o cursor estava no final ou após todos os dígitos, coloca no final
+        if (digitosAntesDoCursor === 0) {
+            novaPosicao = 0; // garante início absoluto
+        } else if (digitosContados < digitosAntesDoCursor || cursorPos >= valorAnterior.length) {
+            novaPosicao = resultado.length;
+        }
+        
+        // Restaura a posição do cursor
+        try {
+            elemento.setSelectionRange(novaPosicao, novaPosicao);
+        } catch(e) {
+            // Em caso de erro, ignora (alguns navegadores não suportam)
+        }
+    }
 }
 
 // Procura elementos que usam a função 'mascaras' no atributo onkeypress e aplica a formatação
@@ -50,10 +96,10 @@ function aplicarMascaraNosCampos(container) {
         var attr = el.getAttribute('onkeypress') || '';
         var m = attr.match(/mascaras\s*\(\s*event\s*,\s*this\s*,\s*'([^']+)'\s*\)/);
         if (m && m[1]) {
-            aplicarMascaraValor(el, m[1]);
+            aplicarMascaraValor(el, m[1], false);
             try {
                 if (!el.dataset.maskAttached) {
-                    el.addEventListener('input', function() { aplicarMascaraValor(el, m[1]); });
+                    el.addEventListener('input', function() { aplicarMascaraValor(el, m[1], true); });
                     // adiciona listener keypress que replica comportamento da função mascaras
                     if (typeof window.mascaras === 'function') {
                         el.addEventListener('keypress', function(evt) { return window.mascaras(evt, el, m[1]); });
@@ -69,10 +115,10 @@ function aplicarMascaraNosCampos(container) {
     nodesData.forEach(function(el) {
         var padrao = el.getAttribute('data-mask');
         if (padrao) {
-            aplicarMascaraValor(el, padrao);
+            aplicarMascaraValor(el, padrao, false);
             try {
                 if (!el.dataset.maskAttached) {
-                    el.addEventListener('input', function() { aplicarMascaraValor(el, padrao); });
+                    el.addEventListener('input', function() { aplicarMascaraValor(el, padrao, true); });
                     if (typeof window.mascaras === 'function') {
                         el.addEventListener('keypress', function(evt) { return window.mascaras(evt, el, padrao); });
                     }

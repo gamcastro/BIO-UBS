@@ -40,6 +40,8 @@ $ubsNome = htmlspecialchars($_SESSION['ubs_nome'] ?? 'UBS - Central');
     
     <!--------CSS customizado do sistema---------------------------------------->
     <link rel="stylesheet" type="text/css" href="<?= BASE_URL ?>/css/custom.css">
+    <!-- TomSelect CSS global -->
+    <link href="https://cdn.jsdelivr.net/npm/tom-select@2.3.1/dist/css/tom-select.bootstrap5.css" rel="stylesheet">
 
     <!--------Google Fonts (Inter)---------------------------------------------->
     <link rel="preconnect" href="https://fonts.googleapis.com">

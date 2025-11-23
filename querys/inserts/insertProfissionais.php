@@ -36,7 +36,7 @@ if (isset($_POST['salvar'])) {
         'ESTADO_EMISSOR_CONSELHO',
         'CEP',
         'ESTADO_ENDERECO',
-        'MUNICIPIO',
+        'ID_MUNICIPIO',
         'BAIRRO',
         'LOGRADOURO',
         'NUMERO',
@@ -53,14 +53,31 @@ if (isset($_POST['salvar'])) {
     $dados = []; // Array que será enviado para a superclasse
     
     foreach ($colunasPermitidas as $coluna) {
-        // Verifica se a coluna existe no POST e NÃO é a senha
-        // <-- MUDANÇA: Nome da coluna corrigido
         if (isset($_POST[$coluna]) && $coluna != 'PASSWORD_HASH') {
-            
             $valor = $_POST[$coluna];
-            // Tratamento: Se o valor for uma string vazia (""), convertemos para NULL.
             $dados[$coluna] = ($valor !== '') ? $valor : null;
         }
+    }
+
+    // Município (ID) vindo do input name="municipio" via TomSelect
+    $idMun = null;
+    if (isset($_POST['municipio']) && $_POST['municipio'] !== '') {
+        $idMun = (int)$_POST['municipio'];
+        if ($idMun <= 0) { $idMun = null; }
+    }
+    // Valida existência do município (opcional se não selecionado)
+    if ($idMun) {
+        $pdoValMun = BioUBS\Conexao::getConn();
+        $stmtMun = $pdoValMun->prepare('SELECT 1 FROM ibge_municipios WHERE CD_MUNICIPIO = :m LIMIT 1');
+        $stmtMun->bindValue(':m', $idMun, PDO::PARAM_INT);
+        $stmtMun->execute();
+        if ($stmtMun->fetchColumn()) {
+            $dados['ID_MUNICIPIO'] = $idMun;
+        } else {
+            $dados['ID_MUNICIPIO'] = null; // município inválido -> ignora
+        }
+    } else {
+        $dados['ID_MUNICIPIO'] = null;
     }
 
     // Validação específica para códigos de UF (devem existir na tabela ibge_ufs)
@@ -123,6 +140,12 @@ if (isset($_POST['salvar'])) {
     // Sanitiza CEP (mantém apenas dígitos)
     if (isset($dados['CEP']) && $dados['CEP'] !== null) {
         $dados['CEP'] = preg_replace('/\D+/', '', (string)$dados['CEP']);
+    }
+
+    // Sanitiza CNS do profissional: armazena apenas dígitos
+    if (isset($dados['CNS_PROFISSIONAL']) && $dados['CNS_PROFISSIONAL'] !== null) {
+        $cnsLimpo = preg_replace('/\D+/', '', (string)$dados['CNS_PROFISSIONAL']);
+        $dados['CNS_PROFISSIONAL'] = $cnsLimpo !== '' ? $cnsLimpo : null;
     }
 
     // Normaliza o campo SEXO para os valores do ENUM do banco: 'Masculino' / 'Feminino'

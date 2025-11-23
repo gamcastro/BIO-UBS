@@ -21,6 +21,8 @@ SCRIPTS JAVASCRIPT GLOBAIS
 <script src="https://cdn.datatables.net/2.3.4/js/dataTables.bootstrap5.js"></script>
 
 <!-- Scripts personalizados do sistema -->
+<!-- TomSelect JS global -->
+<script src="https://cdn.jsdelivr.net/npm/tom-select@2.3.1/dist/js/tom-select.complete.min.js"></script>
 <script src="<?= BASE_URL ?>/js/custom.js"></script> 
 <!-- Validação de data de nascimento (feedback Bootstrap, min/max dinâmicos) -->
 <script src="<?= BASE_URL ?>/js/validacao-data-nascimento.js"></script>

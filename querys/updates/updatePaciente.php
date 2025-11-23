@@ -15,7 +15,7 @@ $nome_mae = $_POST['nome_mae'];
 $telefone_celular = $_POST['telefone_celular'];
 $telefone_contato = isset($_POST['telefone_contato']) ? $_POST['telefone_contato'] : null;
 $cep = $_POST['cep'];
-$municipio = $_POST['municipio'];
+$id_municipio = isset($_POST['municipio']) && $_POST['municipio'] !== '' ? (int)$_POST['municipio'] : null;
 $estado = $_POST['estado'];
 $endereco = $_POST['endereco'];
 $numero = $_POST['numero'];
@@ -63,7 +63,7 @@ $colunasPermitidas = [
   'NOME_MAE',
   'TELEFONE_CELULAR',
   'CEP',
-  'MUNICIPIO',
+  'ID_MUNICIPIO',
   'ESTADO',
   'ENDERECO',
   'NUMERO',
@@ -121,28 +121,28 @@ if ($erros) {
 }
 
 $dados = [
-    'NOME' => $nome,
-    'DATA_NASCIMENTO' => $data_nascimento,
-    'CPF' => $cpf,
-    'CNS' => $cns,
-    'NOME_MAE' => $nome_mae,
-    'TELEFONE_CELULAR' => $telefone_celular,
-    'CEP' => $cep,
-    'MUNICIPIO' => $municipio,
-    'ESTADO' => $estado,
-    'ENDERECO' => $endereco,
-    'NUMERO' => $numero,
-    'COMPLEMENTO' => $complemento,
-    'BAIRRO' => $bairro,
-    'SEXO' => $sexo,
-    'RACA_COR' => $raca_cor,
-    'TELEFONE_RESIDENCIAL' => $telefone_residencial,
-    'TELEFONE_CONTATO' => $telefone_contato,
-    'EMAIL' => $email,
-    'RG' => $rg,
-    'UF_RG' => $uf_rg,
-    'SSP' => $ssp,
-    'LGPD_CONSENT' => $lgpd_consent
+  'NOME' => $nome,
+  'DATA_NASCIMENTO' => $data_nascimento,
+  'CPF' => $cpf,
+  'CNS' => $cns,
+  'NOME_MAE' => $nome_mae,
+  'TELEFONE_CELULAR' => $telefone_celular,
+  'CEP' => $cep,
+  'ID_MUNICIPIO' => $id_municipio,
+  'ESTADO' => $estado,
+  'ENDERECO' => $endereco,
+  'NUMERO' => $numero,
+  'COMPLEMENTO' => $complemento,
+  'BAIRRO' => $bairro,
+  'SEXO' => $sexo,
+  'RACA_COR' => $raca_cor,
+  'TELEFONE_RESIDENCIAL' => $telefone_residencial,
+  'TELEFONE_CONTATO' => $telefone_contato,
+  'EMAIL' => $email,
+  'RG' => $rg,
+  'UF_RG' => $uf_rg,
+  'SSP' => $ssp,
+  'LGPD_CONSENT' => $lgpd_consent
 ];
 
 $updateUbs = $objeto->atualizar($id, $dados);

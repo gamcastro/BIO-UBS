@@ -13,7 +13,7 @@ include_once('../includes/header.php');
 $userProfile = $_SESSION['user_perfil'] ?? '';
 
 // Usamos os mesmos perfis que definimos na sidebar.php
-$perfis_admin = ['COORDENADOR UBS', 'Administrador Município', 'Administrador do Sistema'];
+$perfis_admin = ['Coordenador UBS', 'Administrador Município', 'Administrador do Sistema'];
 $isAdmin = in_array($userProfile, $perfis_admin);
 
 if (!$isAdmin) {

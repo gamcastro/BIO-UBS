@@ -30,7 +30,7 @@ $logradouro = $_POST['logradouro'];
 $numero = $_POST['numero'];
 $bairro = $_POST['bairro'];
 $complemento = $_POST['complemento'];
-$municipio = $_POST['municipio'];
+$municipio = $_POST['municipio']; // ID do município via TomSelect
 $estado_endereco = $_POST['estado_endereco']; // Este é o ID do estado (ex: 21)
 
 
@@ -49,7 +49,7 @@ $colunasPermitidas = [
     'NUMERO',
     'BAIRRO',
     'COMPLEMENTO',
-    'MUNICIPIO',
+    'ID_MUNICIPIO',
     'ESTADO' // No BD, a coluna se chama ESTADO
 ];
 
@@ -72,7 +72,7 @@ $dados = [
     'NUMERO'      => $numero,
     'BAIRRO'      => $bairro,
     'COMPLEMENTO' => $complemento,
-    'MUNICIPIO'   => $municipio,
+    'ID_MUNICIPIO'   => (isset($municipio) && $municipio !== '' ? (int)$municipio : null),
     'ESTADO'      => $estado_endereco // Mapeia o 'estado_endereco' do form para a coluna 'ESTADO'
 ];
 

@@ -37,7 +37,7 @@
 
                             <div class="col-md-6">
                                 <label for="CNS" class="form-label small">CNS</label>
-                                <input class="form-control" type="text" name="cns" id="CNS" placeholder="000 0000 0000 0000" minlength="15" maxlength="18" data-mask="### #### #### ####" inputmode="numeric" data-numeric="true">
+                                <input class="form-control" type="text" name="cns" id="CNS" placeholder="000 0000 0000 0000" minlength="15" maxlength="18" data-mask="### #### #### ####" inputmode="numeric">
                             </div>
 
                             <div class="col-12">

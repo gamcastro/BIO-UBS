@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Tempo de geração: 20/11/2025 às 23:58
+-- Tempo de geração: 23/11/2025 às 21:56
 -- Versão do servidor: 10.4.32-MariaDB
 -- Versão do PHP: 8.2.12
 
@@ -48,7 +48,7 @@ CREATE TABLE `cadastro_paciente` (
   `NUMERO` varchar(10) DEFAULT NULL,
   `COMPLEMENTO` varchar(100) DEFAULT NULL,
   `BAIRRO` varchar(100) DEFAULT NULL,
-  `MUNICIPIO` varchar(100) DEFAULT NULL,
+  `ID_MUNICIPIO` int(7) DEFAULT NULL,
   `ESTADO` char(2) DEFAULT NULL,
   `LGPD_CONSENT` tinyint(1) NOT NULL DEFAULT 0,
   `CRIADO_EM` timestamp NOT NULL DEFAULT current_timestamp(),
@@ -59,10 +59,10 @@ CREATE TABLE `cadastro_paciente` (
 -- Despejando dados para a tabela `cadastro_paciente`
 --
 
-INSERT INTO `cadastro_paciente` (`ID`, `NOME`, `DATA_NASCIMENTO`, `NOME_MAE`, `SEXO`, `RACA_COR`, `CPF`, `CNS`, `RG`, `UF_RG`, `SSP`, `TELEFONE_CELULAR`, `TELEFONE_RESIDENCIAL`, `TELEFONE_CONTATO`, `EMAIL`, `CEP`, `ENDERECO`, `NUMERO`, `COMPLEMENTO`, `BAIRRO`, `MUNICIPIO`, `ESTADO`, `LGPD_CONSENT`, `CRIADO_EM`, `ATUALIZADO_EM`) VALUES
-(34, 'Markleny Martins Pinheiro Melo Castro', '1981-02-28', NULL, NULL, NULL, '65501438372', NULL, '8766555545', 21, 'SSP/MA', '', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, '2025-09-23 02:20:02', '2025-11-07 03:02:05'),
-(39, 'Aaron Carmona Da Silva Dos Anjos', '1987-03-15', 'Maria De Padua Angelita', 'M', 'BRANCA', '44544556789', '898989898989898', '989898932', 21, 'SSP/MA', '98992332673', '9832443155', NULL, 'gamcastro@bol.com.br', '93434343', 'Rua Vinte e Cinco de Dezembro', '220', '', 'Anil de Baixo', 'São Luís de Piratini', '21', 1, '2025-11-07 03:15:07', '2025-11-20 03:45:59'),
-(59, 'Maria das Graças da Silva do Espirito Santo', '1983-01-01', 'Maria do Espirito Santos da Silva', 'F', 'PARDA', '87838873223', '883483438438438', '983948934893', 21, 'SSP/MA', '98992345678', '9832451234', '98992334567', 'maria@gmail.com', '93483943', 'Rua Vinte e Cinco de Dezembro', '221', '', 'Anil de Baixo', 'São Luís de Pira', '21', 1, '2025-11-20 21:25:26', '2025-11-20 21:28:56');
+INSERT INTO `cadastro_paciente` (`ID`, `NOME`, `DATA_NASCIMENTO`, `NOME_MAE`, `SEXO`, `RACA_COR`, `CPF`, `CNS`, `RG`, `UF_RG`, `SSP`, `TELEFONE_CELULAR`, `TELEFONE_RESIDENCIAL`, `TELEFONE_CONTATO`, `EMAIL`, `CEP`, `ENDERECO`, `NUMERO`, `COMPLEMENTO`, `BAIRRO`, `ID_MUNICIPIO`, `ESTADO`, `LGPD_CONSENT`, `CRIADO_EM`, `ATUALIZADO_EM`) VALUES
+(34, 'Markleny Martins Pinheiro Melo Castro', '1981-02-28', 'Denise de Fatima Martins Pinheiro', 'M', 'BRANCA', '65501438372', '983483434343434', '8766555545', 21, 'SSP/MA', '', '', '', '', '65089899', 'Rua 10', '21', '', 'Anil de Cima', 2100550, '21', 1, '2025-09-23 02:20:02', '2025-11-23 15:09:29'),
+(39, 'Aaron Carmona da Silva dos Anjos', '1987-03-15', 'Maria de Padua Angelita', 'M', 'BRANCA', '44544556789', '898989898989898', '989898932', 21, 'SSP/MA', '98992332673', '9832443155', '', 'gamcastro@bol.com.br', '93434343', 'Rua Vinte e Cinco de Dezembro', '220', '', 'Anil de Baixo', 2100550, '21', 1, '2025-11-07 03:15:07', '2025-11-23 15:08:03'),
+(69, 'Maria de Nazare dos Santos de Carvalho', '2001-09-03', 'Maria das Dores da Silva de Sena', 'F', 'PARDA', '70459343454', '734343434343430', '12324232325', 21, 'SSP/MA', '98992332673', '9832443155', '98992345677', 'maria@example.com', '64545494', 'Rua Vinte e Cinco de Dezembro', '220', '', 'Anil de Cima', 2100055, '21', 1, '2025-11-23 18:56:54', '2025-11-23 20:55:40');
 
 -- --------------------------------------------------------
 
@@ -86,7 +86,7 @@ CREATE TABLE `cadastro_profissional` (
   `ESTADO_EMISSOR_CONSELHO` int(11) DEFAULT NULL,
   `CEP` varchar(9) DEFAULT NULL,
   `ESTADO_ENDERECO` int(11) DEFAULT NULL,
-  `MUNICIPIO` varchar(100) DEFAULT NULL,
+  `ID_MUNICIPIO` int(7) DEFAULT NULL,
   `BAIRRO` varchar(100) DEFAULT NULL,
   `LOGRADOURO` varchar(255) DEFAULT NULL,
   `NUMERO` varchar(20) DEFAULT NULL,
@@ -103,10 +103,11 @@ CREATE TABLE `cadastro_profissional` (
 -- Despejando dados para a tabela `cadastro_profissional`
 --
 
-INSERT INTO `cadastro_profissional` (`ID`, `MATRICULA`, `NOME_COMPLETO`, `CPF`, `CNS_PROFISSIONAL`, `DATA_NASCIMENTO`, `SEXO`, `PERFIL`, `EMAIL`, `TELEFONE`, `CONSELHO_CLASSE`, `REGISTRO_CONSELHO`, `ESTADO_EMISSOR_CONSELHO`, `CEP`, `ESTADO_ENDERECO`, `MUNICIPIO`, `BAIRRO`, `LOGRADOURO`, `NUMERO`, `COMPLEMENTO`, `PONTO_REFERENCIA`, `PASSWORD_HASH`, `IS_ACTIVE`, `LAST_LOGIN`, `CRIADO_EM`, `ATUALIZADO_EM`) VALUES
-(17, '3099618', 'George André Melo Castro', '71050035372', '12345', '1976-04-17', 'Masculino', 'COORDENADOR UBS', 'gamcastro14@gmail.com', '98992332673', 'CRM', '345678', 21, '65047-240', 15, 'São Luís', 'Anil', 'rua 10 casa 20', '220', NULL, NULL, '$argon2id$v=19$m=65536,t=4,p=1$TjJsalhaTURZR3NEOFZ0ZA$JbkYpcroYZtdG3yStG8XjPERyc24qXIeWlDdVEtSeOE', 1, NULL, '2025-10-30 16:59:49', '2025-11-07 03:19:23'),
-(21, '102089', 'Aaron Carmona', '99934590045', '88877733', '1943-12-01', 'Masculino', 'MÉDICO', 'gamcastro@gmail.com', '999999999', 'CRM', '2323232', 21, '65047270', 21, 'SÃO LUÍS', 'ANIL', 'RUA 10 CASA', '20', NULL, NULL, '$argon2id$v=19$m=65536,t=4,p=1$dGlxTlJUU2xyS3YwNlZsWA$OchKtLvlK2XeZZZddKXlI2ANsra2HWSasbkUZVY/DD8', 1, NULL, '2025-11-07 03:25:07', '2025-11-07 03:25:07'),
-(37, '93434343434', 'Raimundo da Silva dos Remédios', '98344556787', '354 5453 3232 2', '1976-12-09', 'Masculino', 'Recepção', 'raimundo@gmail.com', '98987401266', NULL, NULL, NULL, '56455656', 21, 'São Luís de Pirati', 'Anil de Cima', 'Rua Vinte e Quatro dos Arpões', '220', NULL, NULL, '$argon2id$v=19$m=65536,t=4,p=1$LnFuUGJCMzFWRktjamdLeQ$9akhnq0ihsbyxW6obn0S9a/opiLue7CIBAw6blIOLxE', 1, NULL, '2025-11-20 22:23:11', '2025-11-20 22:36:35');
+INSERT INTO `cadastro_profissional` (`ID`, `MATRICULA`, `NOME_COMPLETO`, `CPF`, `CNS_PROFISSIONAL`, `DATA_NASCIMENTO`, `SEXO`, `PERFIL`, `EMAIL`, `TELEFONE`, `CONSELHO_CLASSE`, `REGISTRO_CONSELHO`, `ESTADO_EMISSOR_CONSELHO`, `CEP`, `ESTADO_ENDERECO`, `ID_MUNICIPIO`, `BAIRRO`, `LOGRADOURO`, `NUMERO`, `COMPLEMENTO`, `PONTO_REFERENCIA`, `PASSWORD_HASH`, `IS_ACTIVE`, `LAST_LOGIN`, `CRIADO_EM`, `ATUALIZADO_EM`) VALUES
+(17, '3099618', 'George André Melo Castro', '71050035372', '939923923923923', '1976-04-17', 'Masculino', 'Coordenador UBS', 'gamcastro14@gmail.com', '98992332673', 'CRM', '345678', 21, '65047240', 21, 2111300, 'Planalto Anil 3', 'Rua Q', '220', NULL, NULL, '$argon2id$v=19$m=65536,t=4,p=1$TjJsalhaTURZR3NEOFZ0ZA$JbkYpcroYZtdG3yStG8XjPERyc24qXIeWlDdVEtSeOE', 1, NULL, '2025-10-30 16:59:49', '2025-11-23 19:33:03'),
+(21, '202087', 'Aaron Carmona', '99934590045', '888337592123035', '1943-12-01', 'Masculino', 'Médico', 'gamcastro@gmail.com', '999999999', 'CRM', '2323232', 21, '65047270', 21, 2100550, 'Anil de Baixo', 'Rua Vinte e Cinco de Dezembro', '20', NULL, NULL, '$argon2id$v=19$m=65536,t=4,p=1$dGlxTlJUU2xyS3YwNlZsWA$OchKtLvlK2XeZZZddKXlI2ANsra2HWSasbkUZVY/DD8', 1, NULL, '2025-11-07 03:25:07', '2025-11-23 19:30:57'),
+(43, '14222318', 'Marco Aurélios da Silva da Sousa', '84901014957', '093493494399999', '1987-01-01', 'Masculino', 'Recepção', 'marco@gmail.com', '98992324334', NULL, NULL, NULL, '64546464', 21, 2100550, 'Anil de Cima', 'Rua Vinte e Quatro de Dezembro', '221', NULL, NULL, '$argon2id$v=19$m=65536,t=4,p=1$VGtETFlqRS4xWktJZHhaLg$a9QhdeJKRfAp3TgiyNjRbbYYG36mabig6//bHoPIz30', 1, NULL, '2025-11-23 19:01:17', '2025-11-23 19:28:50'),
+(44, '34343437576', 'Raimundo de Nazaré dos Anjos da Silva', '59190902461', '534343431212123', '1987-03-12', 'Masculino', 'Enfermeiro', 'raimundo@gmail.com', '99988433434', 'COREN', '434343433', 21, '54545454', 21, 2100105, 'Anil de Baixo', 'Rua Vinte e Cinco de Dezembro', '3434', NULL, NULL, '$argon2id$v=19$m=65536,t=4,p=1$R0R4Qm9IcDRacTdad0w4Mw$M43rdJ6ORsp9V/Z/hruZM6Kd19f1Zu279MMoZb/9nik', 1, NULL, '2025-11-23 20:44:55', '2025-11-23 20:56:10');
 
 -- --------------------------------------------------------
 
@@ -122,7 +123,7 @@ CREATE TABLE `cadastro_unidade` (
   `TELEFONE` varchar(15) DEFAULT NULL,
   `CEP` varchar(9) DEFAULT NULL,
   `ESTADO` int(11) DEFAULT NULL,
-  `MUNICIPIO` varchar(100) DEFAULT NULL,
+  `ID_MUNICIPIO` int(7) DEFAULT NULL,
   `BAIRRO` varchar(100) DEFAULT NULL,
   `LOGRADOURO` varchar(255) DEFAULT NULL,
   `NUMERO` varchar(20) DEFAULT NULL,
@@ -135,8 +136,8 @@ CREATE TABLE `cadastro_unidade` (
 -- Despejando dados para a tabela `cadastro_unidade`
 --
 
-INSERT INTO `cadastro_unidade` (`ID`, `NOME`, `CNES`, `CNPJ`, `TELEFONE`, `CEP`, `ESTADO`, `MUNICIPIO`, `BAIRRO`, `LOGRADOURO`, `NUMERO`, `COMPLEMENTO`, `CRIADO_EM`, `ATUALIZADO_EM`) VALUES
-(1, 'Unidade ´Básica de Saúde Amapá do Maranhão', '1224243', '66.777.888.99-000', '9892334567', '65023646', 21, 'Amapá do Maranhão', 'Centro', 'Rua Vinte e Quator de Abril', '10', 'Proximo do Supermercado Aragão', '2025-09-29 13:57:49', '2025-11-20 22:49:24');
+INSERT INTO `cadastro_unidade` (`ID`, `NOME`, `CNES`, `CNPJ`, `TELEFONE`, `CEP`, `ESTADO`, `ID_MUNICIPIO`, `BAIRRO`, `LOGRADOURO`, `NUMERO`, `COMPLEMENTO`, `CRIADO_EM`, `ATUALIZADO_EM`) VALUES
+(1, 'Unidade Básica de Saúde Amapá do Maranhão', '1224243', '66.777.888.99-000', '9892334567', '65023646', 21, 2100550, 'Centro', 'Rua Vinte e Cindo do Brasil', '10', 'Proximo Ao Supermecado Aarão', '2025-09-29 13:57:49', '2025-11-23 20:39:10');
 
 -- --------------------------------------------------------
 
@@ -5873,7 +5874,8 @@ CREATE TABLE `remember_tokens` (
 --
 ALTER TABLE `cadastro_paciente`
   ADD PRIMARY KEY (`ID`),
-  ADD KEY `idx_paciente_uf_rg` (`UF_RG`);
+  ADD KEY `idx_paciente_uf_rg` (`UF_RG`),
+  ADD KEY `fk_paciente_municipio` (`ID_MUNICIPIO`);
 
 --
 -- Índices de tabela `cadastro_profissional`
@@ -5885,7 +5887,8 @@ ALTER TABLE `cadastro_profissional`
   ADD UNIQUE KEY `CPF` (`CPF`),
   ADD UNIQUE KEY `CNS_PROFISSIONAL` (`CNS_PROFISSIONAL`),
   ADD KEY `idx_prof_uf_conselho` (`ESTADO_EMISSOR_CONSELHO`),
-  ADD KEY `idx_prof_uf_endereco` (`ESTADO_ENDERECO`);
+  ADD KEY `idx_prof_uf_endereco` (`ESTADO_ENDERECO`),
+  ADD KEY `fk_profissional_municipio` (`ID_MUNICIPIO`);
 
 --
 -- Índices de tabela `cadastro_unidade`
@@ -5894,7 +5897,8 @@ ALTER TABLE `cadastro_unidade`
   ADD PRIMARY KEY (`ID`),
   ADD UNIQUE KEY `CNES` (`CNES`),
   ADD UNIQUE KEY `CNPJ` (`CNPJ`),
-  ADD KEY `idx_unidade_uf` (`ESTADO`);
+  ADD KEY `idx_unidade_uf` (`ESTADO`),
+  ADD KEY `fk_unidade_municipio` (`ID_MUNICIPIO`);
 
 --
 -- Índices de tabela `fila_atendimento`
@@ -5947,13 +5951,13 @@ ALTER TABLE `remember_tokens`
 -- AUTO_INCREMENT de tabela `cadastro_paciente`
 --
 ALTER TABLE `cadastro_paciente`
-  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=60;
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=71;
 
 --
 -- AUTO_INCREMENT de tabela `cadastro_profissional`
 --
 ALTER TABLE `cadastro_profissional`
-  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=38;
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=45;
 
 --
 -- AUTO_INCREMENT de tabela `cadastro_unidade`
@@ -5993,6 +5997,7 @@ ALTER TABLE `remember_tokens`
 -- Restrições para tabelas `cadastro_paciente`
 --
 ALTER TABLE `cadastro_paciente`
+  ADD CONSTRAINT `fk_paciente_municipio` FOREIGN KEY (`ID_MUNICIPIO`) REFERENCES `ibge_municipios` (`CD_MUNICIPIO`) ON UPDATE CASCADE,
   ADD CONSTRAINT `fk_paciente_uf_rg` FOREIGN KEY (`UF_RG`) REFERENCES `ibge_ufs` (`CD_UF`) ON DELETE SET NULL ON UPDATE CASCADE;
 
 --
@@ -6000,12 +6005,14 @@ ALTER TABLE `cadastro_paciente`
 --
 ALTER TABLE `cadastro_profissional`
   ADD CONSTRAINT `fk_prof_uf_conselho` FOREIGN KEY (`ESTADO_EMISSOR_CONSELHO`) REFERENCES `ibge_ufs` (`CD_UF`) ON DELETE SET NULL ON UPDATE CASCADE,
-  ADD CONSTRAINT `fk_prof_uf_endereco` FOREIGN KEY (`ESTADO_ENDERECO`) REFERENCES `ibge_ufs` (`CD_UF`) ON DELETE SET NULL ON UPDATE CASCADE;
+  ADD CONSTRAINT `fk_prof_uf_endereco` FOREIGN KEY (`ESTADO_ENDERECO`) REFERENCES `ibge_ufs` (`CD_UF`) ON DELETE SET NULL ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_profissional_municipio` FOREIGN KEY (`ID_MUNICIPIO`) REFERENCES `ibge_municipios` (`CD_MUNICIPIO`);
 
 --
 -- Restrições para tabelas `cadastro_unidade`
 --
 ALTER TABLE `cadastro_unidade`
+  ADD CONSTRAINT `fk_unidade_municipio` FOREIGN KEY (`ID_MUNICIPIO`) REFERENCES `ibge_municipios` (`CD_MUNICIPIO`),
   ADD CONSTRAINT `fk_unidade_uf` FOREIGN KEY (`ESTADO`) REFERENCES `ibge_ufs` (`CD_UF`) ON DELETE SET NULL ON UPDATE CASCADE;
 
 --

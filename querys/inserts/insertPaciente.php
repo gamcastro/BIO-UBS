@@ -11,7 +11,7 @@ use BioUBS\UbsCrudAll;
   $telefone_celular = $_POST['telefone_celular'];
   $telefone_contato = isset($_POST['telefone_contato']) ? $_POST['telefone_contato'] : null;
   $cep = $_POST['cep'];
-  $municipio = $_POST['municipio'];
+  $id_municipio = $_POST['municipio'];
   $estado = $_POST['estado'];
   $endereco = $_POST['endereco'];
   $numero = $_POST['numero'];
@@ -61,7 +61,7 @@ use BioUBS\UbsCrudAll;
       'NOME_MAE',
       'TELEFONE_CELULAR',
       'CEP',
-      'MUNICIPIO',
+      'ID_MUNICIPIO',
       'ESTADO',
       'ENDERECO',
       'NUMERO',
@@ -126,7 +126,7 @@ use BioUBS\UbsCrudAll;
     'NOME_MAE'              => $nome_mae,
     'TELEFONE_CELULAR'      => $telefone_celular,
     'CEP'                   => $cep,
-    'MUNICIPIO'             => $municipio,
+    'ID_MUNICIPIO'          => $id_municipio,
     'ESTADO'                => $estado,
     'ENDERECO'              => $endereco,
     'NUMERO'                => $numero,

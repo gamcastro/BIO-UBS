@@ -79,13 +79,13 @@ Este layout é COMPLEMENTAR à sidebar, não redundante.
         // --- Lógica de Permissão para os Cards ---       
 
         // Perfis de Atendimento Clínico
-        $perfis_clinicos = ['MÉDICO', 'ENFERMEIRO', 'AUXILIAR/TÉCNICO ENFERMAGEM', 'CIRURGIÃO DENTISTA', 'ASB - AUXILIAR SAÚDE BUCAL', 'TSB - TÉCNICO SAÚDE BUCAL'];
+        $perfis_clinicos = ['Médico', 'Enfermeiro', 'Auxiliar/Técnico enfermagem', 'Cirurgião dentista', 'ASB - Auxiliar de saúde bucal', 'TSB - Técnico de saúde bucal'];
         
         // Perfis Administrativos/Recepção
-        $perfis_recepcao = ['RECEPÇÃO', 'ACS - AGENTE COMUNITÁRIO SAÚDE', 'ACE - AGENTE COMBATE ENDEMIAS'];
+        $perfis_recepcao = ['Recepção'];
 
         // Perfis de Gestão
-        $perfis_gestao = ['COORDENADOR UBS', 'Administrador Município', 'Administrador do Sistema'];
+        $perfis_gestao = ['Coordenador UBS', 'Administrador Município', 'Administrador do Sistema'];
         
         ?>
 

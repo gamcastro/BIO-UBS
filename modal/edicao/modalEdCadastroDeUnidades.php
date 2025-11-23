@@ -24,7 +24,19 @@ if (isset($_GET['id'])): //----só sugirá o conteúdo se vier um ID
         $telefone = $rowsId['TELEFONE'];
         $cep = $rowsId['CEP'];
         $estado = $rowsId['ESTADO'];
-        $municipio = $rowsId['MUNICIPIO'];
+        $id_municipio = $rowsId['ID_MUNICIPIO'] ?? null;
+        $municipioLabel = '';
+        if ($id_municipio) {
+            try {
+                $pdo = BioUBS\Conexao::getConn();
+                $stmtMun = $pdo->prepare('SELECT MUNICIPIO FROM ibge_municipios WHERE CD_MUNICIPIO = :id LIMIT 1');
+                $stmtMun->bindValue(':id', $id_municipio, PDO::PARAM_INT);
+                $stmtMun->execute();
+                $municipioLabel = $stmtMun->fetchColumn() ?: '';
+            } catch (Exception $e) {
+                $municipioLabel = '';
+            }
+        }
         $bairro = $rowsId['BAIRRO'];
         $logradouro = $rowsId['LOGRADOURO'];
         $numero = $rowsId['NUMERO'];
@@ -99,7 +111,7 @@ if (isset($_GET['id'])): //----só sugirá o conteúdo se vier um ID
 
                     <div class="col-md-6">
                         <label for="municipio" class="form-label small">Município</label>
-                        <input class="form-control" type="text" id="municipio" name="municipio" data-titlecase="true" value="<?= htmlspecialchars($municipio ?? '') ?>">
+                        <input class="form-control" type="text" id="municipio" name="municipio" value="<?= htmlspecialchars($id_municipio ?? '') ?>" data-pref-label="<?= htmlspecialchars($municipioLabel) ?>" placeholder="Selecione o município" />
                     </div>
                     <div class="col-md-6">
                         <label for="estado_endereco" class="form-label small">Estado (UF)</label>

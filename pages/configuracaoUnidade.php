@@ -1,20 +1,4 @@
 <?php
-/**
- * pages/configuracaoUnidade.php
- * * Página para GERENCIAR a única unidade do sistema.
- * * ESTRATÉGIA ROBUSTA: Esta versão busca a *primeira linha* da tabela,
- * * independentemente do seu ID, em vez de usar um ID fixo.
- * *
- * * VERSÃO ATUAL: Corrigida a lógica do 'ESTADO' (UF) para usar o ID
- * * (ex: 21) em vez da sigla (ex: 'MA'), alinhando com o script
- * * 'ConsultaUnidadeFederativaSelect.php'.
- * *
- * * VERSÃO ATUAL 2: Troca 'DOMContentLoaded' por 'window.load'
- * * para garantir que o script rode após todos os plugins.
- */
-
-$tituloDaPagina = "Dados da Unidade - BIO-UBS";
-
 // 1. INCLUDES E AUTORIZAÇÃO
 // =============================================
 include_once(__DIR__ . '/../includes/header.php'); 
@@ -24,7 +8,7 @@ use BioUBS\UbsCrudAll;
 // 2. VERIFICAÇÃO DE PERFIL (Segurança)
 // =============================================
 $userProfile = $_SESSION['user_perfil'] ?? '';
-$perfis_admin = ['COORDENADOR UBS', 'Administrador Município', 'Administrador do Sistema'];
+$perfis_admin = ['Coordenador UBS', 'Administrador Município', 'Administrador do Sistema'];
 $isAdmin = in_array($userProfile, $perfis_admin);
 
 if (!$isAdmin) {
@@ -56,7 +40,7 @@ if (isset($_POST['salvar'])) {
     // Nomes das colunas do banco que podem ser atualizadas/criadas
     $colunasPermitidas = [
         'NOME', 'CNES', 'CNPJ', 'TELEFONE', 'CEP', 'ESTADO',
-        'MUNICIPIO', 'BAIRRO', 'LOGRADOURO', 'NUMERO', 'COMPLEMENTO'
+        'ID_MUNICIPIO', 'BAIRRO', 'LOGRADOURO', 'NUMERO', 'COMPLEMENTO'
     ];
     
     // Prepara o array de dados para o update/insert
@@ -75,12 +59,25 @@ if (isset($_POST['salvar'])) {
         'TELEFONE' => $telefone_digits !== '' ? $telefone_digits : null,
         'CEP' => $cep_digits !== '' ? $cep_digits : null,        
         'ESTADO' => $_POST['uf'] ?? null, 
-        'MUNICIPIO' => $_POST['municipio'] ?? null,
+        'ID_MUNICIPIO' => $_POST['municipio'] ?? null,
         'BAIRRO' => $_POST['bairro'] ?? null,
         'LOGRADOURO' => $_POST['logradouro'] ?? null,
         'NUMERO' => $_POST['numero'] ?? null,
         'COMPLEMENTO' => $_POST['complemento'] ?? null
     ];
+
+    // Normalizar ID_MUNICIPIO: aceitar apenas inteiros positivos ou null
+    if (isset($dados['ID_MUNICIPIO'])) {
+        $raw = $dados['ID_MUNICIPIO'];
+        if ($raw === '' || $raw === null) {
+            $dados['ID_MUNICIPIO'] = null;
+        } else {
+            // retirar quaisquer caracteres não-dígitos e converter
+            $onlyDigits = preg_replace('/\D+/', '', (string)$raw);
+            $idVal = $onlyDigits !== '' ? (int)$onlyDigits : 0;
+            $dados['ID_MUNICIPIO'] = $idVal > 0 ? $idVal : null;
+        }
+    }
 
     // *** LÓGICA DE DECISÃO (INSERT vs UPDATE) ***
     
@@ -139,11 +136,41 @@ $uf = $dadosUnidade['ESTADO'] ?? '';
 if (!is_numeric($uf) || $uf <= 0) {
     $uf = '21'; // Maranhão
 }
-$municipio = $dadosUnidade['MUNICIPIO'] ?? '';
+$municipio = $dadosUnidade['ID_MUNICIPIO'] ?? '';
 $bairro = $dadosUnidade['BAIRRO'] ?? '';
 $logradouro = $dadosUnidade['LOGRADOURO'] ?? '';
 $numero = $dadosUnidade['NUMERO'] ?? '';
 $complemento = $dadosUnidade['COMPLEMENTO'] ?? '';
+
+// Se o valor de MUNICIPIO for um ID (numérico), tentar resolver o nome
+$municipioLabel = '';
+$municipioValue = '';
+if ($municipio !== null && $municipio !== '') {
+    if (is_numeric($municipio)) {
+        try {
+            $pdoM = Conexao::getConn();
+            $stmtM = $pdoM->prepare('SELECT MUNICIPIO FROM ibge_municipios WHERE CD_MUNICIPIO = :id LIMIT 1');
+            $stmtM->bindValue(':id', (int)$municipio, PDO::PARAM_INT);
+            $stmtM->execute();
+            $rowM = $stmtM->fetch(PDO::FETCH_ASSOC);
+            if ($rowM) {
+                $municipioLabel = $rowM['MUNICIPIO'];
+                $municipioValue = (string)(int)$municipio; // mantém o ID como value
+            } else {
+                // valor numérico mas não encontrado: tratar como vazio
+                $municipioLabel = '';
+                $municipioValue = '';
+            }
+        } catch (PDOException $e) {
+            $municipioLabel = '';
+            $municipioValue = '';
+        }
+    } else {
+        // Não é numérico: assume que o campo armazenava o nome
+        $municipioLabel = $municipio;
+        $municipioValue = '';
+    }
+}
 
 // Preparar exibição do telefone: formata apenas para visualização
 $telefone_digits_for_display = preg_replace('/\D+/', '', (string)$telefone);
@@ -269,11 +296,6 @@ INÍCIO: Conteúdo HTML da Página
                            <input type="text" class="form-control" id="complemento" name="complemento"
                                value="<?= htmlspecialchars($complemento); ?>" oninput="if(typeof capitalizeNameWithPrepositions === 'function'){ this.value = capitalizeNameWithPrepositions(this.value); }">
                     </div>
-                    <div class="col-md-8">
-                        <label for="municipio" class="form-label">Município</label>
-                           <input type="text" class="form-control" id="municipio" name="municipio"
-                               value="<?= htmlspecialchars($municipio); ?>" oninput="if(typeof capitalizeNameWithPrepositions === 'function'){ this.value = capitalizeNameWithPrepositions(this.value); }">
-                    </div>
                     <div class="col-md-4">
                         <label for="uf" class="form-label">Estado (UF)</label>
                         <!-- O name é 'uf' (que envia o ID, ex: 21) -->
@@ -286,6 +308,14 @@ INÍCIO: Conteúdo HTML da Página
                             require(__DIR__ . '/../querys/ConsultaUnidadeFederativaSelect.php');
                             ?>
                         </select>
+                    </div>
+                    <div class="col-md-8">
+                        <label for="MUNICIPIO" class="form-label">Município</label>
+                        <!-- Campo usado pelo TomSelect genérico de custom.js (ID maiúsculo + data-pref-label) -->
+                        <input type="text" class="form-control" id="MUNICIPIO" name="municipio" 
+                               placeholder="Selecione o município" 
+                               value="<?= htmlspecialchars($municipioValue); ?>" 
+                               data-pref-label="<?= htmlspecialchars($municipioLabel); ?>">
                     </div>
                 </div>
 
@@ -310,3 +340,22 @@ INÍCIO: Conteúdo HTML da Página
 <?php
 include_once(__DIR__ . '/../includes/footer.php');
 ?>
+
+<script>
+// TomSelect para município inicializado via custom.js (função initTomSelectForModal adaptada para páginas standalone)
+document.addEventListener('DOMContentLoaded', function(){
+    // Reutiliza a função genérica de custom.js se estiver disponível
+    if (typeof window.initTomSelectForModal === 'function') {
+        // Simula estrutura de modal para reutilizar a lógica existente
+        var pageContainer = document.querySelector('form#configUnidadeForm') || document.body;
+        try {
+            window.initTomSelectForModal(pageContainer);
+            console.log('[configuracaoUnidade] TomSelect inicializado via custom.js');
+        } catch(e) {
+            console.error('[configuracaoUnidade] Erro ao inicializar TomSelect', e);
+        }
+    } else {
+        console.warn('[configuracaoUnidade] initTomSelectForModal não disponível em custom.js');
+    }
+});
+</script>
