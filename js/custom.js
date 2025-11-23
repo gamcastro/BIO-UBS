@@ -89,6 +89,11 @@ document.addEventListener('DOMContentLoaded', function () {
                             try {
                                 if (window.initValidacaoDataNascimento) window.initValidacaoDataNascimento(modalContent);
                             } catch (e) { console && console.debug && console.debug('custom: initValidacaoDataNascimento failed', e); }
+                            
+                            // Inicializa TomSelect para modais carregados dinamicamente
+                            try {
+                                if (window.initTomSelectForModal) window.initTomSelectForModal(currentModal);
+                            } catch (e) { console && console.debug && console.debug('custom: initTomSelectForModal failed', e); }
                         })
                         .catch(function (error) {
                             // Se der erro ao carregar o conteúdo
@@ -140,6 +145,112 @@ document.addEventListener('DOMContentLoaded', function () {
     }); // Fim do loop forEach
 
 }); // Fim do listener 'DOMContentLoaded'
+
+// -------------------------------------------------------------------------
+// TomSelect genérico para qualquer campo de município em modais
+// -------------------------------------------------------------------------
+const __tomSelectMunicipiosRegistry = new WeakMap(); // input -> instance
+
+function buildMunicipioUrl(uf, query){
+    const parts = location.pathname.split('/').filter(Boolean);
+    const base = parts.length ? '/' + parts[0] : '';
+    return base + '/ajax/municipios.php?uf=' + encodeURIComponent(uf) + '&q=' + encodeURIComponent(query || '');
+}
+
+function initTomSelectForModal(modal){
+    if(!modal) return;
+    // Procura inputs de município (variações de id/name)
+    const municipioInputs = modal.querySelectorAll('input#MUNICIPIO, input#municipio, input[id*="municipio"], input[name="municipio"], input[name="MUNICIPIO"]');
+    if(!municipioInputs.length) return;
+
+    // Detecta UF select
+    const ufSelect = modal.querySelector('select[name="estado"], select[name="uf"], select[id*="cad-uf"], select[id*="UF"], select[name="UF"]');
+    if(!ufSelect) return; // Sem UF não inicializa
+
+    municipioInputs.forEach(function(inp){
+        if(__tomSelectMunicipiosRegistry.has(inp)) return; // Já inicializado
+
+        // Captura valor pré-preenchido (para modais de edição)
+        const prefilledValue = inp.value ? inp.value.trim() : '';
+
+        const instance = new TomSelect(inp, {
+            plugins: ['clear_button'],
+            maxItems: 1,
+            valueField: 'id',
+            labelField: 'nome',
+            searchField: 'nome',
+            create: true, // Permite criar valor temporário para nome pré-preenchido
+            preload: true,
+            maxOptions: null,
+            placeholder: 'Selecione a UF primeiro',
+            shouldLoad: function(){ return true; },
+            load: function(query, callback){
+                const uf = ufSelect.value;
+                if(!uf){ callback(); return; }
+                fetch(buildMunicipioUrl(uf, query))
+                    .then(r => r.json())
+                    .then(json => callback(json))
+                    .catch(() => callback());
+            },
+            onInitialize: function(){
+                if(!ufSelect.value) this.disable();
+                // Se tem valor pré-preenchido (modal de edição), adiciona como opção
+                if(prefilledValue && ufSelect.value){
+                    this.addOption({id: prefilledValue, nome: prefilledValue});
+                    this.setValue(prefilledValue, true);
+                }
+            }
+        });
+
+        // Reage à mudança da UF
+        ufSelect.addEventListener('change', function(){
+            if(!instance) return;
+            instance.clear();
+            instance.clearOptions();
+            if(this.value){
+                instance.enable();
+                instance.settings.placeholder = 'Selecione um município';
+                // Força atualização imediata do placeholder sem esperar blur
+                instance.inputState();
+                instance.load('');
+            } else {
+                instance.disable();
+                instance.settings.placeholder = 'Selecione a UF primeiro';
+                instance.inputState();
+            }
+        });
+
+        __tomSelectMunicipiosRegistry.set(inp, instance);
+    });
+}
+
+function destroyTomSelectForModal(modal){
+    if(!modal) return;
+    const municipioInputs = modal.querySelectorAll('input#MUNICIPIO, input#municipio, input[id*="municipio"], input[name="municipio"], input[name="MUNICIPIO"]');
+    municipioInputs.forEach(function(inp){
+        const inst = __tomSelectMunicipiosRegistry.get(inp);
+        if(inst){
+            inst.destroy();
+            __tomSelectMunicipiosRegistry.delete(inp);
+        }
+    });
+}
+
+// Expõe função globalmente para ser chamada após carregamento dinâmico
+window.initTomSelectForModal = initTomSelectForModal;
+window.destroyTomSelectForModal = destroyTomSelectForModal;
+
+// Inicializa em modais estáticos ao serem mostrados
+document.addEventListener('DOMContentLoaded', function(){
+    document.querySelectorAll('.modal').forEach(function(m){
+        m.addEventListener('shown.bs.modal', function(){
+            initTomSelectForModal(m);
+        });
+        m.addEventListener('hidden.bs.modal', function(){
+            destroyTomSelectForModal(m);
+        });
+    });
+});
 
 // -------------------------------------------------------------------------
 // Comportamentos genéricos para reduzir JS inline

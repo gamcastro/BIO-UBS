@@ -24,7 +24,15 @@ if (isset($_GET['id'])): //----só surgirá o conteúdo se vier um ID
                 $telefone_celular = $rowsId['TELEFONE_CELULAR'];
                 $telefone_contato = $rowsId['TELEFONE_CONTATO'] ?? null;
                 $cep = $rowsId['CEP'];
-                $municipio = $rowsId['MUNICIPIO'];
+                $id_municipio = $rowsId['ID_MUNICIPIO'];
+                $municipio = '';
+                if ($id_municipio) {
+                    $pdo = BioUBS\Conexao::getConn();
+                    $stmtMun = $pdo->prepare('SELECT MUNICIPIO FROM ibge_municipios WHERE CD_MUNICIPIO = :id LIMIT 1');
+                    $stmtMun->bindValue(':id', $id_municipio, PDO::PARAM_INT);
+                    $stmtMun->execute();
+                    $municipio = $stmtMun->fetchColumn() ?: '';
+                }
                 $estado = $rowsId['ESTADO'];
                 $endereco = $rowsId['ENDERECO'];
                 $numero = $rowsId['NUMERO'];

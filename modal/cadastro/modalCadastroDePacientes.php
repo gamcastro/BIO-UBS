@@ -213,3 +213,4 @@
     </div>
 </div>
 <!----------------------------fim da da janela modal----------------------------->
+<!-- Inicialização do TomSelect movida para js/custom.js -->
