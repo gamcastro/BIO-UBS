@@ -87,7 +87,7 @@ if (isset($_GET['id'])): //----só surgirá o conteúdo se vier um ID
 
                 <div class="col-md-6">
                     <label for="CNS" class="form-label small">CNS</label>
-                    <input class="form-control" type="text" name="cns" id="CNS" placeholder="000 0000 0000 0000" minlength="15" maxlength="18" data-mask="### #### #### ####" inputmode="numeric" data-numeric="true" value="<?=$cns?>">
+                    <input class="form-control" type="text" name="cns" id="CNS" placeholder="000 0000 0000 0000" minlength="15" maxlength="18" data-mask="### #### #### ####" inputmode="numeric" value="<?=$cns?>">
                 </div>
 
                 <div class="col-12">
@@ -204,7 +204,7 @@ if (isset($_GET['id'])): //----só surgirá o conteúdo se vier um ID
 
                 <div class="col-md-8">
                     <label for="MUNICIPIO" class="form-label small">Município</label>
-                    <input class="form-control" type="text" name="municipio" id="MUNICIPIO" placeholder="Nome do município" data-titlecase="true" value="<?=$municipio?>">
+                    <input class="form-control" type="text" name="municipio" id="MUNICIPIO" placeholder="Nome do município" data-titlecase="true" value="<?=$id_municipio?>" data-pref-label="<?=$municipio?>">
                 </div>
 
                 <div class="col-md-3">

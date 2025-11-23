@@ -25,7 +25,7 @@ $telefone = $_POST['telefone'];
 $cep = $_POST['cep'];
 
 $estado_endereco = $_POST['uf'];
-$municipio = $_POST['municipio'];
+$municipio = $_POST['municipio']; // ID do município via TomSelect
 $bairro = $_POST['bairro'];
 $logradouro = $_POST['logradouro'];
 $numero = $_POST['numero'];
@@ -46,7 +46,7 @@ $colunasPermitidas =
     'TELEFONE',
     'CEP',
     'ESTADO',
-    'MUNICIPIO',
+    'ID_MUNICIPIO',
     'BAIRRO',
     'LOGRADOURO',
     'NUMERO',
@@ -66,7 +66,7 @@ $dados = ([
   // Executada antes de montar o array final
   // (mantido aqui para mínima alteração estrutural)
   'ESTADO'            => $estado_endereco,
-  'MUNICIPIO'         => $municipio,
+  'ID_MUNICIPIO'      => (isset($municipio) && $municipio !== '' ? (int)$municipio : null),
   'BAIRRO'            => $bairro,
   'LOGRADOURO'        => $logradouro,
   'NUMERO'            => $numero,

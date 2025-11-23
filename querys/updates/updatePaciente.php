@@ -15,7 +15,7 @@ $nome_mae = $_POST['nome_mae'];
 $telefone_celular = $_POST['telefone_celular'];
 $telefone_contato = isset($_POST['telefone_contato']) ? $_POST['telefone_contato'] : null;
 $cep = $_POST['cep'];
-$id_municipio = $_POST['municipio'];
+$id_municipio = isset($_POST['municipio']) && $_POST['municipio'] !== '' ? (int)$_POST['municipio'] : null;
 $estado = $_POST['estado'];
 $endereco = $_POST['endereco'];
 $numero = $_POST['numero'];

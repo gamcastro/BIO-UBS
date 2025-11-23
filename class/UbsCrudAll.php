@@ -87,6 +87,8 @@ class UbsCrudAll {
             } catch (\PDOException $e) {
             
                 echo $e->getMessage() . ' Falha ao inserir registro';
+                // Retorno seguro em caso de falha para cumprir assinatura
+                return '0';
 
             }
         }    
@@ -118,7 +120,7 @@ class UbsCrudAll {
             throw new InvalidArgumentException('Dados vazios para UPDATE.');
         }
 
-        //----------------------------------------------Whitelist de colunas (se definida na classe)
+     
         if (isset($this->colunasPermitidas) && is_array($this->colunasPermitidas) && !empty($this->colunasPermitidas)) {
             $dados = array_intersect_key($dados, array_flip($this->colunasPermitidas));
             if (empty($dados)) {
@@ -176,6 +178,8 @@ class UbsCrudAll {
         } catch (\PDOException $e) {
             
             echo 'Falha ao atualizar registro.';
+            // Garantir retorno inteiro conforme assinatura mesmo em erro
+            return 0;
         }
     }
 
@@ -219,6 +223,7 @@ class UbsCrudAll {
         } catch (\PDOException $e) {
             
             echo 'Falha ao remover registro.';
+            return 0;
         }
     }
 

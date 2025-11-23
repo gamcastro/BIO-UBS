@@ -26,7 +26,7 @@ $userInitial = mb_strtoupper(mb_substr($userName, 0, 1));
 
 // Define os perfis que podem ver o link de Administração
 // (Baseado na nossa discussão e no arquivo image_ed13e7.png)
-$perfis_admin = ['COORDENADOR UBS', 'Administrador Município', 'Administrador do Sistema'];
+$perfis_admin = ['Coordenador UBS', 'Administrador Município', 'Administrador do Sistema'];
 $isAdmin = in_array($userProfile, $perfis_admin);
 ?>
 

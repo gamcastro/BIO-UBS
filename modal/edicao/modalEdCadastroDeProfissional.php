@@ -41,7 +41,19 @@ if (isset($_GET['id'])): //----só surgirá o conteúdo se vier um ID
         // Endereço
         $cep = $rowsId['CEP'];
         $estadoEndereco = $rowsId['ESTADO_ENDERECO'];
-        $municipio = $rowsId['MUNICIPIO'];
+        $id_municipio = $rowsId['ID_MUNICIPIO'] ?? null;
+        $municipioLabel = '';
+        if ($id_municipio) {
+            try {
+                $pdo = BioUBS\Conexao::getConn();
+                $stmtMun = $pdo->prepare('SELECT MUNICIPIO FROM ibge_municipios WHERE CD_MUNICIPIO = :id LIMIT 1');
+                $stmtMun->bindValue(':id', $id_municipio, PDO::PARAM_INT);
+                $stmtMun->execute();
+                $municipioLabel = $stmtMun->fetchColumn() ?: '';
+            } catch (Exception $e) {
+                $municipioLabel = '';
+            }
+        }
         $bairro = $rowsId['BAIRRO'];
         $logradouro = $rowsId['LOGRADOURO'];
         $numero = $rowsId['NUMERO'];
@@ -88,7 +100,7 @@ if (isset($_GET['id'])): //----só surgirá o conteúdo se vier um ID
                     </div>
                     <div class="col-md-3">
                         <label for="CNS_PROFISSIONAL" class="form-label small">CNS</label>
-                        <input class="form-control" type="text" id="CNS_PROFISSIONAL" name="CNS_PROFISSIONAL" placeholder="Nº CNS" value="<?= htmlspecialchars($cnsProfissional ?? '') ?>" oninput="this.value = this.value.replace(/[^0-9]/g, '')" maxlength="15">
+                        <input class="form-control" type="text" id="CNS_PROFISSIONAL" name="CNS_PROFISSIONAL" placeholder="000 0000 0000 0000" minlength="15" maxlength="18" data-mask="### #### #### ####" inputmode="numeric" value="<?= htmlspecialchars($cnsProfissional ?? '') ?>">
                     </div>
                     <div class="col-md-3">
                         <label for="DATA_NASCIMENTO" class="form-label small">Data de nascimento</label>
@@ -213,11 +225,7 @@ if (isset($_GET['id'])): //----só surgirá o conteúdo se vier um ID
                         <input class="form-control" type="text" id="COMPLEMENTO" name="COMPLEMENTO" placeholder="Apto, Bloco, Casa, etc." value="<?= htmlspecialchars($complemento ?? '') ?>">
                     </div>
 
-                    <div class="col-md-6">
-                        <label for="MUNICIPIO" class="form-label small">Município</label>
-                        <input class="form-control" type="text" id="MUNICIPIO" name="MUNICIPIO" value="<?= htmlspecialchars($municipio ?? '') ?>" data-titlecase="true">
-                    </div>
-                    <div class="col-md-6">
+                    <div class="col-md-3">
                         <label for="ESTADO_ENDERECO" class="form-label small">Estado (UF)</label>
                         <select name="ESTADO_ENDERECO" id="ESTADO_ENDERECO" class="form-select">
                             <?php $selectedUf = ($estadoEndereco !== null && $estadoEndereco !== '' && is_numeric($estadoEndereco)) ? (string)$estadoEndereco : null; ?>
@@ -229,10 +237,9 @@ if (isset($_GET['id'])): //----só surgirá o conteúdo se vier um ID
                             <?php require(__DIR__ . '/../../querys/ConsultaUnidadeFederativaSelect.php'); ?>
                         </select>
                     </div>
-
-                    <div class="col-12">
-                        <label for="PONTO_REFERENCIA" class="form-label small">Ponto de referência</label>
-                        <input class="form-control" type="text" id="PONTO_REFERENCIA" name="PONTO_REFERENCIA" value="<?= htmlspecialchars($pontoReferencia ?? '') ?>">
+                    <div class="col-md-9">
+                        <label for="MUNICIPIO" class="form-label small">Município</label>
+                        <input class="form-control" type="text" id="MUNICIPIO" name="municipio" placeholder="Nome do município" value="<?= htmlspecialchars($id_municipio ?? '') ?>" data-pref-label="<?= htmlspecialchars($municipioLabel) ?>" />
                     </div>
                 </div>
             </div>

@@ -74,7 +74,7 @@ require_once __DIR__ . '/../../vendor/autoload.php';
 
                             <div class="col-md-6">
                                 <label for="cad-municipio" class="form-label small">Município</label>
-                                <input type="text" class="form-control" id="cad-municipio" name="municipio" data-titlecase="true">
+                                <input type="text" class="form-control" id="cad-municipio" name="municipio" placeholder="Selecione o município" />
                             </div>
                             <div class="col-md-6">
                                 <label for="cad-uf" class="form-label small">Estado (UF)</label>

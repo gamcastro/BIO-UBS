@@ -27,7 +27,7 @@ if (isset($_POST['editar'])) {
     // Os nomes aqui DEVEM ser idênticos às colunas do banco e aos atributos 'name' do formulário.
     $colunasPermitidas = [
         'NOME_COMPLETO',
-        'MATRICULA', // <-- Adicionado (estava faltando no script antigo)
+        'MATRICULA',
         'CPF',
         'CNS_PROFISSIONAL',
         'DATA_NASCIMENTO',
@@ -40,16 +40,12 @@ if (isset($_POST['editar'])) {
         'ESTADO_EMISSOR_CONSELHO',
         'CEP',
         'ESTADO_ENDERECO',
-        'MUNICIPIO',
+        'ID_MUNICIPIO',
         'BAIRRO',
         'LOGRADOURO',
         'NUMERO',
         'COMPLEMENTO',
-        'PONTO_REFERENCIA',
-        // 'SENHA_HASH' foi REMOVIDA PROPOSITALMENTE.
-        // Nunca atualize a senha em um formulário de edição de perfil,
-        // a menos que seja uma tela específica de "Alterar Senha".
-        // Manter isso aqui apagaria a senha do usuário.
+        'PONTO_REFERENCIA'
     ];
 
     // 3. INSTANCIAR A SUPERCLASSE
@@ -64,17 +60,30 @@ if (isset($_POST['editar'])) {
     $dados = []; // Array que será enviado para a superclasse
     
     foreach ($colunasPermitidas as $coluna) {
-        // Verifica se a coluna existe no que foi enviado via POST
         if (isset($_POST[$coluna])) {
-            
-            // Pega o valor do POST
             $valor = $_POST[$coluna];
-            
-            // Tratamento importante: Se o valor for uma string vazia (""),
-            // convertemos para NULL. Isso evita erros ao salvar no banco
-            // em campos que não aceitam string vazia (como 'date' ou 'int').
             $dados[$coluna] = ($valor !== '') ? $valor : null;
         }
+    }
+
+    // Mapeia ID do município a partir do campo "municipio" vindo do TomSelect
+    if (isset($_POST['municipio']) && $_POST['municipio'] !== '') {
+        $idMun = (int)$_POST['municipio'];
+        if ($idMun > 0) {
+            $pdoValMun = BioUBS\Conexao::getConn();
+            $stmtMun = $pdoValMun->prepare('SELECT 1 FROM ibge_municipios WHERE CD_MUNICIPIO = :m LIMIT 1');
+            $stmtMun->bindValue(':m', $idMun, PDO::PARAM_INT);
+            $stmtMun->execute();
+            if ($stmtMun->fetchColumn()) {
+                $dados['ID_MUNICIPIO'] = $idMun;
+            } else {
+                $dados['ID_MUNICIPIO'] = null;
+            }
+        } else {
+            $dados['ID_MUNICIPIO'] = null;
+        }
+    } else {
+        $dados['ID_MUNICIPIO'] = null;
     }
 
     // Sanitização de CPF (somente números) antes de persistir
@@ -99,6 +108,12 @@ if (isset($_POST['editar'])) {
     // Sanitiza CEP (mantém apenas dígitos)
     if (isset($dados['CEP']) && $dados['CEP'] !== null) {
         $dados['CEP'] = preg_replace('/\D+/', '', (string)$dados['CEP']);
+    }
+
+    // Sanitiza CNS do profissional: armazena apenas dígitos
+    if (isset($dados['CNS_PROFISSIONAL']) && $dados['CNS_PROFISSIONAL'] !== null) {
+        $cnsLimpo = preg_replace('/\D+/', '', (string)$dados['CNS_PROFISSIONAL']);
+        $dados['CNS_PROFISSIONAL'] = $cnsLimpo !== '' ? $cnsLimpo : null;
     }
 
     // Normaliza o campo SEXO para os valores do ENUM do banco: 'Masculino' / 'Feminino'

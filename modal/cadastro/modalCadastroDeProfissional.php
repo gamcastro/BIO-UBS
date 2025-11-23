@@ -156,10 +156,6 @@ require_once __DIR__ . '/../../vendor/autoload.php';
                                 <input class="form-control" type="text" id="COMPLEMENTO" name="COMPLEMENTO" placeholder="Apto, Bloco, Casa, etc.">
                             </div>
 
-                            <div class="col-md-6">
-                                <label for="MUNICIPIO" class="form-label small">Município</label>
-                                <input class="form-control" type="text" id="MUNICIPIO" name="MUNICIPIO" data-titlecase="true">
-                            </div>
                             <div class="col-md-3">
                                 <label for="ESTADO_ENDERECO" class="form-label small">Estado (UF)</label>
                                 <select name="ESTADO_ENDERECO" id="ESTADO_ENDERECO" class="form-select">
@@ -170,9 +166,9 @@ require_once __DIR__ . '/../../vendor/autoload.php';
                                 </select>
                                 <div class="invalid-feedback">Selecione a UF do endereço.</div>
                             </div>
-                            <div class="col-md-3">
-                                <label for="PONTO_REFERENCIA" class="form-label small">Ponto de Referência</label>
-                                <input class="form-control" type="text" id="PONTO_REFERENCIA" name="PONTO_REFERENCIA">
+                            <div class="col-md-9">
+                                <label for="MUNICIPIO" class="form-label small">Município</label>
+                                <input class="form-control" type="text" id="MUNICIPIO" name="municipio" placeholder="Selecione o município" />
                             </div>
                         </div>
                     </div>
