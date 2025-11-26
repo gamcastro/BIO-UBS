@@ -110,12 +110,19 @@ if ($correctPassword) {
     $_SESSION['user_nome'] = $profissional['NOME_COMPLETO']; // Guarda o nome (útil para exibir)
     $_SESSION['user_perfil'] = $profissional['PERFIL'];   // Guarda o perfil (útil para controle de acesso)
 
-    $stmt_ubs = $db->prepare("SELECT NOME FROM cadastro_unidade LIMIT 1");
+    // Busca a primeira unidade (até existir vínculo direto profissional-unidade)
+    $stmt_ubs = $db->prepare("SELECT ID, NOME FROM cadastro_unidade ORDER BY ID ASC LIMIT 1");
     $stmt_ubs->execute();
     $ubs = $stmt_ubs->fetch(PDO::FETCH_ASSOC);
     
-    // Salva o nome da UBS na sessão
-    $_SESSION['ubs_nome'] = $ubs['NOME'] ?? 'UBS - Central';
+    // Salva dados da UBS na sessão
+    if ($ubs) {
+        $_SESSION['ubs_nome'] = $ubs['NOME'] ?? 'UBS - Central';
+        $_SESSION['ubs_id']   = isset($ubs['ID']) ? (int)$ubs['ID'] : null;
+    } else {
+        $_SESSION['ubs_nome'] = 'UBS - Central';
+        $_SESSION['ubs_id']   = null; // Força fallback na página que precisar
+    }
 
     // Lógica do "Lembrar-me" (se selecionado)
     if ($remember) {
