@@ -20,7 +20,7 @@ composer.lock
 *.tmp
 
 # Backups
-*.sql
+
 *.bak
 /backups/
 
