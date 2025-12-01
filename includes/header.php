@@ -62,12 +62,12 @@ $ubsNome = htmlspecialchars($_SESSION['ubs_nome'] ?? 'UBS - Central');
         
         <!--------Abre o Conteúdo Principal (Main)------>
         
-    <main class="flex-grow-1 d-flex flex-column p-4 main-content">
+    <main class="flex-grow-1 d-flex flex-column main-content" style="padding: 0;">
         <?php
         //--------------------incluindo topbar com dados da UBS (nome + data/hora)------------------
         include_once __DIR__ . '/unit-topbar.php';
         //-------------------------------------------------------------------------------------------
         ?>
-            <!--------A partir daqui, o conteúdo da página (ex: index.php) é carregado.----> 
+        <div style="padding: 1rem 1.5rem;">
+            <!--------A partir daqui, o conteúdo da página (ex: index.php) é carregado.---->
             <!--------O <footer> e o </body> são fechados pelo 'footer.php'.---------------->
-

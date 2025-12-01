@@ -58,10 +58,13 @@ if (!$id_unidade) {
 }
 ?> 
 
-<h1 class="display-5 text-center text-muted mb-4">
-    <i class="bi bi-door-open me-2"></i>Recepção - Check-in de Pacientes
-</h1>
-<hr class="mb-4">
+<!-- Cabeçalho da Página -->
+<div class="d-flex align-items-center mb-4 pb-3 border-bottom border-primary" style="border-width: 3px !important;">
+    <div class="bg-primary rounded-3 p-3 me-3" style="width: 64px; height: 64px; display: flex; align-items: center; justify-content: center;">
+        <i class="bi bi-clipboard-check text-white" style="font-size: 2rem;"></i>
+    </div>
+    <h1 class="h3 mb-0 fw-normal">Recepção - Check-in de Pacientes</h1>
+</div>
 
 <!-- Container Principal -->
 <div class="container-fluid">

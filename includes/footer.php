@@ -1,5 +1,4 @@
-   
-
+        </div> <!-- Fecha o wrapper com padding -->
     </main> <!-- Fecha a tag <main class="... d-flex flex-column ..."> aberta no header.php -->
     
 </div> <!-- Fecha a tag <div class="d-flex min-vh-100"> aberta no header.php -->
