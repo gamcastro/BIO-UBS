@@ -25,6 +25,9 @@
                 <!----------------CORPO DA JANELA------------------------->
                 <div class="modal-body">
 
+                    <!-- Campo hidden para indicar origem (será preenchido via JavaScript se vier da recepção) -->
+                    <input type="hidden" name="origem_recepcao" id="origem_recepcao" value="0">
+
                     <!-- DADOS PESSOAIS -->
                     <div class="p-3 mb-3 rounded bg-light">
                         <strong class="d-block mb-2 text-primary">Dados pessoais</strong>

@@ -1,2 +1,45 @@
+# Configurações sensíveis
 config.php
+class/Conexao.php
+
+# Dependências
 /vendor/
+composer.lock
+
+# Logs
+*.log
+/logs/
+
+# Cache
+/cache/
+*.cache
+
+# Uploads e arquivos temporários
+/uploads/
+/tmp/
+*.tmp
+
+# Backups
+
+*.bak
+/backups/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# PHPUnit
+/phpunit.xml
+/.phpunit.cache/
+
+# Documentos temporários
+~$*.docx
+~$*.xlsx

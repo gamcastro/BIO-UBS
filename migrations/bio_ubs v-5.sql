@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Tempo de geração: 23/11/2025 às 21:56
+-- Tempo de geração: 01/12/2025 às 15:36
 -- Versão do servidor: 10.4.32-MariaDB
 -- Versão do PHP: 8.2.12
 
@@ -62,7 +62,9 @@ CREATE TABLE `cadastro_paciente` (
 INSERT INTO `cadastro_paciente` (`ID`, `NOME`, `DATA_NASCIMENTO`, `NOME_MAE`, `SEXO`, `RACA_COR`, `CPF`, `CNS`, `RG`, `UF_RG`, `SSP`, `TELEFONE_CELULAR`, `TELEFONE_RESIDENCIAL`, `TELEFONE_CONTATO`, `EMAIL`, `CEP`, `ENDERECO`, `NUMERO`, `COMPLEMENTO`, `BAIRRO`, `ID_MUNICIPIO`, `ESTADO`, `LGPD_CONSENT`, `CRIADO_EM`, `ATUALIZADO_EM`) VALUES
 (34, 'Markleny Martins Pinheiro Melo Castro', '1981-02-28', 'Denise de Fatima Martins Pinheiro', 'M', 'BRANCA', '65501438372', '983483434343434', '8766555545', 21, 'SSP/MA', '', '', '', '', '65089899', 'Rua 10', '21', '', 'Anil de Cima', 2100550, '21', 1, '2025-09-23 02:20:02', '2025-11-23 15:09:29'),
 (39, 'Aaron Carmona da Silva dos Anjos', '1987-03-15', 'Maria de Padua Angelita', 'M', 'BRANCA', '44544556789', '898989898989898', '989898932', 21, 'SSP/MA', '98992332673', '9832443155', '', 'gamcastro@bol.com.br', '93434343', 'Rua Vinte e Cinco de Dezembro', '220', '', 'Anil de Baixo', 2100550, '21', 1, '2025-11-07 03:15:07', '2025-11-23 15:08:03'),
-(69, 'Maria de Nazare dos Santos de Carvalho', '2001-09-03', 'Maria das Dores da Silva de Sena', 'F', 'PARDA', '70459343454', '734343434343430', '12324232325', 21, 'SSP/MA', '98992332673', '9832443155', '98992345677', 'maria@example.com', '64545494', 'Rua Vinte e Cinco de Dezembro', '220', '', 'Anil de Cima', 2100055, '21', 1, '2025-11-23 18:56:54', '2025-11-23 20:55:40');
+(69, 'Maria de Nazare dos Santos de Carvalho', '2001-09-03', 'Maria das Dores da Silva de Sena', 'F', 'PARDA', '70459343454', '734343434343430', '12324232325', 21, 'SSP/MA', '98992332673', '9832443155', '98992345677', 'maria@example.com', '64545494', 'Rua Vinte e Cinco de Dezembro', '220', '', 'Anil de Cima', 2100055, '21', 1, '2025-11-23 18:56:54', '2025-11-23 20:55:40'),
+(75, 'Idalina da Silva', '1965-01-01', 'Maria da Silva', 'F', 'PRETA', '04540232434', '945845845485548', '93493493434', 21, 'SSP/MA', '98934834834', '9832434535', '98834348343', 'idalina@gmail.com', '65047240', 'Rua 10', '20', '', 'Anil de Baixo', 2111300, '21', 1, '2025-12-01 13:58:34', '2025-12-01 13:58:34'),
+(76, 'Maria da Silva Xavier', '1987-01-01', 'Maria da Silva', 'F', 'PRETA', '45454545452', '434343434343434', '343434343434', 21, 'SSP/MA', '98998898989', '9899898989', '98989898989', 'maria@teste.com', '87343437', 'Rua Vinte e Cinco de Dezembro', '343', '', 'Maria da Silva', 2111300, '21', 1, '2025-12-01 14:32:31', '2025-12-01 14:32:31');
 
 -- --------------------------------------------------------
 
@@ -148,29 +150,20 @@ INSERT INTO `cadastro_unidade` (`ID`, `NOME`, `CNES`, `CNPJ`, `TELEFONE`, `CEP`,
 CREATE TABLE `fila_atendimento` (
   `ID` int(11) NOT NULL,
   `ID_PACIENTE` int(11) NOT NULL,
+  `ID_UNIDADE` int(11) NOT NULL,
   `QUEIXA_PRINCIPAL` text DEFAULT NULL,
   `DATA_HORA_CHEGADA` timestamp NOT NULL DEFAULT current_timestamp(),
-  `STATUS` enum('AGUARDANDO_TRIAGEM','EM_TRIAGEM','AGUARDANDO_ATENDIMENTO','FINALIZADO') NOT NULL DEFAULT 'AGUARDANDO_TRIAGEM'
+  `STATUS` enum('AGUARDANDO_TRIAGEM','EM_TRIAGEM','AGUARDANDO_ATENDIMENTO','EM_ATENDIMENTO','FINALIZADO') NOT NULL DEFAULT 'AGUARDANDO_TRIAGEM'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Despejando dados para a tabela `fila_atendimento`
 --
 
-INSERT INTO `fila_atendimento` (`ID`, `ID_PACIENTE`, `QUEIXA_PRINCIPAL`, `DATA_HORA_CHEGADA`, `STATUS`) VALUES
-(1, 34, 'Muita enxaqueca.', '2025-10-20 14:31:03', 'AGUARDANDO_TRIAGEM'),
-(3, 34, 'Sinusite aguda', '2025-10-23 14:06:40', 'AGUARDANDO_TRIAGEM'),
-(4, 34, 'Teste de Enxaqueca', '2025-10-23 14:08:47', 'AGUARDANDO_TRIAGEM'),
-(5, 34, 'Agora vai', '2025-10-23 14:16:43', 'AGUARDANDO_TRIAGEM'),
-(6, 34, 'Teste de Algo grande', '2025-10-23 14:23:52', 'AGUARDANDO_TRIAGEM'),
-(7, 34, 'dasdfasdfasdf asdfasdf asdf', '2025-10-23 14:25:18', 'AGUARDANDO_TRIAGEM'),
-(8, 34, 'Fec do fec', '2025-10-23 14:30:51', 'AGUARDANDO_TRIAGEM'),
-(9, 34, 'Floc de Floco do Floco', '2025-10-23 14:33:42', 'AGUARDANDO_TRIAGEM'),
-(10, 34, 'crrec do crec do crec', '2025-10-23 14:34:31', 'AGUARDANDO_TRIAGEM'),
-(11, 34, 'Teste de Algo', '2025-10-24 23:42:44', 'AGUARDANDO_TRIAGEM'),
-(12, 34, 'Mamãe está bem', '2025-10-24 23:43:47', 'AGUARDANDO_TRIAGEM'),
-(13, 34, 'Enxaqueca', '2025-10-25 00:44:48', 'AGUARDANDO_TRIAGEM'),
-(14, 34, 'Enxaqueca grande.', '2025-10-25 01:52:00', 'AGUARDANDO_TRIAGEM');
+INSERT INTO `fila_atendimento` (`ID`, `ID_PACIENTE`, `ID_UNIDADE`, `QUEIXA_PRINCIPAL`, `DATA_HORA_CHEGADA`, `STATUS`) VALUES
+(1, 34, 1, NULL, '2025-11-26 14:42:30', 'AGUARDANDO_TRIAGEM'),
+(2, 39, 1, 'Muita dor de cabeça', '2025-12-01 13:06:23', 'AGUARDANDO_TRIAGEM'),
+(3, 69, 1, 'Muita dor de cabeça', '2025-12-01 13:14:04', 'AGUARDANDO_TRIAGEM');
 
 -- --------------------------------------------------------
 
@@ -5865,6 +5858,26 @@ CREATE TABLE `remember_tokens` (
   `created_at` datetime DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+-- --------------------------------------------------------
+
+--
+-- Estrutura para tabela `triagens`
+--
+
+CREATE TABLE `triagens` (
+  `ID` int(11) NOT NULL,
+  `ID_FILA` int(11) NOT NULL,
+  `ID_PROFISSIONAL` int(11) NOT NULL COMMENT 'Profissional que realizou a triagem',
+  `PRESSAO_ARTERIAL` varchar(20) DEFAULT NULL,
+  `TEMPERATURA` decimal(4,1) DEFAULT NULL,
+  `GLICEMIA` int(11) DEFAULT NULL,
+  `PESO` decimal(5,2) DEFAULT NULL,
+  `ALTURA` decimal(3,2) DEFAULT NULL,
+  `QUEIXA_DETALHADA` text DEFAULT NULL,
+  `CLASSIFICACAO_RISCO` enum('VERMELHO','LARANJA','AMARELO','VERDE','AZUL') NOT NULL,
+  `DATA_HORA` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
 --
 -- Índices para tabelas despejadas
 --
@@ -5905,7 +5918,8 @@ ALTER TABLE `cadastro_unidade`
 --
 ALTER TABLE `fila_atendimento`
   ADD PRIMARY KEY (`ID`),
-  ADD KEY `fk_fila_paciente` (`ID_PACIENTE`);
+  ADD KEY `fk_fila_paciente` (`ID_PACIENTE`),
+  ADD KEY `fk_fila_unidade` (`ID_UNIDADE`);
 
 --
 -- Índices de tabela `ibge_municipios`
@@ -5944,6 +5958,15 @@ ALTER TABLE `remember_tokens`
   ADD KEY `user_id` (`user_id`);
 
 --
+-- Índices de tabela `triagens`
+--
+ALTER TABLE `triagens`
+  ADD PRIMARY KEY (`ID`),
+  ADD KEY `idx_triagem_fila` (`ID_FILA`),
+  ADD KEY `idx_triagem_profissional` (`ID_PROFISSIONAL`),
+  ADD KEY `idx_triagem_risco` (`CLASSIFICACAO_RISCO`);
+
+--
 -- AUTO_INCREMENT para tabelas despejadas
 --
 
@@ -5951,7 +5974,7 @@ ALTER TABLE `remember_tokens`
 -- AUTO_INCREMENT de tabela `cadastro_paciente`
 --
 ALTER TABLE `cadastro_paciente`
-  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=71;
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=77;
 
 --
 -- AUTO_INCREMENT de tabela `cadastro_profissional`
@@ -5969,7 +5992,7 @@ ALTER TABLE `cadastro_unidade`
 -- AUTO_INCREMENT de tabela `fila_atendimento`
 --
 ALTER TABLE `fila_atendimento`
-  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT de tabela `login_attempts`
@@ -5988,6 +6011,12 @@ ALTER TABLE `password_resets`
 --
 ALTER TABLE `remember_tokens`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT de tabela `triagens`
+--
+ALTER TABLE `triagens`
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- Restrições para tabelas despejadas
@@ -6019,7 +6048,8 @@ ALTER TABLE `cadastro_unidade`
 -- Restrições para tabelas `fila_atendimento`
 --
 ALTER TABLE `fila_atendimento`
-  ADD CONSTRAINT `fk_fila_paciente` FOREIGN KEY (`ID_PACIENTE`) REFERENCES `cadastro_paciente` (`ID`);
+  ADD CONSTRAINT `fk_fila_paciente` FOREIGN KEY (`ID_PACIENTE`) REFERENCES `cadastro_paciente` (`ID`),
+  ADD CONSTRAINT `fk_fila_unidade` FOREIGN KEY (`ID_UNIDADE`) REFERENCES `cadastro_unidade` (`ID`);
 
 --
 -- Restrições para tabelas `password_resets`
@@ -6032,6 +6062,13 @@ ALTER TABLE `password_resets`
 --
 ALTER TABLE `remember_tokens`
   ADD CONSTRAINT `remember_tokens_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `cadastro_profissional` (`ID`) ON DELETE CASCADE;
+
+--
+-- Restrições para tabelas `triagens`
+--
+ALTER TABLE `triagens`
+  ADD CONSTRAINT `fk_triagem_fila` FOREIGN KEY (`ID_FILA`) REFERENCES `fila_atendimento` (`ID`) ON DELETE CASCADE,
+  ADD CONSTRAINT `fk_triagem_profissional` FOREIGN KEY (`ID_PROFISSIONAL`) REFERENCES `cadastro_profissional` (`ID`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

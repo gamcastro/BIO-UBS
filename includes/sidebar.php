@@ -53,7 +53,16 @@ $isAdmin = in_array($userProfile, $perfis_admin);
             </a>
         </li>
 
-        <!-- MUDANÇA: Link direto para Pacientes -->
+        <!-- Link para Recepção -->
+        <li class="nav-item">
+            <a href="<?= BASE_URL ?>/pages/recepcao.php"
+                class="nav-link <?= ($currentPage == 'recepcao.php') ? 'active' : 'text-dark' ?>">
+                <i class="bi bi-door-open-fill me-2"></i>
+                Recepção
+            </a>
+        </li>
+
+        <!-- Link direto para Pacientes -->
         <li class="nav-item">
             <a href="<?= BASE_URL ?>/pages/cadastroDePacientes.php"
                 class="nav-link <?= ($currentPage == 'cadastroDePacientes.php') ? 'active' : 'text-dark' ?>">

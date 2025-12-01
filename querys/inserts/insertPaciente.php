@@ -148,11 +148,25 @@ use BioUBS\UbsCrudAll;
 //--------------------------------------------------------  
 
 //----------mensagem de confirmacao-----------------------
-/**/
+// Verifica se o cadastro veio da recepção
+$voltarParaRecepcao = isset($_POST['origem_recepcao']) && $_POST['origem_recepcao'] === '1';
+
+if ($voltarParaRecepcao) {
+  // Retorna para a recepção com mensagem de sucesso
+  if (!defined('BASE_URL')) {
+    require_once __DIR__ . '/../../config.php';
+  }
+  echo "<script>
+  window.alert('✓ Paciente cadastrado com sucesso!\\n\\nVocê pode fazer o check-in agora.');
+  window.location='" . BASE_URL . "/pages/recepcao.php?cadastro_sucesso=1&cpf=" . urlencode($cpf) . "'
+  </script>";
+} else {
+  // Retorna para a lista de pacientes (comportamento padrão)
   echo "<script>
   window.alert('Cadastro efetuado com sucesso!');
   window.location='cadastroDePacientes.php'
   </script>";
+}
   
 //----------------------------------------------------------  
 
