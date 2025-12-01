@@ -10,7 +10,13 @@ use BioUBS\UbsCrudAll;
 use BioUBS\Idade;
 //----------------------------------------
 
-// Pega o ID da unidade da sessão (com fallback)
+// Processamento do formulário de cadastro de paciente
+if ($nivelAcesso == 1 && isset($_POST['salvar']) && isset($_POST['origem_recepcao']) && $_POST['origem_recepcao'] == '1') {
+    // Cadastro vindo da página de recepção
+    include(__DIR__ . '/../querys/inserts/insertPaciente.php');
+}
+
+// Pega o ID da unidade da sessão
 $id_unidade = $_SESSION['ubs_id'] ?? null;
 
 if (!$id_unidade) {
@@ -157,33 +163,6 @@ if (!$id_unidade) {
                 </div>
             </div>
 
-            <!-- Card de Paciente Não Encontrado (Oculto inicialmente) -->
-            <div id="cardNaoEncontrado" class="card shadow-sm border-warning" style="display: none;">
-                <div class="card-body text-center">
-                    <div class="d-flex justify-content-between align-items-start mb-3">
-                        <span></span>
-                        <button type="button" class="btn-close" id="btnFecharCardNaoEncontrado"></button>
-                    </div>
-                    <i class="bi bi-exclamation-triangle-fill text-warning" style="font-size: 3rem;"></i>
-                    <h5 class="card-title mt-3 mb-2">Paciente Não Encontrado</h5>
-                    <p class="text-muted mb-3">
-                        Não encontramos nenhum paciente com os dados informados em nossa base.
-                    </p>
-                    <div class="d-grid gap-2">
-                        <button type="button" 
-                                class="btn btn-primary btn-lg" 
-                                data-bs-toggle="modal"
-                                data-bs-target="#insertPaciente"
-                                id="btnCadastrarNovo">
-                            <i class="bi bi-person-plus-fill me-2"></i>Cadastrar Novo Paciente
-                        </button>
-                        <button type="button" class="btn btn-outline-secondary" id="btnNovaConsulta">
-                            <i class="bi bi-arrow-clockwise me-2"></i>Fazer Nova Busca
-                        </button>
-                    </div>
-                </div>
-            </div>
-
         </div>
 
         <!-- Coluna Direita: Fila de Espera -->
@@ -219,6 +198,12 @@ if (!$id_unidade) {
 <script src="https://cdn.jsdelivr.net/npm/tom-select@2.3.1/dist/js/tom-select.complete.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/axios@1.6.7/dist/axios.min.js"></script>
 <link rel="stylesheet" href="<?= BASE_URL ?>/css/recepcao.css">
+<script>
+// Garante que o formulário de cadastro submeta para a página correta
+$(document).ready(function(){
+    $('#cad').attr('action', '<?= BASE_URL ?>/pages/recepcao.php');
+});
+</script>
 <script src="<?= BASE_URL ?>/js/recepcao.js"></script>
 
 <?php

@@ -97,6 +97,9 @@
                 item: function(item, escape){
                     if(!item || !item.nome){ return ''; }
                     return '<div>'+escape(item.nome)+' <span class="text-muted">('+escape(item.cpf)+')</span></div>';
+                },
+                no_results: function(){
+                    return '<div class="no-results">Nenhum paciente encontrado. <a href="#" id="linkCadastrarNovo" class="text-primary">Cadastrar novo paciente</a></div>';
                 }
             },
             loadThrottle: 250,
@@ -105,7 +108,10 @@
                 api.post(BASE_URL + '/querys/sugestoesPacienteRecepcao.php', new URLSearchParams({ term: query }))
                    .then(r => {
                        const data = r.data;
-                       callback(Array.isArray(data)? data : []);
+                       const results = Array.isArray(data)? data : [];
+                       callback(results);
+                       // Não mostra mais o card automaticamente
+                       // O usuário pode clicar no link "Cadastrar novo paciente" que aparece no dropdown
                    })
                    .catch(()=> callback());
             }
@@ -131,15 +137,18 @@
         $('#btnFecharCard').on('click', function(){
             $('#cardPaciente').fadeOut();
             tomSelectBusca.clear();
-            $('#termo_busca').focus();
             tomSelectBusca.enable();
+            setTimeout(() => tomSelectBusca.focus(), 100);
         });
 
-        $('#btnFecharCardNaoEncontrado, #btnNovaConsulta').on('click', function(){
-            $('#cardNaoEncontrado').fadeOut();
+        // Listener para link de cadastro no dropdown
+        $(document).on('click', '#linkCadastrarNovo', function(e){
+            e.preventDefault();
+            // Define origem_recepcao antes de abrir o modal
+            $('#origem_recepcao').val('1');
+            // Abre o modal diretamente sem mostrar o card intermediário
+            $('#insertPaciente').modal('show');
             tomSelectBusca.clear();
-            $('#termo_busca').focus();
-            tomSelectBusca.enable();
         });
 
         $('#btnCheckin').on('click', function(){
@@ -156,6 +165,7 @@
                        alert('✓ Check-in realizado com sucesso!\n\nPaciente enviado para a fila de triagem.');
                        $('#cardPaciente').fadeOut();
                        tomSelectBusca.clear();
+                       tomSelectBusca.enable();
                        carregarFilaEspera();
                    } else {
                        alert('Erro: ' + response.message);
@@ -173,5 +183,14 @@
         $('#insertPaciente').on('show.bs.modal', function(){
             $('#origem_recepcao').val('1');
         });
+
+        $('#insertPaciente').on('hidden.bs.modal', function(){
+            // Após fechar o modal, habilita o campo de busca para buscar o paciente recém-cadastrado
+            tomSelectBusca.enable();
+            setTimeout(() => tomSelectBusca.focus(), 100);
+        });
+
+        // Foco automático no campo de busca ao carregar a página
+        setTimeout(() => tomSelectBusca.focus(), 300);
     });
 })();
